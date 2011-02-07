@@ -1,0 +1,7 @@
+= form_for category, :remote => true do |f|
+  = f.error_messages
+  = f.text_field :name
+  = submit_to Category
+  - unless category.new_record?
+    = link_to_delete category
+    = link_to_add_to_item1 category

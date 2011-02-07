@@ -1,0 +1,12 @@
+﻿!!! Strict
+%html
+  %head
+    %title= APPLICATION_TITLE
+    = javascript_include_tag application_javascripts
+    = stylesheet_link_tag application_stylesheets
+    = csrf_meta_tag
+  %body
+    #wrapper
+      #header= render "catalog_items/header"
+      #nav= render "catalog_items/nav" unless controller_name == "sessions" or controller_name == "users"
+      #content= yield

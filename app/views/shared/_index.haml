@@ -1,0 +1,7 @@
+.ui-widget-content{ :id => objects.first.class.name.tableize }
+  = link_to_close_window1 objects.first.class
+  = will_paginate objects rescue nil
+  = render :partial => objects.first.class.new_partial, :object => objects.first.class.new1 rescue nil
+  = render objects rescue nil  
+  = draggable_element objects.first.class.name.tableize
+  

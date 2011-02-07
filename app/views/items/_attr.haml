@@ -1,0 +1,5 @@
+%span[ attr ]
+  = render_attrs attr
+  = link_to_remove_from_item attr.class
+  = hidden_field_tag "item[#{attr.to_underscore}_ids][]", attr.id
+  = hidden_field_tag "item[#{attr.to_underscore}_ids][]", "0"

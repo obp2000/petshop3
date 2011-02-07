@@ -1,0 +1,7 @@
+.ui-widget-content[ cart_item ]
+  = link_to_show cart_item.catalog_item
+  - [ "size", "colour" ].each do |attr|
+    = render_attrs cart_item.send( attr ) rescue nil  
+  %p
+    = "#{roubles cart_item.price} #{RUB} / #{cart_item.amount} #{SHT}"
+    = link_to_delete cart_item unless do_not_show( session.cart )

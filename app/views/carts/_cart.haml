@@ -1,0 +1,10 @@
+#link_to_new_order_form= render "carts/link_to_new_order_form"
+%div
+  %b
+    = ITOGO.colon
+    %span#cart_total_items= session.cart.total_items
+    = SHT + " / "
+    %span#cart_total_sum= roubles session.cart.total
+    = RUB
+%div{ :id => session.cart.cart_items.new.class.name.tableize }= render session.cart.cart_items
+#link_to_clear_cart= render "carts/link_to_clear_cart"

@@ -1,0 +1,34 @@
+%h2= new_page_title_for ProcessedOrder 
+= form_for @object, :remote => true do |f|
+  = f.error_messages
+  %fieldset.ui-widget-content
+    %div
+      = f.label( :email, ProcessedOrder.email_rus )
+      = render "shared/red_star"
+      = f.text_field :email
+    %div
+      = f.label( :phone_number, ProcessedOrder.phone_number_rus )
+      = render "shared/red_star"
+      = f.text_field :phone_number
+    %div
+      = f.label( :ship_to_first_name, ProcessedOrder.ship_to_first_name_rus )
+      = render "shared/red_star"
+      = f.text_field :ship_to_first_name
+    %div
+      = f.label( :ship_to_city, ProcessedOrder.ship_to_city_rus )
+      = f.text_field :ship_to_city
+    %div
+      = f.label( :ship_to_address, ProcessedOrder.ship_to_address_rus )
+      = f.text_area :ship_to_address, :rows => 2
+  %fieldset.ui-widget-content
+    %div
+      = f.label( :comments, ProcessedOrder.comments_rus )
+      = f.text_area :comments, :rows => 4
+  %fieldset.ui-widget-content
+    = ProcessedOrder.captcha_text
+    = render "shared/red_star"
+    = captcha_block
+  %div
+    = render "shared/red_star"
+    = " - " + REQUIRED_FIELDS
+  %div= submit_to ProcessedOrder 

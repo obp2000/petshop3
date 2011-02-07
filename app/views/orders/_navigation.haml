@@ -1,0 +1,11 @@
+%p 
+  %b Показать:
+  = link_to_index Order
+  = "//"
+  = link_to_index ProcessedOrder    
+  %b
+    (
+    %span#processed_orders_amount= ProcessedOrder.count
+    ) 
+  = "//"
+  = link_to_index ClosedOrder     
