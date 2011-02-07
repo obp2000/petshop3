@@ -21,7 +21,8 @@ class ApplicationController < ActionController::Base
   
   def index
     @object = controller_name.classify.constantize.new_object( params, session )    
-    @objects = controller_name.classify.constantize.all_objects( params, flash ) || [ @object ]
+    @objects = controller_name.classify.constantize.all_objects( params, flash )
+    @objects = [ @object ] if @objects.empty?
     render_block_call     
   end
 
