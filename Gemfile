@@ -6,9 +6,7 @@ gem 'rails', '3.0.3'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3-ruby', :require => 'sqlite3'
-# gem 'sqlite3-ruby', '1.2.5', :require => 'sqlite3'
-
+gem 'sqlite3-ruby', '~> 1.2.0', :require => 'sqlite3'
 
 # Use unicorn as the web server
 # gem 'unicorn'
@@ -23,7 +21,6 @@ gem 'sqlite3-ruby', :require => 'sqlite3'
 # Bundle the extra gems:
 # gem 'bj'
 # gem 'nokogiri'
-# gem 'sqlite3-ruby', :require => 'sqlite3'
 # gem 'aws-s3', :require => 'aws/s3'
 
 gem 'haml'
@@ -31,7 +28,7 @@ gem 'thinking-sphinx', '~> 2.0.0', :require => 'thinking_sphinx'
 gem 'sphinx'
 gem 'rmagick', '2.12.0', :path => 'vendor/gems/rmagick-2.12.0-x86-mswin32/bin' #, :platform => :ruby
 gem 'cgi_multipart_eof_fix'
-gem 'rest-client'
+gem 'rest-client', '~> 1.4.0'
 gem 'launchy'
 gem 'json', '>= 1.5.0'
 gem 'json_pure'
@@ -43,7 +40,7 @@ gem 'mysql2'
 gem 'mysql'
 gem 'will_paginate', '3.0.pre2' , :path => 'vendor/gems/will_paginate-3.0.pre2'
 gem 'heroku'
-gem 'taps'
+gem 'taps', '0.3.6'
 gem 'ghazel-SystemTimer'
 gem 'mongrel'
 gem 'webrat'
