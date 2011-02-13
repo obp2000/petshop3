@@ -1,26 +1,26 @@
 shared_examples_for "a template that renders the items/form partial" do
   it "renders the items/form partial" do
-    view.should_receive(:render).with( :partial => "category", :object => object.category )
-    view.should_receive(:render).with( :partial => "attr", :collection => object.sizes )
-    view.should_receive(:render).with( :partial => "attr", :collection => object.colours )
-    view.should_receive(:render).with( :partial => "photo", :collection => object.photos )      
+#    view.should_receive(:render).with( :partial => "category", :object => object.category )
+#    rendered.should contain( @item.category.name )
+#    view.should_receive(:render).with( :partial => "attr", :collection => object.sizes )
+#    view.should_receive(:render).with( :partial => "attr", :collection => object.colours )
+#    view.should_receive(:render).with( :partial => "photo", :collection => object.photos )      
     render :partial => "items/form"
-    rendered.should have_text_field( assigns[:object], "name" )
-    rendered.should have_text_field( assigns[:object], "price" )    
+    rendered.should have_text_field( @item, "name" )
+    rendered.should have_text_field( @item, "price" )    
     rendered.should have_link_to_remote_get( categories_path )    
     rendered.should have_selector( "input#item_type_summercatalogitem", :type => "radio",
             :name => "item[type]", :value => "SummerCatalogItem" )
-#    rendered.should have_selector( "img", :src => "/images/" + SummerCatalogItem.icon )            
     rendered.should have_selector( "input#item_type_wintercatalogitem", :type => "radio",
             :name => "item[type]", :value => "WinterCatalogItem" )              
     rendered.should have_link_to_remote_get( sizes_path )   
     rendered.should have_link_to_remote_get( colours_path )    
     rendered.should have_link_to_remote_get( photos_path )
-    rendered.should have_textarea( assigns[:object], "blurb" )      
-    rendered.should contain( assigns[:object].created_at.strftime("%d.%m.%y") )
-    rendered.should contain( assigns[:object].created_at.strftime("%H:%M:%S") )        
-    rendered.should contain( assigns[:object].updated_at.strftime("%d.%m.%y") )
-    rendered.should contain( assigns[:object].updated_at.strftime("%H:%M:%S") )       
+    rendered.should have_textarea( @item, "blurb" )      
+    rendered.should contain( @item.created_at.strftime("%d.%m.%y") )
+    rendered.should contain( @item.created_at.strftime("%H:%M:%S") )        
+    rendered.should contain( @item.updated_at.strftime("%d.%m.%y") )
+    rendered.should contain( @item.updated_at.strftime("%H:%M:%S") )       
     rendered.should have_selector( "input", :type => "image" )      
   end
 end
@@ -32,7 +32,7 @@ shared_examples_for "GET index" do
       xhr :get, :index
       assigns[:objects].should == [@colour_proxy]
       assigns[:object].should == @colour_proxy
-      rendered.should render_template("shared/index")      
+      response.should render_template("shared/index")      
   end
 end
 
@@ -76,7 +76,8 @@ shared_examples_for "edit and new forms" do
       form.should have_text_field( @object, "name" )
       form.should have_image_input         
     end
-    rendered.should have_link_to_remote_delete( send( "#{@object.class.name.underscore}_path", @object ) )        
+    rendered.should have_selector( "a", :href => send( "#{@object.class.name.underscore}_path", @object ),
+            "data-method" => "delete" )      
   end
 
   it "renders a form for a new object" do
@@ -97,7 +98,7 @@ shared_examples_for "form for more then one" do
     @catalog_item.send( @attr.tableize ).size.should == 2
     view.should_receive( :render_any_of_attr ).with( @attr )    
     render :locals => { :attr => @attr, :catalog_item => @catalog_item }
-#    rendered.should have_radio_button( @catalog_item.send( @attr.tableize ).first )
+#    response.should have_radio_button( @catalog_item.send( @attr.tableize ).first )
   end
 end
 
@@ -205,7 +206,7 @@ shared_examples_for "object" do
       xhr :get, :index
       assigns[:objects].should == [ @object ]
 #      assigns[:object].should == @object.class.new
-      rendered.should render_template( "shared/index" )
+      response.should render_template( "shared/index" )
     end
   end
 
@@ -214,7 +215,7 @@ shared_examples_for "object" do
       @object.class.should_receive( :find ).with( @object.to_param ).and_return( @object )
       xhr :get, :show, :id => @object.to_param
       assigns[ :object ].should equal( @object )
-      rendered.should render_template( "shared/show" )        
+      response.should render_template( "shared/show" )        
     end
   end
 
@@ -223,7 +224,7 @@ shared_examples_for "object" do
       @object.class.should_receive( :new1 ).and_return( @object )
       xhr :get, :new
       assigns[ :object ].should equal( @object )
-      rendered.should render_template( "shared/new_or_edit" )           
+      response.should render_template( "shared/new_or_edit" )           
     end
   end
 
@@ -232,7 +233,7 @@ shared_examples_for "object" do
       @object.class.should_receive( :find ).with( @object.to_param ).and_return( @object )
       get :edit, :id => @object.to_param
       assigns[ :object ].should equal( @object )
-      rendered.should render_template( "shared/new_or_edit" )            
+      response.should render_template( "shared/new_or_edit" )            
     end
   end
 
@@ -251,7 +252,7 @@ shared_examples_for "object" do
         xhr :post, :create, @object.class.name.underscore => { "name" => @object.name }
 #        flash.should_receive("now[:notice]")
         assigns[ :object ].should equal( @object )
-        rendered.should render_template( "shared/create_or_update" )
+        response.should render_template( "shared/create_or_update" )
 #        flash.now[:notice].should == 'Размер одежды создан удачно.'
       end
     end
@@ -262,7 +263,7 @@ shared_examples_for "object" do
         @object.stub( :save_object ).and_return(false)
         xhr :post, :create, @object.class.name.underscore => { "name" => @object.name }
         assigns[ :object ].should equal( @object )
-        rendered.should render_template( "shared/new_or_edit" )               
+        response.should render_template( "shared/new_or_edit" )               
       end
     end
 
@@ -280,7 +281,7 @@ shared_examples_for "object" do
         @object.class.stub( :update_object ).and_return( [ @object, true ] )
         xhr :put, :update, :id => @object.to_param
         assigns[ :object ].should == @object
-        rendered.should render_template( "shared/create_or_update" )
+        response.should render_template( "shared/create_or_update" )
       end
     end
 
@@ -289,7 +290,7 @@ shared_examples_for "object" do
         @object.class.stub( :update_object ).and_return( [ @object, false ] )
         xhr :put, :update, :id => @object.to_param
         assigns[ :object ].should equal( @object )
-        rendered.should render_template( "shared/new_or_edit" )          
+        response.should render_template( "shared/new_or_edit" )          
       end
     end
 
@@ -301,7 +302,7 @@ shared_examples_for "object" do
                           "controller" => @object.class.name.tableize }, { "flash" => {} }, {} ).and_return( @object )
       xhr :delete, :destroy, :id => @object.to_param
       assigns[ :object ].should equal( @object )
-      rendered.should render_template( "shared/destroy" )
+      response.should render_template( "shared/destroy" )
     end
   end  
     

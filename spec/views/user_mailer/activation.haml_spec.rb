@@ -2,15 +2,15 @@ require 'spec_helper'
 
 describe "user_mailer/activation" do
 
-  before(:each) do
-    assigns[:user] = users_proxy.first
+  before do
+    assign( :user, @user = users_proxy.first )
   end
   
   it "creates user activation letter" do
     render
-    rendered.should contain( assigns[:user].login )
+    rendered.should contain( @user.login )
     rendered.should contain( url_for( :host => 'localhost:3001', :controller => "sessions",  :action => "create",
-          :user => assigns[:user].login, :password => assigns[:user].password )  )
+          :user => @user.login, :password => @user.password )  )
   end
 
 end

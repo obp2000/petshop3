@@ -3,19 +3,18 @@ require 'spec_helper'
 describe "forum_posts/_show" do
 
   before do
-    assigns[:object] = forum_posts_proxy.first
-    view.stub( :link_to_reply_to ).with( assigns[:object] ).and_return( link_to_remote "Test",
-            :url => reply_forum_post_path( assigns[:object] ), :method => :get )    
+    assign( :object, @forum_post = forum_posts_proxy.first )
+    view.stub( :link_to_reply_to ).with( @forum_post ).and_return( link_to "Test",
+            reply_forum_post_path( @forum_post ), :remote => true, :method => :get )    
     
   end
   
   it "renders forum post details" do
-#    view.should_receive( :link_to_reply_to ).with( assigns[:object] )      
     render
-    rendered.should contain( assigns[:object].subject )      
-    rendered.should contain( assigns[:object].name )
-    rendered.should contain(assigns[:object].body)
-    rendered.should have_link_to_remote_get( reply_forum_post_path( assigns[:object] ) )    
+    rendered.should contain( @forum_post.subject )      
+    rendered.should contain( @forum_post.name )
+    rendered.should contain( @forum_post.body )
+    rendered.should have_link_to_remote_get( reply_forum_post_path( @forum_post ) )    
   end
 
 end

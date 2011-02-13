@@ -7,8 +7,8 @@ describe "catalog_items/_photo" do
   end
   
   it "renders photo and comment of catalog item" do
-    render :locals => { :photo => @photo }
-    rendered.should have_selector( "img", :src => "/images/" + @photo.public_filename )
+    render :partial => "catalog_items/photo", :locals => { :photo => @photo }
+    rendered.should have_selector( "img[src*=" + @photo.photo_url[0..-5] + "]" )
     rendered.should contain( @photo.comment )  
   end
 

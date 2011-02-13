@@ -46,6 +46,9 @@ class ForumPost < ActiveRecord1
     def all_objects( params, * ); paginate_objects( params ) end
 
     def reply( params ); new :parent_id => params[ :id ] end
+      
+#    def new1; new :parent_id => params[ :id ] end      
+      
     
     def destroy_object( params, session, flash )
       find( params[ :id ] ).tap { |forum_post| forum_post.destroy_notice( flash ) }.full_set.tap { |full_set| delete full_set }
@@ -59,7 +62,17 @@ class ForumPost < ActiveRecord1
   end
 
 # actions
-  def save_object( session, flash ); super.tap { ( self.class.find( parent_id ).add_child( self ) ) unless parent_id.zero? } end
+  def save_object( session, flash )
+    super.tap do |success|
+      if success
+        if parent_id.zero?
+          reload; self.root_id = self.id; save
+        else
+          self.class.find( parent_id ).add_child( self )
+        end
+      end
+    end
+  end
 
 # links
   def link_to_reply_to( page )
@@ -75,7 +88,7 @@ class ForumPost < ActiveRecord1
   end 
   
   def render_create_or_update( page, session )
-    page.create_forum_post [ ( parent_id.zero? ? "top"  : "after" ), ( parent_id.zero? ? "posts"  : parent_tag ),
+    page.create_forum_post [ ( parent_id.zero? ? "top"  : "after" ), ( parent_id.zero? ? self.class.name.tableize : parent_tag ),
             { :partial => to_underscore, :object => self } ], [ :post, :new_forum_post ]    
   end
 

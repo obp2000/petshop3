@@ -118,10 +118,11 @@ class Array
         :visibility => ( second || first.new_record? ) ? "visible" : "hidden" }
   end
  
-   def render_attrs( page )
-    return "Любой" if first.id.blank?     
-    page.render :partial => "shared/#{first.to_underscore}", :collection => self, :spacer_template => "shared/comma"
-  end 
+#   def render_attrs( page )
+#    return "Любой" if first.id.blank?     
+#    page.render :partial => "shared/#{first.class.name.underscore}", :collection => self, :spacer_template => "shared/comma"
+#    page.render self, :spacer_template => "shared/comma"
+#  end 
 
   def render_destroy( page, session ); each { |object| object.render_destroy( page, session ) }; page.show_notice end   
   

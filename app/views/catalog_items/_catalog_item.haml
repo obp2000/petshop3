@@ -1,4 +1,4 @@
-.ui-widget-content.catalog_item[ catalog_item ]
+.ui-widget-content.catalog_item{ :id => "#{catalog_item.class.name.underscore}_#{catalog_item.id}" }
   .thumbs.yoxview= render :partial => "shared/photo", :collection => catalog_item.photos
   = form_for catalog_item, :url => cart_item_path( catalog_item ), :remote => true do   
     %h4

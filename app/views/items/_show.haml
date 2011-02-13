@@ -1,7 +1,7 @@
 %fieldset.ui-widget-content
   %h3= @object.name
-  - [ "sizes", "colours" ].each do |attr|
-    = render_attrs @object.send( attr )  
+  - [ "size", "colour" ].each do |attr|
+    = render :partial => "shared/#{attr}", :collection => @object.send( attr.tableize ) rescue nil 
   = @object.category.name rescue nil
   = @object.type.constantize.season_name
   %p

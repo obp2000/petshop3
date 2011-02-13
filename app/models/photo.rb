@@ -23,7 +23,7 @@ class Photo < ItemAttribute
   end
  
 # actions
-  def all_objects( params, * ); paginate_objects( params ) end
+  def self.all_objects( params, * ); where( :item_id => nil ).paginate_objects( params ) end
 
   def add_to_item1( page ); super; page.attach_js( "attach_yoxview" ) end 
 

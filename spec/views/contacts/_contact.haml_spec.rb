@@ -9,7 +9,7 @@ describe "contacts/_contact" do
   end
   
   it "renders a form for edit object" do
-    render :locals => { @object.class.name.underscore.to_sym => @object }
+    render :partial => "contacts/contact", :locals => { @object.class.name.underscore.to_sym => @object }
     rendered.should have_selector("form", :method => "post", :action => send( "#{@object.class.name.underscore}_path", @object ) ) do |form|
       form.should have_text_field( @object, "name" )
       form.should have_text_field( @object, "email" )

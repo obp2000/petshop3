@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "items/_form" do
   before do
-    assigns[:object] = items_proxy.second.as_new_record
+    assign( :object, @item = items_proxy.second.as_new_record )
   end
   
   context "when the item is a new record" do

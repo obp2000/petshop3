@@ -7,7 +7,7 @@ describe "shared/_size" do
   end
   
   it "renders size name" do
-    render :locals => { :size => @size }
+    render :partial => "shared/size", :locals => { :size => @size }
     rendered.should contain( @size.name )   
   end
 

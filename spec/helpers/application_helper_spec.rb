@@ -6,7 +6,7 @@ describe ApplicationHelper do
     
     it "renders link to season" do
       [ SummerCatalogItem, WinterCatalogItem, CatalogItem ].each do |season_class|
-        helper.link_to_season( season_class ).should have_text( regexp_for_remote_get( send( "#{season_class.name.tableize}_path" ) ) )
+        helper.link_to_season( season_class ).should have_link_to_remote_get( send( "#{season_class.name.tableize}_path" ) )
       end
     end
   
@@ -43,8 +43,8 @@ describe ApplicationHelper do
     
     before do
       @photo = photos_proxy.first
-      @photo.stub( :link_to_show ).with( helper ).and_return( link_to image_tag( @photo.public_filename( :small ) ),
-          @photo.public_filename )      
+      @photo.stub( :link_to_show ).with( helper ).and_return( link_to image_tag( @photo.photo.thumb.url ),
+          @photo.photo_url )      
     end
 
     it "renders link to show fullsize photo" do
@@ -58,8 +58,8 @@ describe ApplicationHelper do
     
     before do
       @photo = photos_proxy.first
-      @photo.stub( :link_to_show_with_comment ).with( helper ).and_return( link_to image_tag( @photo.public_filename(
-                :small ) ) + @photo.comment, @photo.public_filename )      
+      @photo.stub( :link_to_show_with_comment ).with( helper ).and_return( link_to image_tag( @photo.photo.thumb.url ) +
+              @photo.comment, @photo.photo_url )      
     end
 
     it "renders link to show fullsize photo and photo comment" do
@@ -120,7 +120,8 @@ describe ApplicationHelper do
     context "when renders 'not any' attrs" do
       
       before do
-        @attrs = catalog_items_proxy.first.sizes
+#        @attrs = catalog_items_proxy.first.sizes
+        @attrs = sizes_proxy        
       end    
   
       it "renders partial with collection of attrs" do
@@ -148,12 +149,12 @@ describe ApplicationHelper do
     
     before do
       @object = sizes_proxy.first
-      @object.stub( :link_to_delete ).with( helper ).and_return( link_to_remote @object.name,
-            :url => size_path( @object ), :method => :delete )
+      @object.stub( :link_to_delete ).with( helper ).and_return( link_to @object.name,
+            @object, :remote => true, :method => :delete )
     end
     
     it "renders link to delete object" do
-      helper.link_to_delete( @object ).should have_text( regexp_for_remote_delete( size_path( @object ) ) ) 
+      helper.link_to_delete( @object ).should have_link_to_remote_delete( size_path( @object ) ) 
     end
     
   end
@@ -162,8 +163,7 @@ describe ApplicationHelper do
     
     before do
       @object = catalog_items_proxy.first
-      @object.stub( :link_to_show ).with( helper ).and_return( link_to_remote @object.name,
-            :url => catalog_item_path( @object ), :method => :get )      
+      @object.stub( :link_to_show ).with( helper ).and_return( link_to @object.name, @object, :remote => true, :method => :get )      
     end
     
     it "renders link to show object" do
@@ -178,8 +178,8 @@ describe ApplicationHelper do
     
     before do
       @object = forum_posts_proxy.first
-      @object.stub( :link_to_reply_to ).with( helper ).and_return( link_to_remote @object.name,
-            :url => reply_forum_post_path( @object ), :method => :get )        
+      @object.stub( :link_to_reply_to ).with( helper ).and_return( link_to @object.name,
+            reply_forum_post_path( @object ), :temote => true, :method => :get )        
     end
     
     it "renders link to reply to forum post" do
@@ -192,27 +192,27 @@ describe ApplicationHelper do
     
     before do
       @object = processed_orders_proxy.first
-      @object.stub( :link_to_close ).with( helper ).and_return( link_to_remote "Test",
-            :url => close_processed_order_path( @object ), :method => :get )          
+      @object.stub( :link_to_close ).with( helper ).and_return( link_to "Test",
+            close_processed_order_path( @object ), :remote => true, :method => :get )          
     end
     
     it "renders link to close order" do
-      helper.link_to_close( @object ).should have_text( regexp_for_remote_close( close_processed_order_path( @object ) ) ) 
+      helper.link_to_close( @object ).should have_link_to_remote_close( close_processed_order_path( @object ) ) 
     end
     
   end
 
-  describe "#link_to_remote1( image, text, url, opts )" do
+  describe "#link_to_remote2( image, text, url, opts )" do
     
     before do
       @image = ""
       @text = "Test"
-      @url = [ "catalog_items_path" ]
+      @url = catalog_items_path
       @opts = { :method => :get }
     end
     
     it "renders link to remote" do
-      helper.link_to_remote1( @image, @text, @url, @opts ).should have_link_to_remote_get( catalog_items_path ) do |a|
+      helper.link_to_remote2( @image, @text, @url, @opts ).should have_link_to_remote_get( catalog_items_path ) do |a|
         a.should contain( @text )      
       end      
     end
@@ -247,7 +247,7 @@ describe ApplicationHelper do
   describe "#link_to_change" do
 
     it "renders link to change item attribute" do
-      Size.stub( :link_to_change ).and_return( link_to_remote "Test", :url => sizes_path, :method => :get )
+      Size.stub( :link_to_change ).and_return( link_to "Test", sizes_path, :remote => true, :method => :get )
       helper.link_to_change( Size ).should have_link_to_remote_get( sizes_path )       
     end    
     

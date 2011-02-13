@@ -1,2 +1,3 @@
 = radio_button_tag_for attr, checked, visibility
-= render_attrs attr
+= "Любой" if attr.id.blank?     
+= render "shared/#{attr.class.name.underscore}", :"#{attr.class.name.underscore}" => attr rescue nil

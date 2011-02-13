@@ -75,7 +75,7 @@
   class << self
 
 # actions
-    define_method( :all_objects ) { |*| all }
+    define_method( :all_objects ) { all }
 
     def paginate_hash( params ); paginate_options.merge :page => params[ :page ] end
 

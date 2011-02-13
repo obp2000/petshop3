@@ -2,14 +2,13 @@ require 'spec_helper'
 
 describe "shared/_colour" do
 
-  before(:each) do
+  before do
     @colour = items_proxy.first.colours.first
   end
   
   it "renders colour" do
-    render :locals => { :colour => @colour }
-    rendered.should have_selector( "span",
-          :style => "background-color: #{@colour.html_code}; border: 1px solid black; margin-left: -0px; margin-right: 0;" )   
+    render :partial => "shared/colour", :locals => { :colour => @colour }
+    rendered.should have_colour( @colour.html_code )    
   end
 
 end

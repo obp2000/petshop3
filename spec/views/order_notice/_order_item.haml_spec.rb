@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe "order_notice/_order_item" do
 
-  before(:each) do
+  before do
     @object = order_items_proxy.first
   end
   
   it "renders order notice" do
-    render :locals => { :order_item => @object }
+    render :partials => "order_notice/order_item", :locals => { :order_item => @object }
     rendered.should contain(@object.name)
     rendered.should contain(@object.size.name)
     rendered.should contain(@object.colour.name)    

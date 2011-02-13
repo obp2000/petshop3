@@ -46,12 +46,16 @@ end
 
 def photos_proxy
     photo = mock_model( Photo, valid_photo_attributes2 ).as_null_object
-    photo.stub(:public_filename).with(:small).and_return("photo_of_jacket_small")
+#    photo.stub(:public_filename).with(:small).and_return("photo_of_jacket_small")
+    photo.stub_chain(:photo, :thumb, :url).and_return("photo_of_jacket_small")
     [ photo ]
 end
 
 def cart_items_proxy
-    [ mock_model( CartItem, valid_cart_item_attributes2 ).as_null_object ]
+  [ mock_model( CartItem, valid_cart_item_attributes2 ).as_null_object ]
+#    cart_item.stub( :link_to_show ).and_return( link_to catalog_items_proxy.first.name,
+#            catalog_items_proxy.first, :method => :get, :remote => true)
+#    [ cart_item ]            
 end
 
 def cart_items_proxy3
@@ -203,17 +207,19 @@ def valid_carts_attributes
 end            
 
 def valid_cart_item_attributes
-            { :price => 500,
+            { :name => catalog_items_proxy.first.name, 
+            :price => 500,
             :amount => 1,
-            :item_id => 1,
-            :size_id => 1,
-            :colour_id => 1 }
+            :catalog_item => catalog_items_proxy.first,
+            :size => sizes_proxy.first,
+            :colour => colours_proxy.first,
+            :new => CartItem.new }
 end
 
 def valid_cart_item_attributes2
             { :name => catalog_items_proxy.first.name,
-            :price => 500,
-            :amount => 1,
+            :price => 600,
+            :amount => 2,
             :catalog_item => catalog_items_proxy.first,
             :size => sizes_proxy.first,
             :colour => colours_proxy.first }

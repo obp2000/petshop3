@@ -14,8 +14,8 @@ describe "items/_attr" do
     end
     
     it "renders sizes with checkboxes" do
-      view.should_receive( :render_attrs ).with( @attr )      
-      render :locals => { :attr => @attr }
+      view.should_receive( :link_to_remove_from_item ).with( @attr.class )      
+      render :partial => "items/attr", :locals => { :attr => @attr }
       rendered.should have_item_hidden_field( @attr )
     end
 

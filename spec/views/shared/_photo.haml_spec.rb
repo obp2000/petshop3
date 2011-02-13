@@ -4,13 +4,16 @@ describe "shared/_photo" do
 
   before do
     @photo = photos_proxy.first
-    view.stub( :link_to_show_with_comment ).with( @photo ).and_return( link_to image_tag( 
-              @photo.public_filename( :small ) ) + @photo.comment, @photo.public_filename  )
+    view.stub( :link_to_show_with_comment ).with( @photo ).and_return( link_to image_tag( @photo.photo.thumb.url ) +
+            @photo.comment, @photo.photo_url )              
   end
   
   it "renders thumbnail and comment of photo" do
-    render :locals => { :photo => @photo }
-    rendered.should have_thumbnail( @photo )
+    render :partial => "shared/photo", :locals => { :photo => @photo }
+#    rendered.should have_thumbnail( @photo )
+    rendered.should have_selector( "a", :href => @photo.photo_url ) do |a|
+      a.should have_selector( "img", :src => "/images/" + @photo.photo.thumb.url )
+    end      
     rendered.should contain( @photo.comment )     
   end
 

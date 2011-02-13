@@ -7,6 +7,6 @@
     = csrf_meta_tag
   %body
     #wrapper
-      #header= render "catalog_items/header"
-      #nav= render "catalog_items/nav" unless controller_name == "sessions" or controller_name == "users"
+      #header= render "layouts/header"
+      #nav= render "layouts/nav" unless controller_name == "sessions" or controller_name == "users"
       #content= yield

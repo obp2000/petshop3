@@ -10,7 +10,7 @@ describe "catalog_items/_attr_with_any" do
   context "when catalog item has more then one size" do
     it "renders 'any' size option" do
       view.should_receive( :render_options ).exactly( 2 ).times        
-      render :locals => { :object => @object, :attr => @attr }      
+      render "catalog_items/attr_with_any", :object => @object, :attr => @attr
     end
   end
   
@@ -22,7 +22,7 @@ describe "catalog_items/_attr_with_any" do
     
     it "do not renders 'any' size option" do
       view.should_receive( :render_options ).once
-      render :locals => { :object => @object, :attr => @attr }        
+      render "catalog_items/attr_with_any", :object => @object, :attr => @attr
     end
 
   end  

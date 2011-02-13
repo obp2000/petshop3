@@ -9,16 +9,25 @@ end
 RSpec::Matchers.define :have_link_to_remote_delete do |href|
   match do |response|
     extend Webrat::Matchers
-    response.should have_selector( "a", "data-method" => "delete", :href => href )    
+    response.should have_selector( "a[href*=#{href[1, 99]}]", "data-method" => "delete" )    
   end
 end
 
 RSpec::Matchers.define :have_link_to_remote_close do |href|
   match do |response|
     extend Webrat::Matchers
-    response.should have_text( /#{href}\/close/ )
+    response.should have_selector( "a", :href => href )     
+#    response.should have_text( /#{href}\/close/ )
   end
 end
+
+RSpec::Matchers.define :have_colour do |html_code|
+  match do |response|
+    extend Webrat::Matchers
+    response.should have_selector( "span[style*=#{html_code[1,6]}]" )  
+  end
+end
+
 
 RSpec::Matchers.define :have_text_field do |obj, attr|
   match do |response|
@@ -55,9 +64,10 @@ end
 RSpec::Matchers.define :have_thumbnail do |obj|
   match do |response|
     extend Webrat::Matchers
-    response.should have_selector( "a", :href => obj.public_filename ) do |a|
-      a.should have_selector( "img", :src => "/images/" + obj.public_filename(:small) )
-    end          
+    response.should have_selector( "a", :href => obj.photo.thumb.url ) do |a|
+      a.should have_selector( "img", :src => obj.photo_url )
+    end
+#    response.should have_selector( "a" )           
   end
 end
 

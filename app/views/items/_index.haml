@@ -2,6 +2,8 @@
   %h2= index_page_title_for Item
   %table{ :id => @object.class.name.tableize }
     %caption= will_paginate @objects
-    %tr= render :partial => "header", :collection => Item.headers
+    %tr
+      = render :partial => "header", :collection => Item.headers
+      %th{:scope => "col"}= link_to_new Item
     = render @objects
   #item_content= render @object.new_or_edit_partial

@@ -11,7 +11,7 @@
   %p
     %b= f.label( :category_id, Category.class_name_rus_cap.split.first.colon )
     = render "shared/red_star"
-    %span#form_categories= render :partial => "category", :object => @object.category
+    %span#form_categories= render :partial => "category", :object => @object.category if @object.category
     = link_to_change Category
     %b
       = f.label( :season_id, SEASON.colon )
