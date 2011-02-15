@@ -45,9 +45,15 @@ def colours_proxy
 end
 
 def photos_proxy
-    photo = mock_model( Photo, valid_photo_attributes2 ).as_null_object
-#    photo.stub(:public_filename).with(:small).and_return("photo_of_jacket_small")
-    photo.stub_chain(:photo, :thumb, :url).and_return("photo_of_jacket_small")
+    photo = mock_model( Photo, valid_photo_attributes ).as_null_object
+#    thumb1 = "photo_of_jacket_small"
+#    url1 = "photo_of_jacket1.jpg"
+#    comment1 = "Photo of jacket"
+#    photo.stub( :photo_url ).and_return( url1 )
+#    photo.stub( :comment ).and_return( comment1 )    
+    photo.stub_chain(:photo, :thumb, :url).and_return( "photo_of_jacket_small" )
+#    photo.stub( :link_to_show ).with( :page ).and_return( page.link_to( page.image_tag( thumb1 ), url1 ) )
+#    photo.stub( :link_to_show_with_comment ).with( :page ).and_return( page.link_to( page.image_tag( thumb1 ) + comment1, url1 ) )    
     [ photo ]
 end
 
@@ -125,14 +131,17 @@ def valid_order_item_attributes
            { :item => items_proxy.first,
              :size_id => sizes_proxy.first,
              :colour_id => colours_proxy.first,
+             :price => 300,
              :amount => 5 }  
 end
+
 def valid_order_item_attributes2
              { :name => "Shirt",
-             :size_id => sizes_proxy.first,
-             :colour_id => colours_proxy.first,
+             :size => sizes_proxy.first,
+             :colour => colours_proxy.first,
+             :price => 300,
              :amount => 5,
-             :notice => items_proxy.first.name }
+             :order_item_sum => 1500 }
 end             
 
 def valid_order_attributes
@@ -157,7 +166,7 @@ def valid_order_attributes1
               :status => "ProcessedOrder",
               :total => "500",
               :created_at => Time.now,
-              :updated_at => Time.now,
+              :updated_at => Time.now + 1,
               :items => items_proxy,
               :order_items => order_items_proxy }
 end              
@@ -195,10 +204,6 @@ end
 def valid_photo_attributes
   { :photo_url => "photo_of_jacket.jpg", :comment => "Photo of jacket" }
 end
-
-def valid_photo_attributes2
-  { :photo_url => "photo_of_jacket1.jpg", :comment => "Photo of jacket" }
-end              
 
 def valid_carts_attributes
             { :cart_items => cart_items_proxy,

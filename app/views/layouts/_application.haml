@@ -7,6 +7,14 @@
     = csrf_meta_tag
   %body
     #wrapper
-      #header= render "layouts/header"
-      #nav= render "layouts/nav" unless controller_name == "sessions" or controller_name == "users"
+      #header
+        = form_tag search_catalog_items_path, :remote => true, :id => "search_box" do
+          = text_field_tag :q, "", :size => 20
+          = submit_to CatalogItem
+        = link_to_index ForumPost
+        = link_to_show Contact.first
+        %h3= ( "одежда для<br/>русских тоев" ).html_safe
+        = image_tag "bestic.png"
+        %h5= link_to DEMO, items_path        
+      #nav= render "layouts/nav" unless do_not_show_nav
       #content= yield

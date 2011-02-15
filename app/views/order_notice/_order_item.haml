@@ -1,1 +1,1 @@
-= order_item.notice
+= order_item.instance_exec { "#{name} #{size.name rescue ""} #{colour.name rescue ""} (#{ price.to_i } #{RUB}) - #{amount} #{SHT}".html_safe }

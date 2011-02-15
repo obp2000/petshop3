@@ -1,5 +1,5 @@
 %span{ :id => "#{attr.class.name.underscore}_#{attr.id}" }
   = render "shared/#{attr.class.name.underscore}", :"#{attr.class.name.underscore}" => attr rescue nil  
   = link_to_remove_from_item attr.class
-  = hidden_field_tag "item[#{attr.to_underscore}_ids][]", attr.id
-  = hidden_field_tag "item[#{attr.to_underscore}_ids][]", "0"
+  = hidden_field_tag "item[#{attr.class.name.underscore}_ids][]", attr.id
+  = hidden_field_tag "item[#{attr.class.name.underscore}_ids][]", "0"

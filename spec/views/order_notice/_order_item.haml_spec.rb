@@ -7,7 +7,7 @@ describe "order_notice/_order_item" do
   end
   
   it "renders order notice" do
-    render :partials => "order_notice/order_item", :locals => { :order_item => @object }
+    render :partial => "order_notice/order_item", :locals => { :order_item => @object }
     rendered.should contain(@object.name)
     rendered.should contain(@object.size.name)
     rendered.should contain(@object.colour.name)    

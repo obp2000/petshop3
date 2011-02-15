@@ -9,16 +9,14 @@ describe "order_items/_order_item" do
   end
   
   it "renders order" do
-#    view.should_receive( :render_attrs ).with( @order_item.size )      
-#    view.should_receive( :render_attrs ).with( @order_item.colour )      
     render :partial => "order_items/order_item", :locals => { :order_item => @order_item }
     rendered.should have_link_to_remote_get( item_path( @order_item.item ) ) do |a|
       a.should contain( @order_item.name )      
     end
     rendered.should contain(@order_item.size.name)
-#    rendered.should have_colour(@order_item.colour.html_code)    
+    rendered.should have_colour(@order_item.colour.html_code)    
     rendered.should contain(@order_item.amount.to_s)
-    rendered.should contain(@order_item.order_item_sum.to_s)
+    rendered.should contain( roubles @order_item.order_item_sum.to_s )
   end
 
 end

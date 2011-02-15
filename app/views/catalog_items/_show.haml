@@ -13,7 +13,7 @@
     %br
     - [ "size", "colour" ].each do |attr|
       %b= attr.capitalize.constantize.class_name_rus_cap.pluralize.colon
-      = render "catalog_items/attr_with_any", :object => @object, :attr => attr    
+      = render "catalog_items/attrs", :attrs => @object.send( attr.tableize )          
     = @object.blurb
     .photos= render :partial => "catalog_items/photo", :collection => @object.photos    
     .clear

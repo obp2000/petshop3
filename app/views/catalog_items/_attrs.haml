@@ -1,0 +1,6 @@
+- if attrs.second
+  = render :partial => "catalog_items/attr", :collection => attrs, :locals => { :checked => false, :visibility => "visible" }
+  = radio_button_tag_for attrs.first.class.new, true, "visible"
+  = "Любой"                    
+- else
+  = render :partial => "catalog_items/attr", :collection => attrs, :locals => { :checked => true, :visibility => "hidden" }

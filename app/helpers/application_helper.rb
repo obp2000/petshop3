@@ -13,9 +13,9 @@ module ApplicationHelper
     define_method( method ) { |object| object.send( method, params ) }
   end
 
-  [ :render_attrs, :render_options ].each do |method|
-    define_method( method ) { |object| Array( object ).send( method, self ) rescue nil }
-  end
+#  [ :render_attrs, :render_options ].each do |method|
+#    define_method( method ) { |object| Array( object ).send( method, self ) rescue nil }
+#  end
 
   def attach_js( js ); delay( DURATION + 0.1 ) { call( js ) } end
 
@@ -46,6 +46,8 @@ module ApplicationHelper
   def date_time_rus( arg ); arg.strftime( "%d.%m.%yг. %H:%M:%S" ) rescue "" end
 
   def do_not_show( cart ); controller_name == 'processed_orders' or cart.cart_items.empty? end
+    
+  def do_not_show_nav; controller_name == "sessions" or controller_name == "users" end
   
 # links
   def link_to_index( class_const, params = nil ); class_const.link_to_index( self, params ) end    
@@ -67,7 +69,6 @@ module ApplicationHelper
   def link_to_remote2( image = [], text = "", url = nil, opts = {} )
     link_to( ( image_tag( *image ) rescue "" ) + text.html_safe, url, { :remote => true }.merge( opts )  )
   end     
-
 
   def render_show( appear_tag, fade_tag, show_partial )
 #    action :replace_html, appear_tag, :partial => show_partial
@@ -112,11 +113,11 @@ end
 
 class Array
   
-  def render_options( page )
-    page.render :partial => "catalog_items/attr", :collection => self,
-        :locals => { :checked => ( first.new_record? || !second ),
-        :visibility => ( second || first.new_record? ) ? "visible" : "hidden" }
-  end
+#  def render_options( page )
+#    page.render :partial => "catalog_items/attr", :collection => self,
+#        :locals => { :checked => ( first.new_record? || !second ),
+#        :visibility => ( second || first.new_record? ) ? "visible" : "hidden" }
+#  end
  
 #   def render_attrs( page )
 #    return "Любой" if first.id.blank?     
@@ -137,29 +138,14 @@ end
 class Object
   
   attr_accessor_with_default( :colon ) { self + ":" }
-#  def colon; self + ":" end
 
   attr_accessor_with_default( :total ) { inject(0) {|sum, n| n.price * n.amount + sum} }
-#  def total; inject(0) {|sum, n| n.price * n.amount + sum} end
-
-end
-
-module ActionView::Helpers::PrototypeHelper::JavaScriptGenerator::GeneratorMethods 
-  
-#  def replace_html_with_delay( id, *options_for_render )
-#    visual_effect :fade, opts.first
-#    delay( DURATION ) { replace_html_without_delay( *opts ); visual_effect :appear, opts.first }
-#    p "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrreeeeeeeeeeeeee"
-#    replace_html_without_delay( id, *options_for_render )
-#  end
-#  alias_method_chain :replace_html, :delay
 
 end
 
 class Hash
 
   attr_accessor_with_default( :cart ) { Cart.find_or_create self }
-#  def cart; Cart.find_or_create self end
   
 end
 

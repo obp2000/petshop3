@@ -50,7 +50,7 @@ GEM
     gem_plugin (0.2.3)
     ghazel-SystemTimer (1.2.1.1-x86-mingw32)
     haml (3.0.25)
-    heroku (1.17.10)
+    heroku (1.17.11)
       json (~> 1.4.6)
       launchy (~> 0.3.2)
       rest-client (>= 1.4.0, < 1.7.0)

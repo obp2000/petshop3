@@ -43,12 +43,13 @@ describe ApplicationHelper do
     
     before do
       @photo = photos_proxy.first
-      @photo.stub( :link_to_show ).with( helper ).and_return( link_to image_tag( @photo.photo.thumb.url ),
-          @photo.photo_url )      
+      @photo.stub( :link_to_show ).with( helper ).and_return( link_to image_tag( @photo.photo.thumb.url ), @photo.photo_url )
     end
 
     it "renders link to show fullsize photo" do
-      helper.link_to_show( @photo ).should have_thumbnail( @photo )
+      helper.link_to_show( @photo ).should have_selector( "a", :href => @photo.photo_url ) do |a|
+        a.should have_selector( "img", :src => "/images/" + @photo.photo.thumb.url )
+      end  
       helper.link_to_show( @photo ).should_not contain( @photo.comment )       
     end
 
@@ -63,98 +64,24 @@ describe ApplicationHelper do
     end
 
     it "renders link to show fullsize photo and photo comment" do
-      helper.link_to_show_with_comment( @photo ).should have_thumbnail( @photo )
-      helper.link_to_show_with_comment( @photo ).should contain( @photo.comment )       
+      helper.link_to_show_with_comment( @photo ).should have_selector( "a", :href => @photo.photo_url ) do |a|
+        a.should have_selector( "img", :src => "/images/" + @photo.photo.thumb.url )
+      end  
+      helper.link_to_show_with_comment( @photo ).should contain( @photo.comment )   
     end
 
   end  
-  
-  describe "#render_options( objects )" do
-
-    context "when renders 'not any' options" do
-      
-      before do
-        @objects = catalog_items_proxy.first.sizes
-      end      
-    
-      it "renders partial attr with not checked and visible options" do
-        helper.should_receive( :render ).with( :partial => "catalog_items/attr", :collection => @objects,
-            :locals => { :checked => false, :visibility => "visible" } )    
-        helper.render_options( @objects )      
-      end    
-
-    end
-
-    context "when renders single attribute" do
-      
-      before do
-        @catalog_item = catalog_items_proxy.first
-        @catalog_item.stub( :sizes ).and_return( [ sizes_proxy.first ] )
-        @objects = @catalog_item.sizes
-      end
-       
-      it "renders partial attr with checked and hidden option" do
-        helper.should_receive( :render ).with( :partial => "catalog_items/attr", :collection => @objects,
-            :locals => { :checked => true, :visibility => "hidden" } )    
-        helper.render_options( @objects )      
-      end     
-    end
-
-    context "when renders 'any' option" do
-      
-      before do
-        @objects = sizes_proxy.first.class.new
-      end
-       
-      it "renders partial attr with checked and visible option" do
-        helper.should_receive( :render ).with( :partial => "catalog_items/attr", :collection => [ @objects ],
-            :locals => { :checked => true, :visibility => "visible" } )    
-        helper.render_options( @objects )      
-      end     
-    end
-    
-  end   
-  
-  describe "#render_attrs( attrs )" do
-
-    context "when renders 'not any' attrs" do
-      
-      before do
-#        @attrs = catalog_items_proxy.first.sizes
-        @attrs = sizes_proxy        
-      end    
-  
-      it "renders partial with collection of attrs" do
-        helper.should_receive( :render ).with( :partial => "shared/size", :collection => @attrs, :spacer_template => "shared/comma" )            
-        helper.render_attrs( @attrs )   
-      end
-    
-    end
-
-    context "when renders 'any' attr" do
-      
-      before do
-        @attrs = sizes_proxy.first.class.new
-      end    
-  
-      it "renders partial with collection of attrs" do
-        helper.render_attrs( @attrs ).should == "Любой"   
-      end
-    
-    end
-
-  end
 
   describe "#link_to_delete( object )" do
     
     before do
       @object = sizes_proxy.first
-      @object.stub( :link_to_delete ).with( helper ).and_return( link_to @object.name,
-            @object, :remote => true, :method => :delete )
+      @object.stub( :link_to_delete ).with( helper ).and_return( link_to @object.name, @object, :remote => true,
+              :method => :delete )
     end
     
     it "renders link to delete object" do
-      helper.link_to_delete( @object ).should have_link_to_remote_delete( size_path( @object ) ) 
+      helper.link_to_delete( @object ).should have_selector( "a", :href => size_path( @object ), "data-method" => "delete" )          
     end
     
   end
@@ -252,5 +179,28 @@ describe ApplicationHelper do
     end    
     
   end 
+
+  describe "#updated_at_or_link_to_close" do
+
+    before do
+      @order = orders_proxy.first
+    end 
+       
+    context "when order is closed" do
+      it "renders close time" do
+        @order.stub( :updated_at_or_link_to_close ).with( helper ).and_return( date_time_rus( @order.updated_at ) )         
+        helper.updated_at_or_link_to_close( @order ).should contain( date_time_rus( @order.updated_at ) )
+      end
+    end
+
+    context "when order is not closed" do
+      it "renders link to close order" do
+        @order.stub( :updated_at_or_link_to_close ).with( helper ).and_return( link_to "Test", close_processed_order_path( @order ),
+            :remote => true, :method => :get )        
+        helper.updated_at_or_link_to_close( @order ).should have_link_to_remote_close( close_processed_order_path( @order ) )           
+      end
+    end  
+  
+  end    
 
 end
