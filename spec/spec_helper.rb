@@ -33,6 +33,8 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = true
   config.include Webrat::Matchers
+  config.include ActionDispatch::TestProcess
+
 end  
   
   

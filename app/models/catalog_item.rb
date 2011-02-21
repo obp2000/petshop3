@@ -14,7 +14,8 @@ class CatalogItem < Item
   self.paginate_options = { :per_page => 8, :order => "items.id desc" }
 
 #  PER_PAGE = 8
-#  SEARCH_PER_PAGE = 8  
+#  SEARCH_PER_PAGE = 8
+#  set_inheritance_column "type"   
 
   belongs_to :category
 
@@ -34,6 +35,9 @@ class CatalogItem < Item
 
 # links    
     def link_to_index_local( page ); page.link_to index_text, self end
+
+# renders    
+    def render_index( page, objects ); super; page.attach_js( "attach_shadowOn" ) end
 
 # notices
     def not_found_notice( params, flash )

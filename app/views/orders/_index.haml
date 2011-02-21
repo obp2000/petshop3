@@ -3,7 +3,7 @@
   = render 'orders/navigation'
   %table{:summary => ""}
     %caption= will_paginate @objects
-    %tr= render :partial => "header", :collection => Order.headers
+    %tr= render :partial => "orders/header", :collection => Order.headers
     = render :partial => 'orders/order', :collection => @objects
   #order_details
   #item_content

@@ -5,7 +5,9 @@ $(function() {
 			header: "ui-icon-circle-triangle-e",
 			headerSelected: "ui-icon-circle-triangle-s"
 		};
-		$("#left_accordion").accordion({ icons: icons, fillSpace: false, autoHeight: false, navigation: false, animated: 'bounceslide', active: 2 });
+		$("#left_accordion").accordion({
+			icons: icons, fillSpace: false, autoHeight: false, navigation: false, animated: 'bounceslide',
+			active: 2 });
 				
 		$("#accordionResizer").resizable({
 			resize: function() { $("#categories").accordion("resize"); }
@@ -25,8 +27,8 @@ function attach_js() {
 }
 
 function attach_yoxview() {
-	$(".yoxview").yoxview({ lang: "ru", backgroundColor: "#FFF9E5", backgroundOpacity: 0.6, controlsInitialFadeTime: 100,
-	controlsInitialDisplayTime: 100, titleDisplayDuration: 100 });
+	$(".yoxview").yoxview({ lang: "ru", backgroundColor: "#FFF9E5", backgroundOpacity: 0.6,
+	ontrolsInitialFadeTime: 100, controlsInitialDisplayTime: 100, titleDisplayDuration: 100 });
 }
 
 function attach_mColorPicker() {
@@ -34,23 +36,9 @@ function attach_mColorPicker() {
 }
 
 function attach_shadowOn() {
-	$("#accordionResizer, .catalog_item, #categories, #seasons, #sizes, #colours, #photos, #edit_contacts > #contacts, #notice").shadowOn({ imageset: '29' });
+	$("#accordionResizer, .catalog_item, #categories, #seasons, #sizes, #colours," + 
+		"#photos, #edit_contacts > #contacts, #notice").shadowOn({ imageset: '29' });
 }
-
-function attach_jniceit() {
-/*
-	$('#form').NiceIt();
-	$('form').bltCheckbox({restricted:true});
-*/
-
-}
-
-function attach_jRounded() {
-/*
-	$('.item').corners( { radio: 5, borderSize: 1 } );
-*/
-}
-
 
 function show_order() {
 	$('#content').fadeIn(0.5);

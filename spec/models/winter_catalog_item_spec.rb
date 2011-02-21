@@ -19,4 +19,26 @@ describe WinterCatalogItem do
   
   end
 
+  context "when winter catalog item has category" do
+
+    before do
+      @params = { :category_id => @category1.id }      
+    end
+
+    it "lists only catalog items of @category1" do
+      WinterCatalogItem.catalog_items( @params ).count.should == 1
+      WinterCatalogItem.catalog_items( @params ).each do |catalog_item|
+        catalog_item.category.name.should == @category1.name
+      end
+    end
+ 
+    it "show proper page title" do
+      WinterCatalogItem.index_page_title_for( @params ).should contain( WinterCatalogItem.season_name )      
+      WinterCatalogItem.index_page_title_for( @params ).should contain( @category1.name )
+    end
+  
+  end
+
+
+
 end

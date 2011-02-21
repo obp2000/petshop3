@@ -7,6 +7,18 @@ def catalog_items_proxy
     [ mock_model( CatalogItem, valid_item_attributes1 ).as_null_object ]
 end
 
+def summer_catalog_items_proxy
+    summer_catalog_item = mock_model( SummerCatalogItem, valid_item_attributes1 ).as_null_object
+    summer_catalog_item.stub( :type ).and_return( "SummerCatalogItem" )
+    [ summer_catalog_item ]
+end
+
+def winter_catalog_items_proxy
+    winter_catalog_item = mock_model( WinterCatalogItem, valid_item_attributes1 ).as_null_object
+    winter_catalog_item.stub( :type ).and_return( "WinterCatalogItem" )
+    [ winter_catalog_item ]
+end
+
 def forum_posts_proxy
       [ mock_model(ForumPost, valid_forum_post_attributes).as_null_object ]
 end

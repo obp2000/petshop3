@@ -117,7 +117,7 @@
 # renders    
     def render_index( page, objects )
       page.send render_index_mode, index_tag, index_partial, objects
-      page.attach_js( "attach_js" )
+      page.attach_js( "attach_yoxview" )      
     end      
 
     def render_show( page ); page.render_show appear_tag, fade_tag, show_partial; page.attach_js( "attach_yoxview" ) end     
@@ -137,7 +137,10 @@
 # actions
   def update_object( params, session ); update_attributes( params[ to_underscore ] ) end
   
-  def save_object( session, flash ); save.tap { |success| create_notice( flash ) if success } end
+#  def save_object( session, flash ); save.tap { |success| create_notice( flash ) if success } end
+  def save_object( session, flash )
+    save.tap { |success| success ? create_notice( flash ) : ( new_notice( flash ) rescue nil ) }
+  end    
 
 # links
   def link_to_category( page, seasons )

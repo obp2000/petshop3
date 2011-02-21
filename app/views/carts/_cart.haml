@@ -6,5 +6,6 @@
     = SHT + " / "
     %span#cart_total_sum= roubles session.cart.total
     = RUB
-%div{ :id => session.cart.cart_items.first.class.name.tableize }= render session.cart.cart_items
+#cart_items
+  = render session.cart.cart_items
 #link_to_clear_cart= render "carts/link_to_clear_cart"

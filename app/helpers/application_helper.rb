@@ -17,7 +17,9 @@ module ApplicationHelper
 #    define_method( method ) { |object| Array( object ).send( method, self ) rescue nil }
 #  end
 
-  def attach_js( js ); delay( DURATION + 0.1 ) { call( js ) } end
+  def attach_js( js ); delay( DURATION + 0.2 ) { call( js ) } end
+
+  def attach_chain( *jss ); jss.each { |js| delay( 0.2 ) { attach_js js }  } end
 
   def fade_appear( fade, appear ); fade_with_duration fade; appear_with_duration appear end
 
@@ -81,7 +83,7 @@ module ApplicationHelper
   end
 
   def replace_index_partial( index_tag, index_partial, objects )
-    page.action :replace_html, index_tag,  :partial => index_partial, :locals => { :objects => objects }    
+    page.action :replace_html, index_tag,  :partial => index_partial, :locals => { :objects => objects }
   end
   
   def render_destroy( edit_tag, tag ); [ edit_tag, tag ].each { |tag1| action :remove, tag1 rescue nil } end
@@ -112,18 +114,6 @@ module ApplicationHelper
 end
 
 class Array
-  
-#  def render_options( page )
-#    page.render :partial => "catalog_items/attr", :collection => self,
-#        :locals => { :checked => ( first.new_record? || !second ),
-#        :visibility => ( second || first.new_record? ) ? "visible" : "hidden" }
-#  end
- 
-#   def render_attrs( page )
-#    return "Любой" if first.id.blank?     
-#    page.render :partial => "shared/#{first.class.name.underscore}", :collection => self, :spacer_template => "shared/comma"
-#    page.render self, :spacer_template => "shared/comma"
-#  end 
 
   def render_destroy( page, session ); each { |object| object.render_destroy( page, session ) }; page.show_notice end   
   

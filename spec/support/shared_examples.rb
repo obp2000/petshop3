@@ -202,10 +202,8 @@ shared_examples_for "object" do
   describe "GET index" do
     it "assigns all objects as @objects, new object as @object and renders index template" do
       @object.class.should_receive( :all_objects ).and_return( [ @object ] )
-#      @object.class.should_receive( :new_object ).and_return( @object.class.new )      
       xhr :get, :index
       assigns[:objects].should == [ @object ]
-#      assigns[:object].should == @object.class.new
       response.should render_template( "shared/index" )
     end
   end
@@ -250,10 +248,8 @@ shared_examples_for "object" do
         @object.class.should_receive( :new_object ).and_return( @object )
         @object.stub( :save_object ).and_return( true )        
         xhr :post, :create, @object.class.name.underscore => { "name" => @object.name }
-#        flash.should_receive("now[:notice]")
         assigns[ :object ].should equal( @object )
         response.should render_template( "shared/create_or_update" )
-#        flash.now[:notice].should == 'Размер одежды создан удачно.'
       end
     end
 
@@ -307,15 +303,3 @@ shared_examples_for "object" do
   end  
     
 end
-
-#shared_examples_for "show index page title" do
-
-#  describe "GET index" do
-#    it "renders index page title" do
-#      @object.class.should_receive( :index_page_title ).and_return( "Test" )
-#      xhr :get, :index
-#      assigns[ :page_title ].should == "Test"        
-#    end
-#  end
-
-#end

@@ -4,8 +4,7 @@ class ForumPost; end
   
 describe ForumPostsController do
   
-  before(:each) do
-#    controller.stub(:current_user).and_return( users_proxy.first )
+  before do
     @object = forum_posts_proxy.first
     @reply_post = forum_posts_proxy.first
     @reply_post.stub( :parent_id ).and_return( @object.id )
@@ -26,6 +25,7 @@ describe ForumPostsController do
 
   describe "DELETE destroy" do
     it "destroys the requested forum posts chain and renders destroy template" do
+      controller.stub( :current_user ).and_return( users_proxy.first )  
       @object.class.should_receive( :destroy_object ).and_return( [ @object, @reply_post ] )
       xhr :delete, :destroy, :id => @object.to_param
       assigns[ :object ].should == [ @object, @reply_post ]

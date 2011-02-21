@@ -3,3 +3,7 @@
 
 en:
   hello: "Hello world"
+carrierwave:
+  errors:
+    integrity: 'Here be an error message'
+    processing: 'Here be an error message'
