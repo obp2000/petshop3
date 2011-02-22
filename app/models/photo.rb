@@ -14,7 +14,7 @@ class Photo < ItemAttribute
   self.paginate_options = { :order => "id desc", :per_page => 5  }
 
   class_inheritable_accessor :new_partial
-  self.new_partial = self.new_or_edit_partial = "upload_photo"  
+  self.new_partial = "upload_photo"  
   
 #  validates_integrity_of( :photo )
 #  validates_processing_of( :photo )
