@@ -7,7 +7,6 @@ class CatalogItem < Item
   self.index_partial = "catalog_items/index"
   self.show_partial = "catalog_items/show"    
   self.index_text = "Назад в магазин"    
-  self.fade_tag = "catalog_items"
   self.appear_tag = "details"    
   self.submit_with_options = [ "image_submit_tag", "search_32.png", { :title => "Поиск #{class_name_rus}а" } ]
   self.index_render_block = lambda { render request.xhr? ? Index_template_hash : { :partial => "index", :layout => "application" } }
@@ -15,7 +14,6 @@ class CatalogItem < Item
 
 #  PER_PAGE = 8
 #  SEARCH_PER_PAGE = 8
-#  set_inheritance_column "type"   
 
   belongs_to :category
 
@@ -35,6 +33,9 @@ class CatalogItem < Item
 
 # links    
     def link_to_index_local( page ); page.link_to index_text, self end
+
+# tags and partials
+    attr_accessor_with_default( :fade_tag ) { name.tableize }
 
 # renders    
     def render_index( page, objects ); super; page.attach_js( "attach_shadowOn" ) end

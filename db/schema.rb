@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110131113435) do
+ActiveRecord::Schema.define(:version => 20110223155348) do
 
   create_table "cart_items", :force => true do |t|
     t.integer  "item_id"
@@ -29,13 +29,13 @@ ActiveRecord::Schema.define(:version => 20110131113435) do
   end
 
   create_table "categories", :force => true do |t|
-    t.string   "name",       :limit => 50, :default => "", :null => false
+    t.string   "name",       :limit => 50, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "colours", :force => true do |t|
-    t.string   "name",                     :default => "", :null => false
+    t.string   "name",                     :null => false
     t.string   "photo"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(:version => 20110131113435) do
   end
 
   create_table "contacts", :force => true do |t|
-    t.string   "email",      :limit => 50,  :default => "", :null => false
+    t.string   "email",      :limit => 50,  :null => false
     t.string   "name",       :limit => 50
     t.string   "phone",      :limit => 50
     t.string   "address",    :limit => 100
@@ -60,20 +60,20 @@ ActiveRecord::Schema.define(:version => 20110131113435) do
   end
 
   create_table "forum_posts", :force => true do |t|
-    t.string   "name",       :limit => 50, :default => "", :null => false
-    t.string   "subject",                  :default => "", :null => false
+    t.string   "name",       :limit => 50,                :null => false
+    t.string   "subject",                                 :null => false
     t.text     "body"
-    t.integer  "root_id",                  :default => 0,  :null => false
-    t.integer  "parent_id",                :default => 0,  :null => false
-    t.integer  "lft",                      :default => 0,  :null => false
-    t.integer  "rgt",                      :default => 0,  :null => false
-    t.integer  "depth",                    :default => 0,  :null => false
+    t.integer  "root_id",                  :default => 0, :null => false
+    t.integer  "parent_id",                :default => 0, :null => false
+    t.integer  "lft",                      :default => 0, :null => false
+    t.integer  "rgt",                      :default => 0, :null => false
+    t.integer  "depth",                    :default => 0, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "items", :force => true do |t|
-    t.string   "name",        :limit => 100, :default => "", :null => false
+    t.string   "name",        :limit => 100, :null => false
     t.text     "blurb"
     t.float    "price"
     t.datetime "created_at"
@@ -141,43 +141,20 @@ ActiveRecord::Schema.define(:version => 20110131113435) do
   create_table "photos", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "comment",      :limit => 50
-    t.integer  "parent_id"
-    t.string   "content_type"
-    t.string   "filename"
-    t.string   "thumbnail"
-    t.integer  "size"
-    t.integer  "width"
-    t.integer  "height"
+    t.string   "comment",    :limit => 50
     t.integer  "item_id"
-    t.string   "name"
     t.string   "photo"
   end
 
-  create_table "photos2", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "comment",      :limit => 50
-    t.integer  "parent_id"
-    t.string   "content_type"
-    t.string   "filename"
-    t.string   "thumbnail"
-    t.integer  "size"
-    t.integer  "width"
-    t.integer  "height"
-    t.integer  "item_id"
-    t.string   "name"
-  end
-
   create_table "seasons", :force => true do |t|
-    t.string   "name",       :limit => 50, :default => "", :null => false
+    t.string   "name",       :limit => 50, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "icon",       :limit => 50
   end
 
   create_table "sessions", :force => true do |t|
-    t.string   "session_id", :default => "", :null => false
+    t.string   "session_id", :null => false
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -187,7 +164,7 @@ ActiveRecord::Schema.define(:version => 20110131113435) do
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "sizes", :force => true do |t|
-    t.string   "name",       :limit => 30, :default => "", :null => false
+    t.string   "name",       :limit => 30, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

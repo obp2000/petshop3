@@ -90,7 +90,7 @@
     
     def new_object( params, session ); new params[ name.underscore ] end
       
-# links render_index
+# links
     def link_to_new( page )
       page.link_to_remote2 new_image, new_text, page.send( "new_#{name.underscore}_path" ), :id => "link_to_new" end
 
