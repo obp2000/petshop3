@@ -21,12 +21,10 @@ class Photo < ItemAttribute
 #  validates_presence_of :photo_url 
   validate :must_have_photo
   
-  def must_have_photo
-    errors.add :base, "Не выбрана #{class_name_rus} для загрузки" unless photo_url
-  end
+  def must_have_photo; errors.add :base, "Не выбрана #{class_name_rus} для загрузки" unless photo_url end
  
 # actions
-  def all_objects( params, * ); where( :item_id => nil ).paginate_objects( params ) end
+  def self.all_objects( params, * ); where( :item_id => nil ).paginate_objects( params ) end
 
   def add_to_item1( page ); super; page.attach_js( "attach_yoxview" ) end 
 
@@ -37,7 +35,5 @@ class Photo < ItemAttribute
 
 # renders
   def render_create_or_update( page, session ); super; page.attach_js( "attach_yoxview" ) end
-  
-#  def new_notice( flash ); flash.now[ :notice ] = "ошибка" end  
   
 end

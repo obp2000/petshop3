@@ -4,7 +4,7 @@ module ApplicationHelper
 
   [ :link_to_add_to_item, :link_to_show, :link_to_delete, :link_to_close, :link_to_new,
     :submit_to, :link_to_season, :link_to_show_with_comment, :link_to_reply_to,
-    :link_to_logout, :link_to_add_html_code_to, :link_to_remove_from_item, :link_to_change,
+    :link_to_add_html_code_to, :link_to_remove_from_item, :link_to_change,
     :link_to_index_local, :link_to_cart, :updated_at_or_link_to_close ].each do |method|
     define_method( method ) { |object| object.send( method, self ) }
   end
@@ -13,9 +13,7 @@ module ApplicationHelper
     define_method( method ) { |object| object.send( method, params ) }
   end
 
-#  [ :render_attrs, :render_options ].each do |method|
-#    define_method( method ) { |object| Array( object ).send( method, self ) rescue nil }
-#  end
+  def link_to_logout( class_const ); link_to class_const.logout_text, logout_path end
 
   def attach_js( js ); delay( DURATION + 0.2 ) { call( js ) } end
 
@@ -40,8 +38,6 @@ module ApplicationHelper
   def check_cart_links; Cart.cart_links.each { |link| replace_html link, :partial => "carts/#{link}" } end
 
   def check_cart_totals( session ); session.cart.cart_totals.each { |args| replace_html *args } end
-
-#  def red_star; render "shared/red_star" end
     
   def roubles( arg ); number_to_currency( arg, :unit => "", :precision => 0, :delimiter => " ") end
 
@@ -73,8 +69,8 @@ module ApplicationHelper
   end     
 
   def render_show( appear_tag, fade_tag, show_partial )
-#    action :replace_html, appear_tag, :partial => show_partial
-    self[ appear_tag ].replace_html :partial => show_partial
+    action :replace_html, appear_tag, :partial => show_partial
+#    self[ appear_tag ].replace_html :partial => show_partial
     fade_appear fade_tag, appear_tag          
   end
 

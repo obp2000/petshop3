@@ -211,8 +211,8 @@ table, #item_content, #order_details {
 .photo {
   float: left; }
 
-#form_blurb {
-  margin-top: 135px; }
+#form_photos > span {
+  display: table-cell; }
 
 #processed_orders_amount {
   color: red; }

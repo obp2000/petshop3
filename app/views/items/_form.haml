@@ -25,15 +25,15 @@
       %b= attr_class.class_name_rus_cap.pluralize.split.first.colon
       %span{ :id => "form_#{attr_class.name.tableize}" }= render :partial => "attr", :collection => @object.send( attr_class.name.tableize )
       = link_to_change attr_class
-  %br  
-  %p
-    %span#form_photos= render :partial => "photo", :collection => @object.photos
-    = link_to_change Photo
   %br
   %p
     %div#form_blurb= f.text_area :blurb, :rows => 3
+  %p
+    %span#form_photos= render :partial => "photo", :collection => @object.photos
+    = link_to_change Photo
   %b= Item.created_at_rus.colon
   = date_time_rus @object.created_at
   %b= Item.updated_at_rus.colon
   = date_time_rus @object.updated_at
-  = submit_to Item
+  = submit_to Item 
+    

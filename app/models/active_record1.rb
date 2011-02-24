@@ -101,8 +101,6 @@
 
 #    def link_to_season( page ); page.link_to_remote2 [ season_icon ], season_name + " (#{count})", self end to_html
     def link_to_season( page ); page.link_to_remote2 nil, "Всего (#{count})", self end      
-  
-    def link_to_logout( page ); page.link_to( logout_text, page.logout_path ) end
       
     def submit_to( page ); page.send( *submit_with_options ) end      
 

@@ -38,8 +38,8 @@ class ItemAttribute < ActiveRecord1
     def link_to_remove_from_item( page )
       page.link_to_function page.image_tag( delete_image, { :title => delete_from_item_title } ), delete_from_item_js_string
     end
-
-    attr_accessor_with_default( :options_for_replace_new_tag ) { [ new_tag, { :partial => create_or_update_partial, :object => new1 } ] }      
+    
+    attr_accessor_with_default( :options_for_replace_new_tag ) { [ new_tag, { :partial => new_partial, :object => new1 } ] }      
      
   end
   
