@@ -12,7 +12,7 @@ describe CatalogItem do
   describe "#catalog_items" do
 
     it "lists all catalog items" do
-      CatalogItem.catalog_items( @params ).count.should == 4
+      CatalogItem.index_scope( @params ).count.should == 4
     end
   
   end
@@ -32,8 +32,8 @@ describe CatalogItem do
     end
 
     it "lists only catalog items of @category1" do
-      CatalogItem.catalog_items( @params ).count.should == 2
-      CatalogItem.catalog_items( @params ).each do |catalog_item|
+      CatalogItem.index_scope( @params ).count.should == 2
+      CatalogItem.index_scope( @params ).each do |catalog_item|
         catalog_item.category.name.should == @category1.name
       end
     end

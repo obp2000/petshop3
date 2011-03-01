@@ -1,6 +1,6 @@
 %div
   %h2= index_page_title_for Item
-  %table{ :id => @object.class.name.tableize }
+  %table{ :id => @objects.dom_id }
     %caption= will_paginate @objects
     %tr
       = render :partial => "header", :collection => Item.headers

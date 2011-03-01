@@ -14,10 +14,8 @@ class ForumPost < ActiveRecord1
   self.new_text = "Новая тема"
   self.submit_with_options = [ "submit_tag", "Отправить", { :onclick => "$(this).fadeOut().fadeIn()" } ]
   self.name_rus = "Автор"
-  self.paginate_options = { :order =>  'root_id desc, lft',  :per_page => 15 }
-  self.render_index_mode = "replace_index_partial"
-#  self.index_tag = "content" style
-#  self.new_or_edit_partial = "new"  
+  self.paginate_options = { :per_page => 15 }
+  self.insert_or_replace = "replace_index_tag"
 
   class_inheritable_accessor :no_forum_posts_text, :subject_rus, :body_rus, :reply_image,
           :reply_text, :reply_render_block
@@ -32,27 +30,19 @@ class ForumPost < ActiveRecord1
   attr_accessor_with_default( :style ) { "margin-left: #{depth*20 + 30}px" }
   attr_accessor_with_default( :new_or_edit_tag ) { "post_new" }
   attr_accessor_with_default( :parent_tag ) { "#{to_underscore}_#{parent_id}" }
-#  attr_accessor_with_default( :reply_path ) { [ "reply_#{to_underscore}_path", self ] }  
   
   validate :must_have_long_name, :must_have_long_subject, :must_have_long_body  
   
   def must_have_long_subject; errors.add :base, "#{subject_rus} слишком короткая (минимум 5 букв)" if subject.size < 5 end  
   
   def must_have_long_body; errors.add :base, "#{body_rus} слишком короткое (минимум 5 букв)" if body.size < 5 end
+
+  scope :index_scope, order( "root_id desc, lft" )
   
   class << self
 
 # actions
-    def all_objects( params, * ); paginate_objects( params ) end
-
     def reply( params ); new :parent_id => params[ :id ] end
-      
-#    def new1; new :parent_id => params[ :id ] end      
-      
-    
-    def destroy_object( params, session, flash )
-      find( params[ :id ] ).tap { |forum_post| forum_post.destroy_notice( flash ) }.full_set.tap { |full_set| delete full_set }
-    end
 
 # tags and partials    
     attr_accessor_with_default( :index_page_title_for ) { class_name_rus_cap }         
@@ -74,6 +64,8 @@ class ForumPost < ActiveRecord1
     end
   end
 
+  def destroy_object; full_set.tap { |full_set| full_set.each { |forum_post| forum_post.delete } } end
+
 # links
   def link_to_reply_to( page )
     page.link_to_remote2 [ reply_image ], reply_text, page.send( "reply_#{to_underscore}_path", self ), :id => "link_to_reply"  
@@ -93,8 +85,8 @@ class ForumPost < ActiveRecord1
   end
 
 # notices
-  def create_notice( flash ); flash.now[ :notice ] = parent_id.zero? ? "Новая тема создана" : "Сообщение отправлено" end
+  def set_create_notice( flash ); flash.now[ :notice ] = parent_id.zero? ? "Новая тема создана" : "Сообщение отправлено" end
 
-  def destroy_notice( flash ); flash.now[ :notice ] = "Ветвь сообщений удалена" end
+  def set_destroy_notice( flash ); flash.now[ :notice ] = "Ветвь сообщений удалена" end
 
 end

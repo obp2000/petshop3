@@ -11,7 +11,8 @@ class Photo < ItemAttribute
     "$(this).siblings(':checkbox').removeAttr('checked');$(this).siblings(':not(:checkbox)').remove();$(this).remove();"  
   self.insert_attr = "photo"
   self.create_render_block = lambda { responds_to_parent { render Create_or_update_template_hash } }
-  self.paginate_options = { :order => "id desc", :per_page => 5  }
+  self.paginate_options = { :per_page => 5  }
+  self.attach_js = [ "attach_yoxview" ] 
 
   class_inheritable_accessor :new_partial
   self.new_partial = "upload_photo"  
@@ -23,17 +24,11 @@ class Photo < ItemAttribute
   
   def must_have_photo; errors.add :base, "Не выбрана #{class_name_rus} для загрузки" unless photo_url end
  
-# actions
-  def self.all_objects( params, * ); where( :item_id => nil ).paginate_objects( params ) end
-
-  def add_to_item1( page ); super; page.attach_js( "attach_yoxview" ) end 
+  scope :index_scope, where( :item_id => nil ).order( :id ) 
 
 # links
   def link_to_show( page, comment = "" ); page.link_to page.image_tag( photo.thumb.url ) + comment, photo_url rescue nil end
 
   def link_to_show_with_comment( page ); link_to_show page, comment end
-
-# renders
-  def render_create_or_update( page, session ); super; page.attach_js( "attach_yoxview" ) end
   
 end

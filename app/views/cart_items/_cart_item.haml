@@ -1,4 +1,4 @@
-.ui-widget-content{ :id => "#{cart_item.class.to_s.underscore}_#{cart_item.id}" }
+.ui-widget-content{ :id => dom_id( cart_item ) }
   = link_to_show cart_item.catalog_item
   - [ "size", "colour" ].each do |attr|
     = render "shared/#{attr}", :"#{attr}" => cart_item.send( attr ) rescue nil   

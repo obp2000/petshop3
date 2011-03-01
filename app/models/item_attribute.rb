@@ -14,9 +14,8 @@ class ItemAttribute < ActiveRecord1
   self.add_to_item_image = [ "arrow_large_right.png", { :title =>"Добавить к #{Item.class_name_rus}у" } ]
   self.attr_partial = "attr"
 
-  attr_accessor_with_default( :options_for_replace_item_attributes ) { [ tag, { :partial => "items/" + 
-          attr_partial, :object => self } ] }
-#  attr_accessor_with_default( :add_to_item_block1 ) { lambda { |page| add_to_item1( page ) } }
+  attr_accessor_with_default( :options_for_replace_item_attributes ) {
+          [ tag, { :partial => "items/" + attr_partial, :object => self } ] }
 
   def must_have_unique_name
     errors.add :base, "Такой #{class_name_rus} уже есть" if new_record? && self.class.where( :name => name ).first     
@@ -51,9 +50,10 @@ class ItemAttribute < ActiveRecord1
     end  
   end   
   
-  def add_to_item1( page )
-    page.remove_and_insert [ :remove, tag ],
-            [ :bottom, "form_#{self.class.name.tableize}", { :partial => "items/#{insert_attr}", :object => self } ]
+  def add_to_item( page )
+    page.remove_and_insert [ :remove, tag ], [ :bottom, "form_#{self.class.name.tableize}",
+            { :partial => "items/#{insert_attr}", :object => self } ]
+    page.attach_chain( attach_js )          
   end    
 
   def radio_button_tag1( page, checked, visibility )

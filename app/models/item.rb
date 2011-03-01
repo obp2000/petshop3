@@ -26,9 +26,7 @@ class Item < ActiveRecord1
   self.name_rus = "Название"
   self.index_render_block = lambda { render request.xhr? ? Index_template_hash : { :partial => "index", :layout => "items" } }
   self.paginate_options = { :per_page => 14 }
-  self.render_index_mode = "replace_index_partial"
-#  self.index_tag = "content"
-#  self.new_or_edit_partial = "form"  
+  self.insert_or_replace = "replace_index_tag"
 
   class_inheritable_accessor :price_rus, :headers
   self.price_rus = "Цена"
@@ -55,9 +53,7 @@ class Item < ActiveRecord1
   class << self
 
 # actions
-    def item_objects( params ); all.sort_by { |item| eval( "item." + params[ :sort_by ] ) rescue "" } end
-
-    def all_objects( params, * ); item_objects( params ).paginate paginate_hash( params ) end
+    def index_scope( params ); all.sort_by { |item| eval( "item." + params[ :sort_by ] ) rescue "" } end
 
 # tags and partials
     attr_accessor_with_default( :create_or_update_partial ) { edit_partial }
@@ -79,7 +75,7 @@ class Item < ActiveRecord1
   
   def save_photos; photos.each { |photo| photo.save } end
   
-  def update_object( params, session ); params[ "item" ][ :existing_photo_attributes ] ||= {}; super end
+  def update_object( params ); params[ "item" ][ :existing_photo_attributes ] ||= {}; super end
   
   def existing_photo_attributes=(photo_attributes)
     photos.reject( &:new_record? ).each do |photo|
@@ -87,9 +83,6 @@ class Item < ActiveRecord1
       attributes ? photo.attributes = attributes : photos.delete( photo )
     end
   end
-
-#  def size_ids=(ids); Size.update_attr( self, ids ) end
-#  def colour_ids=(ids); Colour.update_attr( self, ids ) end
 
   [ "Size", "Colour" ].each do |class_name|
     define_method( "#{class_name.underscore}_ids=" ) { |ids| class_name.constantize.update_attr( self, ids ) }    

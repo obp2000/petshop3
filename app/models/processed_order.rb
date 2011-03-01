@@ -6,7 +6,6 @@ class ProcessedOrder < Order
   self.new_image = [ "tick_16.png" ]
   self.new_text = "Оформить #{class_name_rus}"   
   self.submit_with_options = [ "submit_tag", "Разместить #{class_name_rus}", { :onclick => "$(this).fadeOut().fadeIn()" } ]
-#  self.new_or_edit_partial = "new"   
   
   class_inheritable_accessor :close_image, :close_confirm, :captcha_text, :fade_duration,
         :close_render_block, :update_amount
@@ -60,7 +59,8 @@ class ProcessedOrder < Order
   def save_object( session, flash )
     self.captcha_validated = session[ :captcha_validated ]
     self.cart = session.cart
-    save && populate_order( self.cart ) && self.cart.clear_cart && create_notice( flash ) && OrderNotice.deliver_order_notice( self )
+    save && populate_order( self.cart ) && self.cart.clear_cart && set_create_notice( flash ) &&
+            OrderNotice.deliver_order_notice( self )
   end     
 
   def populate_order( cart )
@@ -88,7 +88,7 @@ class ProcessedOrder < Order
 # notices
   def close_notice( flash ); flash.now[ :notice ] = "#{Order.class_name_rus_cap} № #{id} успешно закрыт." end
 
-  def create_notice( flash )
+  def set_create_notice( flash )
     flash.now[ :notice ] =
             "<h3>Спасибо за заказ!</h3><br />В ближайшее время наши менеджеры свяжутся с Вами.<br />
             На адрес Вашей электронной почты отправлено информационное сообщение.<br />

@@ -18,8 +18,7 @@
     :index_render_block, :show_render_block, :new_render_block, :edit_render_block, :create_render_block,
     :update_render_block, :destroy_render_block, :paginate_options,
     :new_or_edit_partial, :create_or_update_partial, :new_tag, :index_tag, :show_partial,
-    :render_index_mode
-
+    :insert_or_replace, :attach_js
   self.class_name_rus = ""
   self.class_name_rus_cap = ""  
   self.back_image = [ "back1.png", { :title => "Назад" } ]
@@ -50,7 +49,8 @@
   self.destroy_render_block = lambda { render Destroy_template_hash }
   self.paginate_options = {}
   self.show_partial = "show"
-  self.render_index_mode = "insert_index_partial"
+  self.insert_or_replace = "insert_index_tag"
+  self.attach_js = [ "attach_yoxview" ]
 
   attr_accessor_with_default( :show_text ) { name }
   attr_accessor_with_default( :delete_title ) { "Удалить #{class_name_rus} #{name rescue id}?" }
@@ -72,23 +72,43 @@
     errors.add :base, "Неверный формат адреса электронной почты" if email !~ /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i     
   end 
   
+  scope :index_scope
+    
   class << self
 
 # actions
-    define_method( :all_objects ) { all }
-
+    def all_objects( params, * ); index_scope( params ).paginate_objects( params ) end
+    
     def paginate_hash( params ); paginate_options.merge :page => params[ :page ] end
 
     def paginate_objects( params ); paginate paginate_hash( params ) end 
 
-    def update_object( params, session, flash )
-      [ find( params[ :id ] ), nil ].tap { |result| result.update_object( params, session, flash ) } end    
+    def find_current_object( params, session ); find params[ :id ] end
+    alias_method :find_object_for_update, :find_current_object
 
-    def destroy_object( params, session, flash ); find( params[ :id ] ).destroy.tap { |object| object.destroy_notice( flash ) } end     
+    def update_object( params, session, flash )
+      find_object_for_update( params, session ).update_object( params ).tap {
+            |result| result.first.set_update_notice( flash ) if result.second }
+    end
+
+    def destroy_object( params, session, flash )
+      find_current_object( params, session ).tap { |result| result.set_destroy_notice( flash ) }.destroy_object
+    end     
 
     attr_accessor_with_default( :new1 ) { new }      
     
     def new_object( params, session ); new params[ name.underscore ] end
+      
+# renders    
+    def render_index( page, objects )
+      page.send insert_or_replace, index_tag, index_partial, objects
+      page.attach_chain( attach_js )
+    end      
+
+    def render_show( page )
+      page.render_show appear_tag, fade_tag, show_partial
+      page.attach_chain( attach_js )      
+    end       
       
 # links
     def link_to_new( page )
@@ -99,7 +119,6 @@
           page.send( "#{name.tableize}_path", params )      
     end
 
-#    def link_to_season( page ); page.link_to_remote2 [ season_icon ], season_name + " (#{count})", self end to_html
     def link_to_season( page ); page.link_to_remote2 nil, "Всего (#{count})", self end      
       
     def submit_to( page ); page.send( *submit_with_options ) end      
@@ -111,14 +130,6 @@
     attr_accessor_with_default( :edit_partial ) { name.underscore }     
     attr_accessor_with_default( :new_or_edit_partial ) { name.underscore }
     attr_accessor_with_default( :create_or_update_partial ) { new_or_edit_partial }    
-
-# renders    
-    def render_index( page, objects )
-      page.send render_index_mode, index_tag, index_partial, objects
-      page.attach_js( "attach_yoxview" )      
-    end      
-
-    def render_show( page ); page.render_show appear_tag, fade_tag, show_partial; page.attach_js( "attach_yoxview" ) end     
       
 # JS
     def back( page ); page.fade_appear( appear_tag, fade_tag ) end      
@@ -130,15 +141,32 @@
   end
 
   attr_accessor_with_default( :to_underscore ) { self.class.name.underscore }
-#  def to_underscore; self.class.name.underscore end
 
 # actions
-  def update_object( params, session ); update_attributes( params[ to_underscore ] ) end
+  def update_object( params ); [ self, update_attributes( params[ to_underscore ] ) ] end
+    
+  def destroy_object; destroy end     
   
-#  def save_object( session, flash ); save.tap { |success| create_notice( flash ) if success } end
-  def save_object( session, flash )
-    save.tap { |success| success ? create_notice( flash ) : ( new_notice( flash ) rescue nil ) }
-  end    
+  def save_object( session, flash ); save.tap { |success| set_create_notice( flash ) if success } end
+    
+# notices
+  def set_create_notice( flash ); flash.now[ :notice ] = "#{class_name_rus_cap} создан удачно." end
+  def set_update_notice( flash ); flash.now[ :notice ] = "#{class_name_rus_cap} удачно обновлён." end
+  def set_destroy_notice( flash ); flash.now[ :notice ] = "#{class_name_rus_cap} удалён." end     
+
+# renders   
+  def render_new_or_edit( page )
+    page.action replace, new_or_edit_tag, :partial => new_or_edit_partial, :object => self
+    page.attach_chain( attach_js )     
+  end 
+
+  def render_create_or_update( page, session )
+    page.render_create_or_update [ :remove, create_or_update_tag ],
+            [ :bottom, self.class.name.tableize, { :partial => create_or_update_partial, :object => self } ]
+    page.attach_chain( attach_js )             
+  end  
+  
+  def render_destroy( page, session ); page.render_destroy edit_tag, tag end 
 
 # links
   def link_to_category( page, seasons )
@@ -152,25 +180,5 @@
     page.link_to_remote2 [ delete_image, { :title => delete_title } ], delete_text, self, :method => :delete,
             :confirm => delete_title
   end
-    
-# renders   
-  def render_new_or_edit( page )
-    page.action replace, new_or_edit_tag, :partial => new_or_edit_partial, :object => self
-    page.attach_js( "attach_yoxview" )
-  end 
-
-  def render_create_or_update( page, session )
-    page.render_create_or_update [ :remove, create_or_update_tag ],
-            [ :bottom, self.class.name.tableize, { :partial => create_or_update_partial, :object => self } ]
-  end  
-  
-  def render_destroy( page, session ); page.render_destroy edit_tag, tag end  
-  
-# notices
-  def create_notice( flash ); flash.now[ :notice ] = "#{class_name_rus_cap} создан удачно." end
-  def update_notice( flash ); flash.now[ :notice ] = "#{class_name_rus_cap} удачно обновлён." end
-  def destroy_notice( flash ); flash.now[ :notice ] = "#{class_name_rus_cap} удалён." end  
-
-#  def each; yield self end
 
 end

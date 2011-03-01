@@ -17,7 +17,11 @@ module ApplicationHelper
 
   def attach_js( js ); delay( DURATION + 0.2 ) { call( js ) } end
 
-  def attach_chain( *jss ); jss.each { |js| delay( 0.2 ) { attach_js js }  } end
+  def attach_chain( jses )
+    delay( DURATION + 0.2 ) do
+      jses.each { |js| call js if js }
+    end
+  end
 
   def fade_appear( fade, appear ); fade_with_duration fade; appear_with_duration appear end
 
@@ -60,8 +64,8 @@ module ApplicationHelper
     link_to_function( image_tag *class_const.back_image ) { |page| class_const.back( page ) }
   end
 
-  def link_to_add_to_item1( class_const )
-    link_to_function( image_tag *class_const.add_to_item_image ) { |page| class_const.add_to_item1( page ) }
+  def link_to_add_to_item( class_const )
+    link_to_function( image_tag *class_const.add_to_item_image ) { |page| class_const.add_to_item( page ) }
   end  
     
   def link_to_remote2( image = [], text = "", url = nil, opts = {} )
@@ -74,12 +78,12 @@ module ApplicationHelper
     fade_appear fade_tag, appear_tag          
   end
 
-  def insert_index_partial( index_tag, index_partial, objects )
+  def insert_index_tag( index_tag, index_partial, objects )
     remove_and_insert [ :remove, index_tag ], [ :after, "tabs", { :partial => index_partial, :locals => { :objects => objects } } ]       
   end
 
-  def replace_index_partial( index_tag, index_partial, objects )
-    page.action :replace_html, index_tag,  :partial => index_partial, :locals => { :objects => objects }
+  def replace_index_tag( index_tag, index_partial, objects )
+    page.action :replace_html, index_tag, :partial => index_partial, :locals => { :objects => objects }
   end
   
   def render_destroy( edit_tag, tag ); [ edit_tag, tag ].each { |tag1| action :remove, tag1 rescue nil } end
@@ -114,10 +118,10 @@ class Array
   def render_destroy( page, session ); each { |object| object.render_destroy( page, session ) }; page.show_notice end   
   
   def render_index( page ); first.class.render_index( page, self ) rescue nil; page.show_notice end
- 
-  def update_object( params, session, flash )
-    self[ 0 ].update_notice( flash ) if self[ 1 ] = self[ 0 ].update_object( params, session )
-  end  
+  
+  def paginate_objects( params ); paginate first.class.paginate_hash( params ) end
+    
+  def dom_id; first.class.name.tableize end
   
 end
 

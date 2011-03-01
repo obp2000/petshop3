@@ -1,4 +1,4 @@
-%div{ :id => "#{forum_post.class.name.underscore}_#{forum_post.id}", :style => forum_post.style }
+%div{ :id => dom_id( forum_post ), :style => forum_post.style }
   %b= link_to_show forum_post 
   автор:
   = h forum_post.name

@@ -98,31 +98,31 @@ describe Item do
     
     it "sorts by name" do
       @params = {  :sort_by => "name" }
-      @items = Item.item_objects( @params )
+      @items = Item.index_scope( @params )
       @items.first.name.should == "Jacket"
     end
     
     it "sorts by price" do
       @params = {  :sort_by => "price" }
-      @items = Item.item_objects( @params )
+      @items = Item.index_scope( @params )
       @items.first.price.should == 300
     end    
     
     it "sorts by category" do
       @params = {  :sort_by => "category.name" }
-      @items = Item.item_objects( @params )
+      @items = Item.index_scope( @params )
       @items.first.category.name.should == "Jackets"
     end      
     
     it "sorts by sizes" do
       @params = {  :sort_by => "sizes.first.name" }
-      @items = Item.item_objects( @params )
+      @items = Item.index_scope( @params )
       @items.first.sizes.first.name.should == "L"
     end    
 
     it "sorts by colours" do
       @params = {  :sort_by => "colours.first.name" }
-      @items = Item.item_objects( @params )
+      @items = Item.index_scope( @params )
       @items.first.colours.first.name.should == "Green"
     end        
     

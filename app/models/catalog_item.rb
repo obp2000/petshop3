@@ -10,25 +10,25 @@ class CatalogItem < Item
   self.appear_tag = "details"    
   self.submit_with_options = [ "image_submit_tag", "search_32.png", { :title => "Поиск #{class_name_rus}а" } ]
   self.index_render_block = lambda { render request.xhr? ? Index_template_hash : { :partial => "index", :layout => "application" } }
-  self.paginate_options = { :per_page => 8, :order => "items.id desc" }
+  self.paginate_options = { :per_page => 8 }
+  self.attach_js = [ "attach_yoxview", "attach_shadowOn" ] 
 
 #  PER_PAGE = 8
 #  SEARCH_PER_PAGE = 8
 
   belongs_to :category
 
-#  set_inheritance_column "type"   
+  scope :ordered_by_id, order( :id )
+  scope :with_category, lambda { |params| where( :category_id => params[ :category_id ] ) if params[ :category_id ] }
+  scope :index_scope, lambda { |params| with_category( params ).ordered_by_id }
+  scope :group_by_category, group( :category_id )
 
   class << self
 
 # actions
-    def all_objects( params, * ); catalog_items( params ).paginate paginate_hash( params ) end
-
-    def catalog_items( params ); params[ :category_id ] ? where( :category_id => params[ :category_id ] ) : all end
-
     def search_results( params, flash )
-      ( results1 = search( *params.search_args ) ).tap { |results| not_found_notice( params, flash ) if results.size.zero? }              
-      results1
+      not_found_notice( params, flash ) if ( results = search( *params.search_args ) ).empty?              
+      results
     end
 
 # links    
@@ -36,9 +36,6 @@ class CatalogItem < Item
 
 # tags and partials
     attr_accessor_with_default( :fade_tag ) { name.tableize }
-
-# renders    
-    def render_index( page, objects ); super; page.attach_js( "attach_shadowOn" ) end
 
 # notices
     def not_found_notice( params, flash )

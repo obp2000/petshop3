@@ -11,8 +11,5 @@ class OrderItem < ActiveRecord1
   self.class_name_rus_cap = "Товар"    
 
   attr_accessor_with_default( :order_item_sum ) { price * amount }
-   
-#  attr_accessor_with_default( :notice ) { 
-#          "#{name} #{size.name rescue ""} #{colour.name rescue ""} (#{ price.to_i } #{RUB}) - #{amount} #{SHT}".html_safe }
   
 end

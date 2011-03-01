@@ -9,24 +9,15 @@ class Category < ItemAttribute
   self.class_name_rus_cap = "Вид одежды"
   self.change_image = "color_line.png"
   self.index_text = "Вид одежды"
-  self.paginate_options = { :order => 'name' }
   self.attr_partial = "category"     
  
   validate :must_have_name, :must_have_unique_name
- 
-  class << self
 
-# actions
-    def all_objects( * ); all paginate_options end
-      
-    def all_of( season_class ); all.reject { |category| category.send( season_class.name.tableize ).empty? } end
-      
-  end
+  scope :index_scope, order( :name )
 
 # JS
-  def add_to_item1( page )
+  def add_to_item( page )
     page.replace_html "form_#{self.class.name.tableize}", :partial => "items/#{to_underscore}", :object => self
-#    page[ "form_#{self.class.name.tableize}" ].replace_html1 :partial => "items/#{to_underscore}", :object => self
   end
    
 end

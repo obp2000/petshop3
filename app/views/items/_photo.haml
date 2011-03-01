@@ -1,4 +1,4 @@
-%span{ :id => "#{photo.class.name.underscore}_#{photo.id}" }
+%span{ :id => dom_id( photo ) }
   %span.yoxview= link_to_show photo
   = link_to_remove_from_item Photo
   %br

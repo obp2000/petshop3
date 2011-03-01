@@ -1,4 +1,4 @@
-%tr{ :id => "#{order.class.name.underscore}_#{order.id}", :onclick => "$.get('#{order_path(order)}')" }
+%tr{ :id => dom_id( order ), :onclick => "$.get('#{order_path(order)}')" }
   %td= order.id
   %td{ :id => "order_status_#{order.id}" }= order.class.status_rus
   %td.align_right= roubles order.total

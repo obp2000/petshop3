@@ -1,0 +1,4 @@
+%h3= link_to image_tag( season_class.season_icon ) + season_class.season_name       
+%div
+  %b= link_to_season( season_class )
+  = render :partial => "layouts/grouped_by_category", :locals => { :season_class => season_class }, :collection => season_class.group_by_category

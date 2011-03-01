@@ -1,4 +1,4 @@
-%div{ :id => @objects.first.class.name.tableize }
+%div{ :id => @objects.dom_id }
   %h2= index_page_title_for @objects.first.class
   = render :partial => "catalog_items/catalog_item", :collection => @objects
   = will_paginate @objects

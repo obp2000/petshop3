@@ -16,8 +16,8 @@ class Order < ActiveRecord1
   self.index_partial = "orders/index"
   self.fade_tag = "item_content"
   self.appear_tag = "order_details"
-  self.paginate_options = {  :order => 'created_at desc', :per_page => 14 }
-  self.render_index_mode = "replace_index_partial"    
+  self.paginate_options = { :per_page => 14 }
+  self.insert_or_replace = "replace_index_tag"    
 
   class_inheritable_accessor :id_rus, :status_header_rus, :total_rus, :count_rus, :email_rus, :phone_number_rus,
     :ship_to_first_name_rus, :ship_to_city_rus, :ship_to_address_rus, :comments_rus, :details_title,
@@ -38,18 +38,14 @@ class Order < ActiveRecord1
   self.status_rus_nav = ""
   self.status_rus = ""
   self.blank = ""
-#  self.index_tag = "content"  
 
   attr_accessor_with_default( :status_tag ) { "order_status_#{id}" }
   attr_accessor_with_default( :updated_tag ) { "order_updated_#{id}" }
   attr_accessor_with_default( :close_tag ) { "close_order_#{id}" }
-#  attr_accessor_with_default( :close_path ) { [ "close_#{to_underscore}_path", self ] }    
+
+  scope :index_scope, order( "created_at desc" )
 
   class << self
-  
-# actions  
-    def all_objects( params, * ); paginate_objects( params ) end
-
 # tags
     attr_accessor_with_default( :index_tag ) { "content" }       
     
@@ -63,13 +59,13 @@ class Order < ActiveRecord1
 
 # renders
   def render_destroy( page, session )
-    super page, session
+    super
     page.update_processed_orders_amount ProcessedOrder.update_amount
   end 
 
   def updated_at_or_link_to_close( page ); closed? ? page.date_time_rus( updated_at ) : page.link_to_close( self ) end
 
 # notices
-  def destroy_notice( flash ); flash.now[ :notice ] = "#{class_name_rus_cap} № #{id} успешно удалён." end
+  def set_destroy_notice( flash ); flash.now[ :notice ] = "#{class_name_rus_cap} № #{id} успешно удалён." end
        
 end

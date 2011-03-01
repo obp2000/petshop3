@@ -1,4 +1,4 @@
-.ui-widget-content.catalog_item{ :id => "#{catalog_item.class.name.underscore}_#{catalog_item.id}" }
+.ui-widget-content.catalog_item{ :id => dom_id( catalog_item ) }
   .thumbs.yoxview= render :partial => "shared/photo", :collection => catalog_item.photos
   = form_for catalog_item, :url => cart_item_path( catalog_item ), :remote => true do   
     %h4
@@ -7,7 +7,7 @@
         = roubles( catalog_item.price ) + " " + RUB
         = submit_to Cart
     - [ "size", "colour" ].each do |attr| 
-      %div{ :class => attr.tableize }= render "catalog_items/attrs", :attrs => catalog_item.send( attr.tableize ) 
+      %div{ :class => attr.tableize }= render "catalog_items/attrs", :attrs => catalog_item.send( attr.tableize )
   .blurb= catalog_item.blurb
 = draggable_element catalog_item.tag, :revert => true
       

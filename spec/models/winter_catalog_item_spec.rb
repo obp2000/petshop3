@@ -9,8 +9,8 @@ describe WinterCatalogItem do
   describe "#catalog_items" do
 
     it "lists only winter catalog items" do
-      WinterCatalogItem.catalog_items( @params ).count.should == 2
-      WinterCatalogItem.catalog_items( @params ).first.type.should == "WinterCatalogItem"   
+      WinterCatalogItem.index_scope( @params ).count.should == 2
+      WinterCatalogItem.index_scope( @params ).first.type.should == "WinterCatalogItem"   
     end
  
     it "show proper page title" do
@@ -26,8 +26,8 @@ describe WinterCatalogItem do
     end
 
     it "lists only catalog items of @category1" do
-      WinterCatalogItem.catalog_items( @params ).count.should == 1
-      WinterCatalogItem.catalog_items( @params ).each do |catalog_item|
+      WinterCatalogItem.index_scope( @params ).count.should == 1
+      WinterCatalogItem.index_scope( @params ).each do |catalog_item|
         catalog_item.category.name.should == @category1.name
       end
     end

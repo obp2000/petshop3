@@ -1,4 +1,4 @@
-%tr{ :id => "#{item.class.name.underscore}_#{item.id}", :onclick => "$.get('#{edit_item_path(item)}')" }
+%tr{ :id => dom_id( item ), :onclick => "$.get('#{edit_item_path(item)}')" }
   %td= item.name
   - [ "size", "colour" ].each do |attr|
     %td= render :partial => "shared/#{attr}", :collection => item.send( attr.tableize ) rescue nil      
