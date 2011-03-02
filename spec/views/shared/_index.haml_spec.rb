@@ -4,6 +4,7 @@ describe "shared/_index" do
 
   before do
     @objects = sizes_proxy
+    Size.stub( :new1 ).and_return( sizes_proxy.first.as_new_record )
   end
 
   it "renders index template" do

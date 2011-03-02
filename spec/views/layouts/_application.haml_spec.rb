@@ -9,9 +9,12 @@ describe "layouts/_application" do
     Contact.stub( :first ).and_return( @first_contact )
     view.stub( :link_to_index ).with( ForumPost ).and_return( link_to "Test", forum_posts_path, :remote => true, :method => :get )
     view.stub( :do_not_show_nav ).and_return( false )
-    CatalogItem.stub( :group_by_category ).and_return( [ catalog_items_proxy.first ] )
-    SummerCatalogItem.stub( :group_by_category ).and_return( [ summer_catalog_items_proxy.first ] )
-    WinterCatalogItem.stub( :group_by_category ).and_return( [ winter_catalog_items_proxy.first ] ) 
+#    CatalogItem.stub( :group_by_category ).and_return( [ catalog_items_proxy.first ] )
+#    SummerCatalogItem.stub( :group_by_category ).and_return( [ summer_catalog_items_proxy.first ] )
+#    WinterCatalogItem.stub( :group_by_category ).and_return( [ winter_catalog_items_proxy.first ] )     
+    CatalogItem.stub( :find ).with( :all, :select => "category_id", :group => "category_id" ).and_return( [ catalog_items_proxy.first ] )
+    SummerCatalogItem.stub( :all, :select => "category_id", :group => "category_id" ).and_return( [ summer_catalog_items_proxy.first ] )
+    WinterCatalogItem.stub( :all, :select => "category_id", :group => "category_id" ).and_return( [ winter_catalog_items_proxy.first ] ) 
   end  
   
   it "renders main page" do
