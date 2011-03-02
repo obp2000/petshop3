@@ -112,7 +112,8 @@
       
 # links
     def link_to_new( page )
-      page.link_to_remote2 new_image, new_text, page.send( "new_#{name.underscore}_path" ), :id => "link_to_new" end
+      page.link_to_remote2 new_image, new_text, page.send( "new_#{name.underscore}_path" ), :id => "link_to_new"
+    end
 
     def link_to_index( page, params = nil )
       page.link_to_remote2 index_image, ( params[ :index_text ] rescue class_name_rus_cap.pluralize ),

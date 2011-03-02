@@ -38,6 +38,7 @@ class Contact < ActiveRecord1
 
   end
 
+# notices
   def set_update_notice( flash ); flash.now[ :notice ] = "#{class_name_rus_cap} успешно обновлены." end
 
 end

@@ -29,14 +29,17 @@ class CartItem < ActiveRecord1
   def destroy_object; tap { update_amount( -1 ); destroy if amount.zero? } end
     
   def update_object( params ); [ tap { update_amount( 1 ) }, true ] end
-  
-  def update_amount( i ); update_attribute :amount, amount + i end     
 
   def populate_order_item_hash
     {}.tap do |order_item_hash|
       [ :item_id, :price, :amount, :size_id, :colour_id ].each { |arg| order_item_hash[ arg ] = send( arg ) }
     end
   end
+
+# notices
+  def set_update_notice( flash ); flash.now[ :notice ] = "Добавлен товар<br /> <em>#{name}</em>".html_safe end
+
+  def set_destroy_notice( flash ); flash.now[ :notice ] = "Удален товар <em>#{name}</em>".html_safe end  
   
 # renders    
   def render_create_or_update( page, session )
@@ -44,11 +47,9 @@ class CartItem < ActiveRecord1
     page.after_create_or_update_cart_item tag, ( amount.zero? or session.cart.cart_items.empty? ), session
   end  
   alias_method :render_destroy, :render_create_or_update
-
-# notices
-  def set_update_notice( flash ); flash.now[ :notice ] = "Добавлен товар<br /> <em>#{name}</em>".html_safe end
-
-  def set_destroy_notice( flash ); flash.now[ :notice ] = "Удален товар <em>#{name}</em>".html_safe end
+  
+  private
+    def update_amount( i ); update_attribute :amount, amount + i end     
     
 end
 

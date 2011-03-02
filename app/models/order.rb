@@ -57,6 +57,9 @@ class Order < ActiveRecord1
   
   end
 
+# notices
+  def set_destroy_notice( flash ); flash.now[ :notice ] = "#{class_name_rus_cap} № #{id} успешно удалён." end
+
 # renders
   def render_destroy( page, session )
     super
@@ -64,8 +67,5 @@ class Order < ActiveRecord1
   end 
 
   def updated_at_or_link_to_close( page ); closed? ? page.date_time_rus( updated_at ) : page.link_to_close( self ) end
-
-# notices
-  def set_destroy_notice( flash ); flash.now[ :notice ] = "#{class_name_rus_cap} № #{id} успешно удалён." end
        
 end

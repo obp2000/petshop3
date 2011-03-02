@@ -66,6 +66,11 @@ class ForumPost < ActiveRecord1
 
   def destroy_object; full_set.tap { |full_set| full_set.each { |forum_post| forum_post.delete } } end
 
+# notices
+  def set_create_notice( flash ); flash.now[ :notice ] = parent_id.zero? ? "Новая тема создана" : "Сообщение отправлено" end
+
+  def set_destroy_notice( flash ); flash.now[ :notice ] = "Ветвь сообщений удалена" end
+
 # links
   def link_to_reply_to( page )
     page.link_to_remote2 [ reply_image ], reply_text, page.send( "reply_#{to_underscore}_path", self ), :id => "link_to_reply"  
@@ -83,10 +88,5 @@ class ForumPost < ActiveRecord1
     page.create_forum_post [ ( parent_id.zero? ? "top"  : "after" ), ( parent_id.zero? ? self.class.name.tableize : parent_tag ),
             { :partial => to_underscore, :object => self } ], [ :post, :new_forum_post ]    
   end
-
-# notices
-  def set_create_notice( flash ); flash.now[ :notice ] = parent_id.zero? ? "Новая тема создана" : "Сообщение отправлено" end
-
-  def set_destroy_notice( flash ); flash.now[ :notice ] = "Ветвь сообщений удалена" end
 
 end

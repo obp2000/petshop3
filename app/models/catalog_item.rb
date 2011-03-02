@@ -11,10 +11,6 @@ class CatalogItem < Item
   self.submit_with_options = [ "image_submit_tag", "search_32.png", { :title => "Поиск #{class_name_rus}а" } ]
   self.index_render_block = lambda { render request.xhr? ? Index_template_hash : { :partial => "index", :layout => "application" } }
   self.paginate_options = { :per_page => 8 }
-  self.attach_js = [ "attach_yoxview", "attach_shadowOn" ] 
-
-#  PER_PAGE = 8
-#  SEARCH_PER_PAGE = 8
 
   belongs_to :category
 
@@ -24,6 +20,8 @@ class CatalogItem < Item
   scope :group_by_category, group( :category_id )
 
   class << self
+    
+    attr_accessor_with_default( :attach_js ) { superclass.attach_js << "attach_shadowOn" }  
 
 # actions
     def search_results( params, flash )

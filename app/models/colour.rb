@@ -10,7 +10,7 @@ class Colour < ItemAttribute
   self.change_image = "kcoloredit.png"
   self.index_text = "Цвета"
   self.paginate_options = { :per_page => 10 }
-  self.attach_js = [ "attach_yoxview", "attach_mColorPicker" ]   
+  self.attach_js = [ "attach_mColorPicker" ]   
 
   class_inheritable_accessor :add_html_code_to_colour_image, :add_html_code_to_colour_js_string
     
@@ -31,6 +31,7 @@ class Colour < ItemAttribute
   scope :index_scope, order( :name )
 
   class << self
+     
 # links     
     def link_to_add_html_code_to( page )
       page.link_to_function page.image_tag( *add_html_code_to_colour_image ), add_html_code_to_colour_js_string

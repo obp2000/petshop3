@@ -44,7 +44,9 @@ class ProcessedOrder < Order
   class << self
 
 # actions    
-    def close_object( params, session, flash ); find( params[ :id ] ).tap { |processed_order| processed_order.close( flash ) } end
+    def close_object( params, session, flash )
+      find_current_object( params, session ).tap { |result| result.set_close_notice( flash ); result.close_object }
+    end
 
 # partials
     attr_accessor_with_default( :new_or_edit_partial ) { "new" }   
@@ -62,13 +64,23 @@ class ProcessedOrder < Order
     save && populate_order( self.cart ) && self.cart.clear_cart && set_create_notice( flash ) &&
             OrderNotice.deliver_order_notice( self )
   end     
+  
+  def close_object; self.status = ClosedOrder.status_eng; save( :validate => false ) end
 
   def populate_order( cart )
     cart.cart_items.each { |cart_item| order_items.build( cart_item.populate_order_item_hash ) }
     save
   end
-  
-  def close( flash ); self.status = ClosedOrder.status_eng; save( :validate => false ); close_notice( flash ) end
+
+# notices
+  def set_close_notice( flash ); flash.now[ :notice ] = "#{Order.class_name_rus_cap} № #{id} успешно закрыт." end
+
+  def set_create_notice( flash )
+    flash.now[ :notice ] =
+            "<h3>Спасибо за заказ!</h3><br />В ближайшее время наши менеджеры свяжутся с Вами.<br />
+            На адрес Вашей электронной почты отправлено информационное сообщение.<br />
+            В случае необходимости используйте <b>номер #{class_name_rus}а #{id}.</b>".html_safe
+  end
 
 # links
   def link_to_close( page )
@@ -85,18 +97,8 @@ class ProcessedOrder < Order
 
   def render_create_or_update( page, session ); page.create_processed_order fade_duration end 
 
-# notices
-  def close_notice( flash ); flash.now[ :notice ] = "#{Order.class_name_rus_cap} № #{id} успешно закрыт." end
-
-  def set_create_notice( flash )
-    flash.now[ :notice ] =
-            "<h3>Спасибо за заказ!</h3><br />В ближайшее время наши менеджеры свяжутся с Вами.<br />
-            На адрес Вашей электронной почты отправлено информационное сообщение.<br />
-            В случае необходимости используйте <b>номер #{class_name_rus}а #{id}.</b>".html_safe
-  end
-
   def change_close_tag_to_updated_tag( page ); [ :replace_html, updated_tag, page.date_time_rus( updated_at ) ] end
       
-  def closed?; false end      
+  def closed?; false end
       
 end

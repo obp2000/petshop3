@@ -69,7 +69,7 @@ end
 shared_examples_for "edit and new forms" do
 
   it "renders a form for edit object" do
-    view.should_receive( :link_to_add_to_item1 ).with( @object )    
+    view.should_receive( :link_to_add_to_item ).with( @object )    
     render :partial => "#{@object.class.name.tableize}/#{@object.class.name.underscore}",
             :locals => { @object.class.name.underscore.to_sym => @object }
     rendered.should have_selector( "form", :method => "post", :action => send( "#{@object.class.name.underscore}_path", @object ) ) do |form|

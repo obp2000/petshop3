@@ -1,5 +1,5 @@
 .ui-widget-content{ :id => objects.dom_id }
-  = link_to_close_window1 objects.first.class
+  = link_to_close_window objects.first.class
   = will_paginate objects rescue nil
   = render :partial => objects.first.class.new_partial, :object => objects.first.class.new1 rescue nil
   = render objects unless objects.first.new_record? rescue nil  

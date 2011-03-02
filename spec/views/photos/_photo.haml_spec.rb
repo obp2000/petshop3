@@ -8,7 +8,7 @@ describe "photos/_photo" do
             photo_path( @object ), :remote => true, :method => :delete )
     view.stub( :link_to_show ).with( @object ).and_return( link_to image_tag( @object.photo.thumb.url ),
             @object.photo_url )
-    view.should_receive( :link_to_add_to_item1 ).with( @object )
+    view.should_receive( :link_to_add_to_item ).with( @object )
     render :partial => "photos/photo", :locals => { :photo => @object }
     rendered.should have_selector( "a", :href => @object.photo_url ) do |a|
       a.should have_selector( "img", :src => "/images/" + @object.photo.thumb.url )

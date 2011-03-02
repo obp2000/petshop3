@@ -12,7 +12,6 @@ class Photo < ItemAttribute
   self.insert_attr = "photo"
   self.create_render_block = lambda { responds_to_parent { render Create_or_update_template_hash } }
   self.paginate_options = { :per_page => 5  }
-  self.attach_js = [ "attach_yoxview" ] 
 
   class_inheritable_accessor :new_partial
   self.new_partial = "upload_photo"  

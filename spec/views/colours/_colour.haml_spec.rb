@@ -10,7 +10,7 @@ describe "colours/_colour" do
   it_should_behave_like "edit and new forms"    
   
   it "renders a form for edit colour" do
-    view.should_receive( :link_to_add_to_item1 ).with( @object )      
+    view.should_receive( :link_to_add_to_item ).with( @object )      
     render :partial => "colours/colour", :locals => { :colour => @object }
     rendered.should have_selector("form", :method => "post", :action => colour_path(@object)) do |form|
       form.should have_text_field( @object, "html_code" )               

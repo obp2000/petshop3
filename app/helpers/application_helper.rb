@@ -17,11 +17,7 @@ module ApplicationHelper
 
   def attach_js( js ); delay( DURATION + 0.2 ) { call( js ) } end
 
-  def attach_chain( jses )
-    delay( DURATION + 0.2 ) do
-      jses.each { |js| call js if js }
-    end
-  end
+  def attach_chain( jses ); delay( DURATION + 0.2 ) { jses.each { |js| call js if js } } end
 
   def fade_appear( fade, appear ); fade_with_duration fade; appear_with_duration appear end
 
@@ -56,7 +52,7 @@ module ApplicationHelper
 
   def link_to_category( category, season_class ); category.link_to_category( self, season_class.name.tableize ) end
 
-  def link_to_close_window1( class_const )
+  def link_to_close_window( class_const )
     link_to_function( image_tag *class_const.close_window_image ) { |page| class_const.close_window( page ) }
   end
 
@@ -115,13 +111,13 @@ end
 
 class Array
 
+  def paginate_objects( params ); paginate first.class.paginate_hash( params ) end 
+
   def render_destroy( page, session ); each { |object| object.render_destroy( page, session ) }; page.show_notice end   
   
   def render_index( page ); first.class.render_index( page, self ) rescue nil; page.show_notice end
-  
-  def paginate_objects( params ); paginate first.class.paginate_hash( params ) end
     
-  def dom_id; first.class.name.tableize end
+  def dom_id; first.class.name.tableize end     
   
 end
 
