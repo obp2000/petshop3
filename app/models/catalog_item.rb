@@ -17,7 +17,7 @@ class CatalogItem < Item
   scope :ordered_by_id, order( :id )
   scope :with_category, lambda { |params| where( :category_id => params[ :category_id ] ) if params[ :category_id ] }
   scope :index_scope, lambda { |params| with_category( params ).ordered_by_id }
-  scope :group_by_category, group( :category_id )
+  scope :group_by_category, group( :category_id, :id )
 
   class << self
     
