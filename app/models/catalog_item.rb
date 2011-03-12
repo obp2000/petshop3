@@ -4,15 +4,19 @@ class CatalogItem < Item
   class_inheritable_accessor :season_icon, :season_name
   self.season_icon = "amor.png"
   self.season_name = "Все сезоны"
-  self.index_partial = "catalog_items/index"
-  self.show_partial = "catalog_items/show"    
+  
   self.index_text = "Назад в магазин"    
-  self.appear_tag = "details"    
   self.submit_with_options = [ "image_submit_tag", "search_32.png", { :title => "Поиск #{class_name_rus}а" } ]
-  self.index_render_block = lambda { render request.xhr? ? Index_template_hash : { :partial => "index", :layout => "application" } }
+  self.index_render_block =
+    lambda { render request.xhr? ? Index_template_hash : { :partial => "index", :layout => "application" } }
   self.paginate_options = { :per_page => 8 }
-
-  belongs_to :category
+  self.js_for_show = []
+  
+  cattr_accessor :row_partial, :partial_path
+  self.row_partial = name.underscore  
+  self.partial_path = name.tableize
+  
+  self.thumb_path = SharedPath
 
   scope :ordered_by_id, order( :id )
   scope :with_category, lambda { |params| where( :category_id => params[ :category_id ] ) if params[ :category_id ] }
@@ -21,7 +25,11 @@ class CatalogItem < Item
 
   class << self
     
-    attr_accessor_with_default( :attach_js ) { superclass.attach_js << "attach_shadowOn" }  
+    attr_accessor_with_default( :js_for_index ) { superclass.js_for_index << "attach_shadowOn" }
+    
+    def back( page ); page.fade_appear( show_tag, name.tableize ) end     
+
+    def render_show( page ); super; page.fade_appear name.tableize, show_tag end
 
 # actions
     def search_results( params, flash )
@@ -33,7 +41,7 @@ class CatalogItem < Item
     def link_to_index_local( page ); page.link_to index_text, self end
 
 # tags and partials
-    attr_accessor_with_default( :fade_tag ) { name.tableize }
+    attr_accessor_with_default( :show_tag ) { "details" }
 
 # notices
     def not_found_notice( params, flash )
@@ -49,6 +57,8 @@ class CatalogItem < Item
     end
 
   end
+
+#  attr_accessor_with_default( :edit_tag ) { self.class.name.underscore }
 
 #ts
   define_index do

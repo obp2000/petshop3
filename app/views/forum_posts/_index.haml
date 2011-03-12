@@ -1,9 +1,11 @@
-%h2= index_page_title_for ForumPost
+%h2= index_page_title_for @objects
 %fieldset#forum.ui-widget-content
-  = link_to_new ForumPost
-  = ForumPost.no_forum_posts_text unless @objects.first
-  %div{ :id => @objects.dom_id }= render @objects rescue nil  
-  = will_paginate @objects rescue nil
-#post
-#post_new
+  = link_to_new @objects.first.class
+  - if @objects.empty?
+    = @objects.no_forum_posts_text
+  - else
+    %div{ :id => @objects.dom_id }= render @objects
+    = will_paginate @objects
+%div{ :id => @objects.show_tag }
+%div{ :id => @objects.new_tag }
  

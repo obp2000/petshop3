@@ -1,7 +1,9 @@
 %span{ :id => dom_id( photo ) }
   %span.yoxview= link_to_show photo
-  = link_to_remove_from_item Photo
+  = link_to_remove_from_item photo
   %br
-  = fields_for "item[existing_photo_attributes][]", photo do |photo_form|
+  = fields_for "item[photos_attributes][0]", photo do |photo_form|
     = photo_form.text_area :comment, :rows => 2, :class => "photo_comment"
-  = check_box_tag "item[photo_ids][]", photo.id, true, :style => "visibility: hidden;" 
+    = photo_form.hidden_field :id
+
+ 

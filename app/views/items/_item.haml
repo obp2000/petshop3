@@ -1,7 +1,7 @@
 %tr{ :id => dom_id( item ), :onclick => "$.get('#{edit_item_path(item)}')" }
   %td= item.name
-  - [ "size", "colour" ].each do |attr|
-    %td= render :partial => "shared/#{attr}", :collection => item.send( attr.tableize ) rescue nil      
-  %td= h item.category.name rescue nil
+  %td= render_sizes_of item
+  %td= render_colours_of item 
+  %td= item.category.name rescue nil
   %td.align_right= roubles item.price
   %td= link_to_delete item

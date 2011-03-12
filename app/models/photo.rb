@@ -12,21 +12,26 @@ class Photo < ItemAttribute
   self.insert_attr = "photo"
   self.create_render_block = lambda { responds_to_parent { render Create_or_update_template_hash } }
   self.paginate_options = { :per_page => 5  }
-
-  class_inheritable_accessor :new_partial
-  self.new_partial = "upload_photo"  
+  self.js_for_add_to_item = self.js_for_create_or_update = [ "attach_mColorPicker" ]
+  self.partial_for_attr_with_link_to_remove = "photo"  
   
-#  validates_integrity_of( :photo )
-#  validates_processing_of( :photo )
-#  validates_presence_of :photo_url 
+  class_inheritable_accessor :upload_frame
+  self.upload_frame = "upload_frame"
+
   validate :must_have_photo
   
   def must_have_photo; errors.add :base, "Не выбрана #{class_name_rus} для загрузки" unless photo_url end
  
   scope :index_scope, where( :item_id => nil ).order( :id ) 
 
+  class << self
+    attr_accessor_with_default( :new_partial ) { "upload_photo" }
+  end
+
 # links
-  def link_to_show( page, comment = "" ); page.link_to page.image_tag( photo.thumb.url ) + comment, photo_url rescue nil end
+  def link_to_show( page, comment = "" )
+    page.link_to page.image_tag( photo.thumb.url ) + comment, photo_url rescue nil
+  end
 
   def link_to_show_with_comment( page ); link_to_show page, comment end
   

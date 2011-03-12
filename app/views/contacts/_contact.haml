@@ -1,18 +1,10 @@
 = form_for contact, :remote => true do |f|
   = f.error_messages
-  %div
-    = f.label( :name, Contact.name_rus.colon )
-    = f.text_field :name
-  %div
-    = f.label( :email, Contact.email_rus.colon )
-    = f.text_field :email
-  %div
-    = f.label( :phone, Contact.phone_rus.colon )
-    = f.text_field :phone
-  %div
-    = f.label( :icq, Contact.icq_rus.colon )
-    = f.text_field :icq    
-  %div
-    = f.label( :address, Contact.address_rus.colon )
-    = f.text_area :address, :rows => 3    
-    = submit_to Contact
+  - with_options :f => f do |in_form|
+    %div= in_form.render_name_field_of contact
+    %div= in_form.render_email_field_of contact
+    %div= in_form.render_phone_field_of contact     
+    %div= in_form.render_icq_field_of contact         
+    %div
+      = in_form.render_address_field_of contact         
+      = submit_to contact

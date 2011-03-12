@@ -48,6 +48,7 @@ class ApplicationController < ActionController::Base
   end
 
   def update
+    p params
     @object, success = controller_name.classify.constantize.update_object( params, session, flash )
     render_block_call( ( "edit" unless success ) )     
   end

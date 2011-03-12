@@ -13,4 +13,29 @@ module CatalogItemsHelper
 
   def radio_button_tag_for( attr, checked, visibility ); attr.radio_button_tag1( self, checked, visibility ) end
 
+##########
+
+  [ "sizes", "colours" ].each do |attrs|
+    define_method( :"render_#{attrs}_with_options_of" ) do |object|
+      render :partial => "#{object.partial_path}/attr", :collection => object.send( attrs ),
+        :locals => { :many => object.send( attrs ).many? }        
+    end    
+  end
+
+  [ "price", "season" ].each do |attr|
+    define_method( :"render_#{attr}_of" ) do |object|    
+      render "#{object.partial_path}/#{attr}", :object => object
+    end
+  end
+
+  def render_category_of( object, locals = {} )
+    render :partial => "#{object.partial_path}/category", :object => object.category,
+        :locals => locals unless object.category.blank?      
+  end
+
+  def render_photos_of( object, locals = {} )
+    render :partial => "#{object.partial_path}/photo", :collection => object.photos,
+        :locals => { :attrs => object.photos }.merge( locals ) unless object.photos.empty?     
+  end
+
 end

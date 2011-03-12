@@ -1,8 +1,2 @@
-= form_for size, :remote => true do |f|
-  = f.error_messages
-  = f.text_field :name
-  = submit_to Size
-  - unless size.new_record?
-    = link_to_delete size
-    = link_to_add_to_item size
-         
+= f.text_field :name
+        

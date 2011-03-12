@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 #  include AuthenticatedSystem
   
   def new
-#    @user = User.new
+    @user = User.new
     render :action => "new", :layout => false
   end
 

@@ -13,7 +13,7 @@ describe "items/_index" do
     view.should_receive( :index_page_title_for ).with( Item )
     view.should_receive( :will_paginate ).with( @items )    
 #    view.should_receive( :render ).with( :partial => "item", :collection => assigns[ :objects ] )
-#    view.should_receive(:render).with( :partial => assigns[ :object ].class.new_or_edit_partial )      
+#    view.should_receive(:render).with( :partial => assigns[ :object ].class.edit_partial )      
     render :partial => "items/index", :locals => { :objects => @items, :object => @item }
     rendered.should have_link_to_remote_get( items_path( :sort_by => "name", :index_text => "Название" ) )
     rendered.should have_link_to_remote_get( items_path( :sort_by => "sizes.first.name", :index_text => "Размер" ) )

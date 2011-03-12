@@ -1,0 +1,11 @@
+%div{ :id => cart.link_to_new_order_form }= link_to_new ProcessedOrder unless do_not_show( cart )
+%div
+  %b
+    = ITOGO.colon
+    %span{ :id => cart.total_items_dom_id }= cart.cart_items_sum_amount
+    = SHT
+    \/
+    %span{ :id => cart.total_sum_dom_id }= roubles cart.total
+    = RUB
+%div{ :id => cart.cart_items.dom_id }= render cart.cart_items
+%div{ :id => cart.link_to_clear_cart }= link_to_delete cart unless do_not_show( cart )

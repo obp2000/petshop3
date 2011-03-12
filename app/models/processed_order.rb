@@ -2,14 +2,14 @@
 class ProcessedOrder < Order
 
   self.class_name_rus_cap = "Заказ для исполнения"
-  self.replace = :replace_html
+#  self.replace = :replace_html
   self.new_image = [ "tick_16.png" ]
   self.new_text = "Оформить #{class_name_rus}"   
-  self.submit_with_options = [ "submit_tag", "Разместить #{class_name_rus}", { :onclick => "$(this).fadeOut().fadeIn()" } ]
+  self.submit_with_options = [ "submit_tag", "Разместить #{class_name_rus}",
+        { :onclick => "$(this).fadeOut().fadeIn()" } ]
   
   class_inheritable_accessor :close_image, :close_confirm, :captcha_text, :fade_duration,
-        :close_render_block, :update_amount
-
+        :close_render_block, :update_amount, :processed_orders_amount_dom_id
   self.close_image = [ "page_table_close.png", { :title => "Закрыть #{class_name_rus}" } ]
   self.close_confirm = "Закрыть #{class_name_rus}?"
   self.captcha_text = "Введите, пожалуйста, проверочный код:"
@@ -18,8 +18,9 @@ class ProcessedOrder < Order
   self.status_eng = "ProcessedOrder"
   self.status_rus_nav = " со статусом \"для исполнения\""
   self.status_rus = "для исп."
+  self.processed_orders_amount_dom_id = "processed_orders_amount"
 
-  attr_accessor_with_default( :new_or_edit_tag ) { "content" }
+  attr_accessor_with_default( :new_tag ) { ContentTag }
   attr_accessor_with_default( :change_to_closed ) { [ :replace_html, status_tag, ClosedOrder.status_rus ] }  
     
   validate :must_have_ship_to_first_name, :must_have_long_phone_number, :must_have_valid_email, :must_have_valid_captcha,
@@ -49,11 +50,11 @@ class ProcessedOrder < Order
     end
 
 # partials
-    attr_accessor_with_default( :new_or_edit_partial ) { "new" }   
-
     attr_accessor_with_default( :update_amount ) { [ :replace_html, "processed_orders_amount", count ] }
 
     attr_accessor_with_default( :new_page_title_for ) { "Оформление #{class_name_rus}а" }
+    
+    attr_accessor_with_default( :edit_partial ) { "form" }      
            
   end
 
@@ -61,8 +62,10 @@ class ProcessedOrder < Order
   def save_object( session, flash )
     self.captcha_validated = session[ :captcha_validated ]
     self.cart = session.cart
-    save && populate_order( self.cart ) && self.cart.clear_cart && set_create_notice( flash ) &&
-            OrderNotice.deliver_order_notice( self )
+    transaction do
+      save && populate_order( self.cart ) && self.cart.clear_cart && set_create_notice( flash ) &&
+              OrderNotice.deliver_order_notice( self )
+    end
   end     
   
   def close_object; self.status = ClosedOrder.status_eng; save( :validate => false ) end

@@ -2,9 +2,11 @@
 class Cart < ActiveRecord1
   has_many :cart_items, :dependent => :delete_all do
     def clear_cart; dup.tap { clear } end
+    def dom_id; name.tableize end
   end
   has_many :items, :through => :cart_items
 
+  delegate :sum_amount, :to => :cart_items, :prefix => true
   delegate :total, :to => :cart_items
 
   self.class_name_rus = "корзина"
@@ -15,17 +17,21 @@ class Cart < ActiveRecord1
      :onmouseover => "$(this).attr('src', 'images/basket_add_over.png')",
      :onmouseout => "$(this).attr('src', 'images/basket_add.png')",
      :onclick => "$(this).fadeOut().fadeIn()" } ]
-  self.index_partial = "carts/cart"
   self.delete_text = "Очистить корзину"
   self.nav_image = "basket.png"
   self.nav_text = "Корзина"
           
-  class_inheritable_accessor :cart, :cart_links
-  self.cart_links = [ "link_to_new_order_form", "link_to_clear_cart" ]
+  class_inheritable_accessor :cart, :link_to_new_order_form, :link_to_clear_cart,
+        :total_items_dom_id, :total_sum_dom_id, :content_tag
+  self.link_to_new_order_form = "link_to_new_order_form"
+  self.link_to_clear_cart = "link_to_clear_cart"
+  self.total_items_dom_id = "cart_total_items"
+  self.total_sum_dom_id = "cart_total_sum"
+  self.content_tag = "cart"
 
   attr_accessor_with_default( :delete_title ) { nil }
-  attr_accessor_with_default( :total_items ) { cart_items.sum( :amount ) }
-  attr_accessor_with_default( :cart_totals ) { [ [ "cart_total_items", total_items ], [ "cart_total_sum", total ] ] }    
+  attr_accessor_with_default( :cart_totals ) { [ [ Cart.total_items_dom_id, cart_items_sum_amount ],
+        [ Cart.total_sum_dom_id, total ] ] }    
 
   class << self
 
@@ -42,9 +48,8 @@ class Cart < ActiveRecord1
   end
 
 # actions
-  def destroy_object; clear_cart end
-
-  def clear_cart; cart_items.clear_cart end    
+  def clear_cart; cart_items.clear_cart end
+  alias_method :destroy_object, :clear_cart    
 
   def populate_order( order ); cart_items.each { |cart_item| order.populate_order_item( cart_item ) } end
 

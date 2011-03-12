@@ -9,7 +9,10 @@ class Size < ItemAttribute
   self.class_name_rus = "размер одежды"
   self.class_name_rus_cap = "Размер одежды"
   self.change_image = "pencil-ruler.png"
-  self.index_text = "Размеры"  
+  self.index_text = "Размеры"
+  
+  class_inheritable_accessor :style
+  self.style = "margin-left: -2px; margin-right: -1px"
 
   validate :must_have_name, :must_have_unique_name
 

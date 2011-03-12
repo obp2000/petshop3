@@ -4,10 +4,6 @@ class ForumPost < ActiveRecord1
 
   self.class_name_rus = "сообщение"  
   self.class_name_rus_cap = "Форум"
-  self.index_partial = "index"
-  self.replace = :replace_html
-  self.fade_tag = "post_new"
-  self.appear_tag = "post"  
   self.index_image = [ "agt_forum.png" ]  
   self.index_text = "Форум"
   self.new_image = [ "document-edit.png" ]
@@ -15,21 +11,18 @@ class ForumPost < ActiveRecord1
   self.submit_with_options = [ "submit_tag", "Отправить", { :onclick => "$(this).fadeOut().fadeIn()" } ]
   self.name_rus = "Автор"
   self.paginate_options = { :per_page => 15 }
-  self.insert_or_replace = "replace_index_tag"
 
-  class_inheritable_accessor :no_forum_posts_text, :subject_rus, :body_rus, :reply_image,
-          :reply_text, :reply_render_block
-  self.no_forum_posts_text = "В форуме пока ещё нет сообщений. Будьте первым!"
+  class_inheritable_accessor :subject_rus, :body_rus, :reply_image,
+          :reply_text, :reply_render_block, :link_to_reply_dom_id, :parent_tag
   self.subject_rus = "Тема"
   self.body_rus = "Сообщение"
   self.reply_image = new_image
   self.reply_text = "Ответить"
   self.reply_render_block = lambda { render :template => "shared/reply.rjs" }
+  self.link_to_reply_dom_id = "link_to_reply"
   
   attr_accessor_with_default( :show_text ) { subject }
   attr_accessor_with_default( :style ) { "margin-left: #{depth*20 + 30}px" }
-  attr_accessor_with_default( :new_or_edit_tag ) { "post_new" }
-  attr_accessor_with_default( :parent_tag ) { "#{to_underscore}_#{parent_id}" }
   
   validate :must_have_long_name, :must_have_long_subject, :must_have_long_body  
   
@@ -45,9 +38,15 @@ class ForumPost < ActiveRecord1
     def reply( params ); new :parent_id => params[ :id ] end
 
 # tags and partials    
-    attr_accessor_with_default( :index_page_title_for ) { class_name_rus_cap }         
-    attr_accessor_with_default( :index_tag ) { "content" }
-    attr_accessor_with_default( :new_or_edit_partial ) { "new" }         
+    attr_accessor_with_default( :index_page_title_for ) { class_name_rus_cap }
+
+    include ReplaceContent  
+
+    attr_accessor_with_default( :new_tag ) { "post_new" }
+    attr_accessor_with_default( :show_tag ) { "post" }
+    attr_accessor_with_default( :edit_partial ) { "form" }      
+
+    def render_show( page ); super; page.fade new_tag end
 
   end
 
@@ -73,20 +72,25 @@ class ForumPost < ActiveRecord1
 
 # links
   def link_to_reply_to( page )
-    page.link_to_remote2 [ reply_image ], reply_text, page.send( "reply_#{to_underscore}_path", self ), :id => "link_to_reply"  
+    page.link_to_remote2 [ reply_image ], reply_text, page.send( "reply_#{to_underscore}_path", self ),
+          :id => link_to_reply_dom_id  
   end
 
 # renders  
-  def render_new_or_edit( page ); super; page.fade :post end  
+ 
+  def render_new_or_edit( page ); super; page.fade show_tag end 
+
+  attr_accessor_with_default( :parent_tag ) { "#{to_underscore}_#{parent_id}" }
 
   def render_reply( page )
     self.class.superclass.instance_method( :render_new_or_edit ).bind( self )[ page ]    
-    page.fade :link_to_reply    
+    page.fade link_to_reply_dom_id    
   end 
   
   def render_create_or_update( page, session )
-    page.create_forum_post [ ( parent_id.zero? ? "top"  : "after" ), ( parent_id.zero? ? self.class.name.tableize : parent_tag ),
-            { :partial => to_underscore, :object => self } ], [ :post, :new_forum_post ]    
+    page.create_forum_post [ ( parent_id.zero? ? "top"  : "after" ),
+      ( parent_id.zero? ? self.class.name.tableize : parent_tag ), { :partial => to_underscore, :object => self } ],
+      [ show_tag, new_tag ]    
   end
 
 end

@@ -10,7 +10,7 @@ describe "catalog_items/_show" do
   end
   
   it "shows only one existing catalog item's details" do
-    view.should_receive( :link_to_back1 )            
+    view.should_receive( :link_to_back )            
     render
     rendered.should contain( @catalog_item.name )
     rendered.should contain( @catalog_item.price.to_s )

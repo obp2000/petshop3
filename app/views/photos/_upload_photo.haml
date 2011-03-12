@@ -1,5 +1,5 @@
-= form_for upload_photo, :html => { :multipart => true, :target => "upload_frame" } do |f|
+= form_for upload_photo, :html => { :multipart => true, :target => upload_photo.upload_frame } do |f|
   = f.error_messages
   = f.file_field :photo
   = f.hidden_field :photo_cache  
-  = submit_to Photo
+  = submit_to upload_photo

@@ -8,13 +8,11 @@
   %body
     #wrapper
       #header
-        = form_tag search_catalog_items_path, :remote => true, :id => "search_box" do
-          = text_field_tag :q, "", :size => 20
-          = submit_to CatalogItem
+        = render "layouts/search"
         = link_to_index ForumPost
         = link_to_show Contact.first
         %h3= ( "одежда для<br/>русских тоев" ).html_safe
         = image_tag "bestic.png"
         %h5= link_to DEMO, items_path        
-      #nav= render "layouts/nav" unless do_not_show_nav
-      #content= yield
+      #nav= render "layouts/nav", :cart => session.cart unless do_not_show_nav
+      %div{ :id => ContentTag }= yield

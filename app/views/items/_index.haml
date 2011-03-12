@@ -1,9 +1,9 @@
 %div
-  %h2= index_page_title_for Item
+  %h2= index_page_title_for @objects
   %table{ :id => @objects.dom_id }
     %caption= will_paginate @objects
     %tr
-      = render :partial => "header", :collection => Item.headers
-      %th{:scope => "col"}= link_to_new Item
+      = render_headers_of @objects
+      %th{:scope => "col"}= link_to_new @object.class
     = render @objects
-  #item_content= render @object.new_or_edit_partial
+  %div{ :id => @object.new_tag }= render @object.new_partial

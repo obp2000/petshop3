@@ -1,8 +1,8 @@
 %tr{ :id => dom_id( order ), :onclick => "$.get('#{order_path(order)}')" }
   %td= order.id
-  %td{ :id => "order_status_#{order.id}" }= order.class.status_rus
+  %td{ :id => order.status_tag }= order.status_rus
   %td.align_right= roubles order.total
-  %td.align_right= order.items.size
+  %td.align_right= order.order_items_sum_amount
   %td.align_right= date_time_rus order.created_at
-  %td.align_right{ :id => "order_updated_#{order.id}" }= updated_at_or_link_to_close order
+  %td.align_right{ :id => order.updated_tag }= closed_at_or_link_to_close order
   %td= link_to_delete order

@@ -1,11 +1,5 @@
-= form_for colour, :remote => true do |f|
-  = f.error_messages
-  = f.text_field :name
-  = f.text_field :html_code
-  = link_to_add_html_code_to Colour
-  = content_tag :input, "", :type => "color", :hex => true, :value => "#ffffff"
-  = submit_to Colour
-  - unless colour.new_record?
-    = render "shared/colour", :colour => colour 
-    = link_to_delete colour
-    = link_to_add_to_item colour
+= f.text_field :name
+= f.text_field :html_code
+= link_to_add_html_code_to attr.class
+= content_tag :input, "", :type => "color", :hex => true, :value => "#ffffff"
+= render "shared/colour", :colour => attr unless attr.new_record?

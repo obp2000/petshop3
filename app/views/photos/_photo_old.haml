@@ -1,0 +1,7 @@
+= form_for photo, :remote => true do |f|
+  = f.error_messages
+  %span.yoxview= link_to_show photo
+  = link_to_delete photo
+  = f.text_area :comment, :rows => 2, :class => "photo_comment" 
+  = submit_to photo
+  = link_to_add_to_item photo          

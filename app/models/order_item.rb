@@ -8,8 +8,8 @@ class OrderItem < ActiveRecord1
   delegate :name, :to => :item 
   
   self.class_name_rus = "товар"
-  self.class_name_rus_cap = "Товар"    
+  self.class_name_rus_cap = "Товар"
 
   attr_accessor_with_default( :order_item_sum ) { price * amount }
-  
+
 end

@@ -1,7 +1,7 @@
 .ui-widget-content{ :id => dom_id( cart_item ) }
   = link_to_show cart_item.catalog_item
-  - [ "size", "colour" ].each do |attr|
-    = render "shared/#{attr}", :"#{attr}" => cart_item.send( attr ) rescue nil
+  = render_size_of cart_item
+  = render_colour_of cart_item  
   %p
     = "#{roubles cart_item.price} #{RUB} / #{cart_item.amount} #{SHT}"
     = link_to_delete cart_item unless do_not_show( session.cart )

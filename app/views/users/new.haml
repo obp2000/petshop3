@@ -1,28 +1,12 @@
 %h3 Новый администратор
 = form_for @user, :url => users_path do |f|
   = error_messages_for :user
-  %p
-    = f.label( :login, User.login_rus )
-    %br
-    = f.text_field :login
-  %p
-    = f.label( :email, User.email_rus )
-    %br= f.text_field :email
-  %p
-    = f.label( :last_name, User.last_name_rus )
-    %br
-    = f.text_field :last_name
-  %p
-    = f.label( :first_name, User.first_name_rus )
-    %br
-    = f.text_field :first_name
-  %p
-    = f.label( :password, User.password_rus )
-    %br
-    = f.password_field :password
-  %p
-    = f.label( :password_confirmation, User.password_confirmation_rus )
-    %br
-    = f.password_field :password_confirmation
-  %p= submit_tag User.submit_text
+  - with_options :f => f do |in_form|
+    %p= in_form.render_login_field_of @user    
+    %p= in_form.render_email_field_of @user      
+    %p= in_form.render_last_name_field_of @user     
+    %p= in_form.render_first_name_field_of @user    
+    %p= in_form.render_password_field_of @user
+    %p= in_form.render_password_confirmation_field_of @user  
+  %p= submit_tag @user.submit_text
   

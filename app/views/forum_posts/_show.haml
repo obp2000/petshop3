@@ -1,9 +1,5 @@
 %fieldset.ui-widget-content  
-  %b= ForumPost.subject_rus.colon
-  = h @object.subject
-  %b= ForumPost.name_rus.colon
-  = h @object.name
-  %p
-    %b= ForumPost.body_rus.colon 
-    = h @object.body
+  = render_subject_of @object
+  = render_name_of @object  
+  %p= render_body_of @object
   %p= link_to_reply_to @object

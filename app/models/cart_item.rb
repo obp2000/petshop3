@@ -10,8 +10,6 @@ class CartItem < ActiveRecord1
   
   self.class_name_rus = "товар"
   self.class_name_rus_cap = "Товар"
-  self.index_partial = "carts/cart"
-  self.create_or_update_partial = "cart_items/cart_item"     
   
   attr_accessor_with_default( :create_or_update_tag ) { tag }
   
@@ -22,6 +20,8 @@ class CartItem < ActiveRecord1
       where( params.conditions_hash( session ) ).first ||
               create( params.conditions_hash( session ).merge :amount => 0 )
     end
+
+    attr_accessor_with_default( :edit_partial ) { "#{partial_path}/#{row_partial}" }  
 
   end
 
@@ -45,7 +45,7 @@ class CartItem < ActiveRecord1
   def render_create_or_update( page, session )
     super
     page.after_create_or_update_cart_item tag, ( amount.zero? or session.cart.cart_items.empty? ), session
-  end  
+  end
   alias_method :render_destroy, :render_create_or_update
   
   private

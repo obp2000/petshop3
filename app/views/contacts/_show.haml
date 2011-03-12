@@ -1,21 +1,11 @@
-%h2= show_page_title_for Contact
+%h2= show_page_title_for @object
 %dl.ui-widget-content
-  %dd
-    = image_tag Contact.name_image
-    = @object.name
+  %dd= render_name_of @object
   %br
-  %dd
-    = image_tag Contact.email_image
-    = mail_to @object.email, nil, :subject => Contact.email_subject
+  %dd= render_email_of @object
   %br
-  %dd
-    = image_tag Contact.phone_image
-    = @object.phone
+  %dd= render_phone_of @object
   %br
-  %dd
-    = image_tag Contact.icq_image
-    = @object.icq
+  %dd= render_icq_of @object
   %br
-  %dd
-    = image_tag Contact.address_image
-    = @object.address
+  %dd= render_address_of @object

@@ -3,9 +3,10 @@ class Order < ActiveRecord1
   attr_protected :id, :status, :updated_at, :created_at
   attr_accessor :captcha_validated, :cart
 
-  has_many :order_items 
+  has_many :order_items
   has_many :items, :through => :order_items
 
+  delegate :sum_amount, :to => :order_items, :prefix => true
   delegate :total, :to => :order_items
 
   set_inheritance_column "status"
@@ -13,11 +14,7 @@ class Order < ActiveRecord1
   self.class_name_rus = "заказ"  
   self.class_name_rus_cap = "Заказ"
   self.updated_at_rus = "Закрыт"
-  self.index_partial = "orders/index"
-  self.fade_tag = "item_content"
-  self.appear_tag = "order_details"
   self.paginate_options = { :per_page => 14 }
-  self.insert_or_replace = "replace_index_tag"    
 
   class_inheritable_accessor :id_rus, :status_header_rus, :total_rus, :count_rus, :email_rus, :phone_number_rus,
     :ship_to_first_name_rus, :ship_to_city_rus, :ship_to_address_rus, :comments_rus, :details_title,
@@ -39,6 +36,10 @@ class Order < ActiveRecord1
   self.status_rus = ""
   self.blank = ""
 
+  cattr_accessor :row_partial, :partial_path
+  self.row_partial = name.underscore  
+  self.partial_path = name.tableize
+
   attr_accessor_with_default( :status_tag ) { "order_status_#{id}" }
   attr_accessor_with_default( :updated_tag ) { "order_updated_#{id}" }
   attr_accessor_with_default( :close_tag ) { "close_order_#{id}" }
@@ -47,13 +48,17 @@ class Order < ActiveRecord1
 
   class << self
 # tags
-    attr_accessor_with_default( :index_tag ) { "content" }       
+    include ReplaceContent      
     
     def index_page_title_for( params ); "Список #{class_name_rus}ов" + params[ :controller ].classify.constantize.status_rus_nav end
   
     def headers
       [ "id_rus", "status_header_rus", "total_rus", "count_rus", "created_at_rus", "updated_at_rus", "blank" ]
     end
+
+#tags and partials
+    attr_accessor_with_default( :show_tag ) { "order_details" }
+#    attr_accessor_with_default( :partial_path ) { "orders" }    
   
   end
 
@@ -66,6 +71,6 @@ class Order < ActiveRecord1
     page.update_processed_orders_amount ProcessedOrder.update_amount
   end 
 
-  def updated_at_or_link_to_close( page ); closed? ? page.date_time_rus( updated_at ) : page.link_to_close( self ) end
+  def closed_at_or_link_to_close( page ); closed? ? page.date_time_rus( updated_at ) : page.link_to_close( self ) end
        
 end

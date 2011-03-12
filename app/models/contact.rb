@@ -3,8 +3,6 @@ class Contact < ActiveRecord1
 
   self.class_name_rus = "контакт"
   self.class_name_rus_cap = "Контакт"
-  self.fade_tag = "content"
-  self.appear_tag = "content"
   self.change_text = "Изменить контакты"  
 
   class_inheritable_accessor :name_rus, :name_image, :email_rus, :email_image, :phone_rus, :phone_image,
@@ -33,9 +31,14 @@ class Contact < ActiveRecord1
 
   class << self
 
-    attr_accessor_with_default( :show_page_title_for ) { class_name_rus_cap.pluralize }       
-    attr_accessor_with_default( :new1 ) { }         
+    include InsertContent
 
+    attr_accessor_with_default( :show_page_title_for ) { class_name_rus_cap.pluralize }       
+    attr_accessor_with_default( :new1 ) { }
+    attr_accessor_with_default( :show_tag ) { ContentTag }
+    attr_accessor_with_default( :index_partial ) { "shared/index" }
+    attr_accessor_with_default( :edit_partial ) { row_partial }    
+  
   end
 
 # notices

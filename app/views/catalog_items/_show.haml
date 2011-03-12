@@ -1,19 +1,16 @@
 %h2
-  = link_to_back1 @object.class
+  = link_to_back @object.class
   = @object.name
-.ui-widget-content  
-  = form_for @object, :url => cart_item_path( @object ), :remote => true do 
-    %b Цена:
-    = roubles( @object.price ) + RUB
-    %b= Category.class_name_rus_cap.colon
-    = @object.category.name rescue nil
-    %b= SEASON.colon
-    = @object.type.constantize.season_name
-    = submit_to Cart  
-    %br
-    - [ "size", "colour" ].each do |attr|
-      %b= attr.capitalize.constantize.class_name_rus_cap.pluralize.colon
-      = render "catalog_items/attrs", :attrs => @object.send( attr.tableize )          
-    = @object.blurb
-    .photos= render :partial => "catalog_items/photo", :collection => @object.photos    
-    .clear
+= form_for @object, :url => cart_item_path( @object ), :remote => true, :html => { :class => "ui-widget-content" } do 
+  = render_price_of @object
+  = render_category_of @object
+  = render_season_of @object    
+  = submit_to session.cart  
+  %br
+  %b= @object.sizes.class_name_rus_cap.pluralize.colon      
+  = render_sizes_with_options_of @object
+  %b= @object.colours.class_name_rus_cap.pluralize.colon       
+  = render_colours_with_options_of @object 
+  = @object.blurb
+  = render_photos_of @object    
+  .clear

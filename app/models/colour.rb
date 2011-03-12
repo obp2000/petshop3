@@ -10,12 +10,12 @@ class Colour < ItemAttribute
   self.change_image = "kcoloredit.png"
   self.index_text = "Цвета"
   self.paginate_options = { :per_page => 10 }
-  self.attach_js = [ "attach_mColorPicker" ]   
+  self.js_for_index = self.js_for_new_or_edit = self.js_for_create_or_update = [ "attach_mColorPicker" ]   
 
-  class_inheritable_accessor :add_html_code_to_colour_image, :add_html_code_to_colour_js_string
-    
+  class_inheritable_accessor :add_html_code_to_colour_image, :add_html_code_to_colour_js_string, :style
   self.add_html_code_to_colour_image = [ "arrow-180.png", { :title => "Добавить в #{class_name_rus}" } ]
   self.add_html_code_to_colour_js_string = "$(this).prev('input').val( $(this).prev('input').val() + ' ' + $(this).next('input').val() )"  
+  self.style = "margin-left: -2px"
 
   validate :must_have_name, :must_have_unique_name, :must_have_html_code, :must_have_unique_html_code
   
