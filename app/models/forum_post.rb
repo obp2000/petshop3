@@ -89,7 +89,7 @@ class ForumPost < ActiveRecord1
   
   def render_create_or_update( page, session )
     page.create_forum_post [ ( parent_id.zero? ? "top"  : "after" ),
-      ( parent_id.zero? ? self.class.name.tableize : parent_tag ), { :partial => to_underscore, :object => self } ],
+      ( parent_id.zero? ? dom_id : parent_tag ), { :partial => to_underscore, :object => self } ],
       [ show_tag, new_tag ]    
   end
 

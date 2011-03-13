@@ -1,3 +1,4 @@
 %span{ :id => dom_id( category ) }
-  = f.hidden_field :category_id, :value => category.id
-  = category.name
+  = render_single category
+  =# f.hidden_field :category_id, :value => category.id
+  = hidden_field_tag category.hidden_field_name, category.id 

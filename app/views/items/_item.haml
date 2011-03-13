@@ -2,6 +2,6 @@
   %td= item.name
   %td= render_sizes_of item
   %td= render_colours_of item 
-  %td= item.category.name rescue nil
+  %td= render_category_of item
   %td.align_right= roubles item.price
   %td= link_to_delete item

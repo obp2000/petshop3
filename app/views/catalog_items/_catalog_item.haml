@@ -6,8 +6,8 @@
       %div
         = roubles( catalog_item.price ) + " " + RUB
         = submit_to session.cart
-    = render_sizes_choose_partial_of catalog_item
-    = render_colours_choose_partial_of catalog_item                      
+    %div{ :class => catalog_item.sizes.dom_id }= render_sizes_choose_partial_of catalog_item
+    %div{ :class => catalog_item.colours.dom_id }= render_colours_choose_partial_of catalog_item                      
   .blurb= catalog_item.blurb
 = draggable_element dom_id( catalog_item ), :revert => true
       

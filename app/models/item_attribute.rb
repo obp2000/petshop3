@@ -5,7 +5,7 @@ class ItemAttribute < ActiveRecord1
   
   class_inheritable_accessor :delete_from_item_title, :delete_from_item_js_string, :insert_attr,
     :change_image, :add_to_item_image, :attr_partial, :options_for_replace_new_tag, :js_for_add_to_item,
-    :partial_for_attr_with_link_to_remove, :attr_choose_partial, :hidden_field_index 
+    :partial_for_attr_with_link_to_remove, :attr_choose_partial, :hidden_field_index, :hidden_field_name 
   
   self.delete_from_item_title = "Удалить из #{Item.class_name_rus}а"
   self.delete_from_item_js_string =
@@ -48,6 +48,8 @@ class ItemAttribute < ActiveRecord1
     attr_accessor_with_default( :index_partial ) { "shared/index" }
     attr_accessor_with_default( :edit_partial ) { "shared/attr" }     
     attr_accessor_with_default( :hidden_field_index ) { name.underscore + "_ids" } 
+    attr_accessor_with_default( :hidden_field_name ) { "item[#{name.underscore}_ids][]" } 
+     
      
   end
   
@@ -60,7 +62,7 @@ class ItemAttribute < ActiveRecord1
   end   
   
   def add_to_item( page )
-    page.remove_and_insert [ :remove, tag ], [ :bottom, "form_#{self.class.name.tableize}",
+    page.remove_and_insert [ :remove, tag ], [ :bottom, "form_#{dom_id}",
             { :partial => "items/#{insert_attr}", :object => self } ]
     page.attach_chain( js_for_add_to_item )          
   end    

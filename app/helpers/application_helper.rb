@@ -60,7 +60,9 @@ module ApplicationHelper
 # links
   def link_to_index( class_const, params = nil ); class_const.link_to_index( self, params ) end    
 
-  def link_to_category( category, season_class ); category.link_to_category( self, season_class.name.tableize ) end
+  def link_to_category( category, season_class )
+    category.link_to_category( self, season_class.name.tableize )
+  end
 
   def link_to_close_window( class_const )
     link_to_function( image_tag *class_const.close_window_image ) { |page| class_const.close_window( page ) }
@@ -119,13 +121,12 @@ module ApplicationHelper
     
 ####################    
   def render_collection_of( objects, opts = nil )
-    render :partial => objects.first.instance_exec { "#{partial_path}/#{row_partial}" },
+    render :partial => objects.instance_exec { "#{partial_path}/#{row_partial}" },
           :collection => objects
   end
 
   def render_single( attr )
     render :partial => "#{SharedPath}/#{attr.row_partial}", :object => attr unless attr.blank?
-#    "wwwwwwwwww"    
   end
   
   def render_categories_of( season_class )
@@ -161,7 +162,7 @@ module ApplicationHelper
   end           
      
   def render_thumbs_of( object, locals = {} )
-    render :partial => "#{object.thumb_path}/photo", :collection => object.photos,
+    render :partial => "#{object.thumb_show_path}/photo", :collection => object.photos,
     :locals => { :attrs => object.photos }.merge( locals ) unless object.photos.empty?     
   end
 
@@ -195,7 +196,9 @@ class Array
     
   def new_partial; first.new_partial end
     
-  def edit_partial; first.edit_partial end    
+  def edit_partial; first.edit_partial end
+    
+  def row_partial; first.row_partial end      
     
   def headers; first.headers end
   

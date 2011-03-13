@@ -1,2 +1,2 @@
-= radio_button_tag_for attr, ( many ? false : true ), ( many ? "visible" : "hidden" )
+= radio_button_tag "#{attr.to_underscore}_id", attr.id, ( many ? false : true ), :style => "visibility: " + ( many ? "visible" : "hidden" )
 = render_single attr

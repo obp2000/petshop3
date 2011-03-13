@@ -9,7 +9,7 @@ class Item < ActiveRecord1
   belongs_to :category
   
   has_many :photos
-  accepts_nested_attributes_for :photos
+#  accepts_nested_attributes_for :photos
   
   has_many :cart_items
   has_many :carts, :through => :cart_items
@@ -32,10 +32,11 @@ class Item < ActiveRecord1
   self.season_rus = "Сезон"
   self.style = "margin-left: 10px;"
 
-  class_inheritable_accessor :thumb_path
-  self.thumb_path = name.tableize
+  class_inheritable_accessor :thumb_show_path
+  self.thumb_show_path = SharedPath
   
   attr_accessor_with_default( :create_or_update_tag ) { tag }
+  attr_accessor_with_default( :create_or_update_partial ) { row_partial }  
   attr_accessor_with_default( :deleted_notice ) { "#{class_name_rus_cap} удалён из каталога!" }
 
   validate :must_have_long_name, :must_have_valid_price, :must_have_category, :must_have_type
@@ -82,18 +83,18 @@ class Item < ActiveRecord1
   end
 
 # actions
-#  after_update :save_photos
-#  
-#  def save_photos; photos.each { |photo| photo.save } end
-#  
-#  def update_object( params ); params[ "item" ][ :existing_photo_attributes ] ||= {}; super end
-#  
-#  def existing_photo_attributes=(photo_attributes)
-#    photos.reject( &:new_record? ).each do |photo|
-#      attributes = photo_attributes[ photo.id.to_s ]
-#      attributes ? photo.attributes = attributes : photos.delete( photo )
-#    end
-#  end
+  after_update :save_photos
+  
+  def save_photos; photos.each { |photo| photo.save } end
+  
+  def update_object( params ); params[ "item" ][ :existing_photo_attributes ] ||= {}; super end
+  
+  def existing_photo_attributes=(photo_attributes)
+    photos.reject( &:new_record? ).each do |photo|
+      attributes = photo_attributes[ photo.id.to_s ]
+      attributes ? photo.attributes = attributes : photos.delete( photo )
+    end
+  end
 
   attr_accessor_with_default( :edit_tag ) { new_tag }
 #  attr_accessor_with_default( :season ) { type.classify.constantize.season_name }  

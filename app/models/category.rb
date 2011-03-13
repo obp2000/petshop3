@@ -10,7 +10,8 @@ class Category < ItemAttribute
   self.change_image = "color_line.png"
   self.index_text = "Вид одежды"
   self.attr_partial = "category"
-  self.attr_choose_partial = name.tableize  
+  self.attr_choose_partial = name.tableize
+  self.hidden_field_name = "item[category_id]"
  
   validate :must_have_name, :must_have_unique_name
 
@@ -18,8 +19,8 @@ class Category < ItemAttribute
 
 # JS
   def add_to_item( page )
-#    page.replace_html "form_#{self.class.name.tableize}", :partial => "items/#{"attr"}", :object => self
-    page.replace_html "form_categories", :partial => "items/category", :object => self
+    page.replace_html "form_#{dom_id}", :partial => "items/#{attr_partial}", :object => self
+#    page.replace_html "form_categories", :partial => "items/category", :object => self
   end
    
 end

@@ -24,7 +24,7 @@ end
 RSpec::Matchers.define :have_colour do |html_code|
   match do |response|
     extend Webrat::Matchers
-    response.should have_selector( "span[style*=#{html_code[1,6]}]" )  
+    response.should have_selector( "span[style*=#{html_code[1,6].html_safe}]" )  
   end
 end
 

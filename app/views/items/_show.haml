@@ -2,7 +2,7 @@
   %h3= @object.name
   = render_sizes_of @object
   = render_colours_of @object           
-  = @object.category.name unless @object.category.blank?
+  = render_category_of @object
   = @object.season.name
   %div= render_price_of @object  
   %p= @object.blurb

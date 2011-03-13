@@ -113,7 +113,10 @@ def valid_item_attributes1
               :photos => photos_proxy,
               :blurb => "New jacket",
               :created_at => Time.now,
-              :updated_at => Time.now }
+              :updated_at => Time.now,
+              :thumb_path => SharedPath,
+              :partial_path => "catalog_items"              
+              }
 end
 def valid_item_attributes2
               { :name => "Shirt",
@@ -198,19 +201,19 @@ def valid_category_attributes2
 end
 
 def valid_size_attributes
-  { :name => "XL"  }
+  { :name => "XL", :row_partial => "size"  }
 end
 
 def valid_size_attributes2
-  { :name => "L"  }
+  { :name => "L", :row_partial => "size"  }
 end
 
 def valid_colour_attributes
-  { :name => "Red", :html_code => "#FF0000" }
+  { :name => "Red", :html_code => "#FF0000", :row_partial => "colour"  }
 end
 
 def valid_colour_attributes2
-  { :name => "Green", :html_code => "#00FF00" }
+  { :name => "Green", :html_code => "#AAFF00", :row_partial => "colour"  }
 end
 
 def valid_photo_attributes

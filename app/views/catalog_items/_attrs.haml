@@ -1,3 +1,2 @@
-%div{ :class => object.send( attrs ).dom_id }
-  = send( "render_#{attrs}_with_options_of", object )
-  = render "catalog_items/any_attr", :any_attr => object.send( attrs ).first.class.new1 if object.send( attrs ).many?                    
+= send( "render_#{attrs}_with_options_of", object )
+= render "catalog_items/any_attr", :any_attr => object.send( attrs ).first.class.new1 if object.send( attrs ).many?                    

@@ -8,9 +8,9 @@
   = submit_to session.cart  
   %br
   %b= @object.sizes.class_name_rus_cap.pluralize.colon      
-  = render_sizes_with_options_of @object
+  = render_sizes_choose_partial_of @object
   %b= @object.colours.class_name_rus_cap.pluralize.colon       
-  = render_colours_with_options_of @object 
+  = render_colours_choose_partial_of @object
   = @object.blurb
   = render_photos_of @object    
   .clear

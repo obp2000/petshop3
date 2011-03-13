@@ -26,7 +26,8 @@
     :partial_path,
     :row_partial,
     :dom_id,
-    :headers
+    :headers,
+    :create_or_update_partial
     
   self.class_name_rus = ""
   self.class_name_rus_cap = ""  
@@ -52,7 +53,6 @@
   self.create_render_block = self.update_render_block = lambda { render Create_or_update_template_hash }
   self.destroy_render_block = lambda { render Destroy_template_hash }
   self.paginate_options = {}
-#  self.insert_or_replace = "insert_index_tag"
   self.js_for_index = [ "attach_yoxview" ] 
   self.js_for_show = []
   self.js_for_new_or_edit = []
@@ -62,6 +62,7 @@
   attr_accessor_with_default( :tag ) { "#{to_underscore}_#{id}" }
   attr_accessor_with_default( :edit_tag ) { "edit_#{to_underscore}_#{id}" }
   attr_accessor_with_default( :create_or_update_tag ) { edit_tag }
+  attr_accessor_with_default( :create_or_update_partial ) { edit_partial }
   attr_accessor_with_default( :single_path ) { [ "#{to_underscore}_path", self ] }      
   
   def must_have_name
@@ -140,7 +141,7 @@
     attr_accessor_with_default( :show_partial ) { "#{partial_path}/show" }     
       
 # JS
-    def close_window( page ); page.action :remove, name.tableize end  
+    def close_window( page ); page.action :remove, dom_id end  
 
     attr_accessor_with_default( :class_name_rus_cap_first ) { class_name_rus_cap.split.first }
 
@@ -160,7 +161,7 @@
   def set_update_notice( flash ); flash.now[ :notice ] = "#{class_name_rus_cap} удачно обновлён." end
   def set_destroy_notice( flash ); flash.now[ :notice ] = "#{class_name_rus_cap} удалён." end     
 
-# renders   
+# renders
   def render_new_or_edit( page )
     page.action replace, ( new_record? ? new_tag : edit_tag ),
           :partial => ( new_record? ? new_partial : edit_partial ), :object => self
@@ -169,7 +170,7 @@
 
   def render_create_or_update( page, session )
     page.render_create_or_update [ :remove, create_or_update_tag ],
-            [ :bottom, self.class.name.tableize, { :partial => edit_partial, :object => self } ]
+            [ :bottom, dom_id, { :partial => create_or_update_partial, :object => self } ]
     page.attach_chain( js_for_create_or_update )             
   end  
   
@@ -177,8 +178,8 @@
 
 # links
   def link_to_category( page, seasons )
-    page.link_to_remote2 [], name + " (#{send( seasons ).size})", page.send( "category_#{seasons}_path", self ),
-            :class => "category"
+    page.link_to_remote2 [], name + " (#{send( seasons ).size})",
+          page.send( "category_#{seasons}_path", self ), :class => "category"
   end
 
   def link_to_show( page ); ( page.link_to_remote2 show_image, show_text, self ) rescue deleted_notice end    
