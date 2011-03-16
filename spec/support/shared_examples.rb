@@ -1,11 +1,89 @@
-shared_examples_for "a template that renders the items/form partial" do
+shared_examples_for "catalog item" do
+  
+  it "renders one catalog item" do
+    @object.should_receive( :link_to_show ).and_return( link_to @object.name,
+            @object, :remote => true, :method => :get )
+    @photo.should_receive( :link_to_show_with_comment ).and_return( link_to image_tag(
+            @photo.photo.thumb.url ) + @photo.comment, @photo.photo_url )
+    view.should_receive( :draggable_element ).with( dom_id( @object ), :revert => true )
+    render
+    rendered.should have_selector( "a[href*=" + @photo.photo_url[0..-5] + "]" ) do |a|
+      a.should have_selector( "img[src*=" + @photo.photo.thumb.url + "]" )
+    end
+    rendered.should contain( @photo.comment )  
+    rendered.should have_selector( "form", :method => "post", :action => cart_item_path( @object ) ) do |form|
+      form.should have_link_to_remote_get( catalog_item_path( @object ) ) do |a|
+        a.should contain( @object.name  )      
+      end
+      form.should contain( @object.price.to_s )      
+      form.should have_image_input
+    end    
+  end
+
+  it_should_behave_like "sizes and colours of catalog item"  
+  
+end
+
+shared_examples_for "sizes and colours of catalog item" do
+
+  context "when catalog item has more then one size and colour" do
+    it "do renders 'any' size and color option" do
+      render
+      rendered.should contain( @object.sizes.first.name )
+      rendered.should have_selector( "input", :type => "radio", :value => @object.sizes.first.to_param )    
+      rendered.should contain( @object.sizes.second.name )
+      rendered.should have_selector( "input", :type => "radio", :value => @object.sizes.second.to_param )    
+      rendered.should have_colour( @object.colours.first.html_code )
+      rendered.should have_selector( "input", :type => "radio", :value => @object.colours.first.to_param )    
+      rendered.should have_colour( @object.colours.second.html_code )
+      rendered.should have_selector( "input", :type => "radio", :value => @object.colours.second.to_param )    
+      rendered.should contain( AnyAttr )     
+      rendered.should have_selector( "input", :type => "radio", :id => "size_id_", :checked => "checked" )
+      rendered.should have_selector( "input", :type => "radio", :id => "colour_id_", :checked => "checked" )      
+      rendered.should contain( @object.blurb )
+    end
+  end
+
+  context "when catalog item has only one size and only one colour" do
+    it "do not renders 'any' size and color option" do
+      @object.stub( :sizes ).and_return( [ sizes_proxy.first ] )
+      @object.stub( :colours ).and_return( [ colours_proxy.first ] )
+      @object.stub_chain( :sizes, :class_name_rus_cap ).and_return( "Размер" )
+      @object.stub_chain( :colours, :class_name_rus_cap ).and_return( "Цвет" )      
+      render      
+      rendered.should contain( @object.sizes.first.name )      
+      rendered.should have_selector( "input", :type => "radio", :value => @object.sizes.first.to_param,
+      :style => "visibility: hidden", :checked => "checked" ) 
+      rendered.should have_colour( @object.colours.first.html_code )
+      rendered.should have_selector( "input", :type => "radio", :value => @object.colours.first.to_param,
+      :style => "visibility: hidden", :checked => "checked" )       
+      rendered.should_not contain( AnyAttr )       
+    end
+  end   
+  
+end
+
+shared_examples_for "item" do
+  
+  it "renders item" do
+    view.should_receive( :link_to_delete ).with( @items.first ).and_return(
+          link_to "Test", @items.first, :remote => true, :method => :delete )     
+    render
+    rendered.should have_selector( "tr", :onclick => "$.get('#{edit_item_path( @items.first )}')" )
+    rendered.should contain(@items.first.name)
+    rendered.should contain(@items.first.category.name)
+    rendered.should contain( @items.first.sizes.first.name )
+    rendered.should have_colour( @items.first.colours.first.html_code )     
+    rendered.should contain(@items.first.price.to_s)
+    rendered.should have_selector( "a", :href => send( "#{@items.first.class.name.underscore}_path",
+          @items.first ), "data-method" => "delete" )    
+  end
+  
+end
+
+shared_examples_for "new or edit item form" do
   it "renders the items/form partial" do
-#    view.should_receive(:render).with( :partial => "category", :object => object.category )
-#    rendered.should contain( @item.category.name )
-#    view.should_receive(:render).with( :partial => "attr", :collection => object.sizes )
-#    view.should_receive(:render).with( :partial => "attr", :collection => object.colours )
-#    view.should_receive(:render).with( :partial => "photo", :collection => object.photos )      
-    render :partial => "items/form"
+    render
     rendered.should have_text_field( @item, "name" )
     rendered.should have_text_field( @item, "price" )    
     rendered.should have_link_to_remote_get( categories_path )    
@@ -21,9 +99,60 @@ shared_examples_for "a template that renders the items/form partial" do
     rendered.should contain( @item.created_at.strftime("%H:%M:%S") )        
     rendered.should contain( @item.updated_at.strftime("%d.%m.%y") )
     rendered.should contain( @item.updated_at.strftime("%H:%M:%S") )       
-    rendered.should have_selector( "input", :type => "image" )      
+    rendered.should have_selector( "input", :type => "image" )
+    
+    rendered.should contain( @category.name )
+    rendered.should have_selector( "input#item_category_id", :type => "hidden", :name => "item[category_id]",
+          :value => @category.to_param )
+
+    rendered.should =~ /#{@size.name}/
+    rendered.should have_item_hidden_field( @size )
+    rendered.should have_selector( "input#item_#{@size.class.name.underscore}_ids_", :type => "hidden",
+        :name => "item[#{@size.class.name.underscore}_ids][]", :value => "0" )
+        
+    rendered.should =~ /#{@colour.name}/
+    rendered.should have_item_hidden_field( @colour )
+    rendered.should have_selector( "input#item_#{@colour.class.name.underscore}_ids_", :type => "hidden",
+        :name => "item[#{@colour.class.name.underscore}_ids][]", :value => "0" )
+        
+    rendered.should have_selector( "a", :href => @photo.photo_url ) do |a|
+      a.should have_selector( "img", :src => "/images/" + @photo.photo.thumb.url )
+    end    
+    rendered.should have_selector( "textarea", :content => @photo.comment )
+    rendered.should have_item_checkbox( @photo )        
+        
   end
 end
+
+shared_examples_for "edit and new forms" do
+
+  it "renders a form for edit object" do
+    view.should_receive( :link_to_add_to_item ).with( @object )    
+    render "#{@object.class.name.tableize}/#{@object.class.name.underscore}",
+            @object.class.name.underscore.to_sym => @object
+    rendered.should have_selector( "form", :method => "post", :action => send( "#{@object.class.name.underscore}_path", @object ) ) do |form|
+      form.should have_text_field( @object, "name" )
+      form.should have_image_input         
+    end
+    rendered.should have_selector( "a", :href => send( "#{@object.class.name.underscore}_path", @object ),
+            "data-method" => "delete" )      
+  end
+
+  it "renders a form for a new object" do
+    @object = @object.as_new_record
+    render "#{@object.class.name.tableize}/#{@object.class.name.underscore}",
+            @object.class.name.underscore.to_sym => @object
+    rendered.should have_selector("form", :method => "post", :action => send( "#{@object.class.name.tableize}_path")) do |form|
+      form.should have_text_field( @object, "name" )
+      form.should have_image_input          
+    end
+  end
+
+end
+
+
+
+
 
 shared_examples_for "GET index" do
   it "assigns all objects as @objects, new object as @object and renders index template" do
@@ -64,32 +193,6 @@ shared_examples_for "when catalog item has one or some sizes" do
         end
         it_should_behave_like "new cart item with size_id == single size_id"         
       end
-end
-
-shared_examples_for "edit and new forms" do
-
-  it "renders a form for edit object" do
-    view.should_receive( :link_to_add_to_item ).with( @object )    
-    render :partial => "#{@object.class.name.tableize}/#{@object.class.name.underscore}",
-            :locals => { @object.class.name.underscore.to_sym => @object }
-    rendered.should have_selector( "form", :method => "post", :action => send( "#{@object.class.name.underscore}_path", @object ) ) do |form|
-      form.should have_text_field( @object, "name" )
-      form.should have_image_input         
-    end
-    rendered.should have_selector( "a", :href => send( "#{@object.class.name.underscore}_path", @object ),
-            "data-method" => "delete" )      
-  end
-
-  it "renders a form for a new object" do
-    @object = @object.as_new_record
-    render :partial => "#{@object.class.name.tableize}/#{@object.class.name.underscore}",
-            :locals => { @object.class.name.underscore.to_sym => @object }
-    rendered.should have_selector("form", :method => "post", :action => send( "#{@object.class.name.tableize}_path")) do |form|
-      form.should have_text_field( @object, "name" )
-      form.should have_image_input          
-    end
-  end
-
 end
 
 shared_examples_for "form for more then one" do

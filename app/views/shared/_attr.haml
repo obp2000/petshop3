@@ -1,6 +1,7 @@
 = form_for attr, :remote => true do |f|
   = f.error_messages
-  = render attr, :f => f  
+  = render "#{attr.partial_path}/#{attr.class.name.underscore}", :f => f, :attr => attr
+  =# render attr, :f => f, :attr => attr 
   = submit_to attr
   - unless attr.new_record?
     = link_to_delete attr

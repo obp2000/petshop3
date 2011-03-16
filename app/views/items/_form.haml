@@ -1,6 +1,6 @@
 = form_for @object, :remote => true, :html => { :class => "ui-widget-content" } do |f|
   = f.error_messages
-  - with_options :f => f do |in_form|
+  = with_options :f => f do |in_form|
     %p
       = in_form.render_name_field_of @object, :required => true     
       = in_form.render_price_field_of @object, :required => true
@@ -10,13 +10,13 @@
       = in_form.render_seasons_choose_partial_of @object, :required => true 
     %br
     %p
-      = in_form.render_sizes_choose_partial_of @object
-      = in_form.render_colours_choose_partial_of @object
+      = in_form.render_sizes_choose_partial_of @object, :required => false
+      = in_form.render_colours_choose_partial_of @object, :required => false
     %br
     %p
-      = in_form.render_blurb_field_of @object
+      = in_form.render_blurb_field_of @object, {}
     %p
-      = in_form.render_photos_choose_partial_of @object      
+      = in_form.render_photos_choose_partial_of @object, :required => false      
     = render_created_time_of @object
     = render_updated_time_of @object  
     = submit_to @object 

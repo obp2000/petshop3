@@ -127,7 +127,7 @@
 
     def link_to_season( page ); page.link_to_remote2 nil, "Всего (#{count})", self end      
       
-    def submit_to( page ); page.send( *submit_with_options ) end      
+#    def submit_to( page ); page.send( *submit_with_options ) end      
 
 # tags and partials
     attr_accessor_with_default( :new_tag ) { "new_#{name.underscore}" }

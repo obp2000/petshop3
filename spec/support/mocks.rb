@@ -1,6 +1,5 @@
 def items_proxy
-    [ mock_model( Item, valid_item_attributes1 ).as_null_object,
-      mock_model( Item, valid_item_attributes2 ).as_null_object ]               
+    [ mock_model( Item, valid_item_attributes3 ).as_null_object ]               
 end
 
 def catalog_items_proxy
@@ -9,15 +8,24 @@ end
 
 def summer_catalog_items_proxy
     summer_catalog_item = mock_model( SummerCatalogItem, valid_item_attributes1 ).as_null_object
+    summer_catalog_item.stub( :category ).and_return( categories_proxy.first )
     summer_catalog_item.stub( :type ).and_return( "SummerCatalogItem" )
     [ summer_catalog_item ]
 end
 
 def winter_catalog_items_proxy
     winter_catalog_item = mock_model( WinterCatalogItem, valid_item_attributes1 ).as_null_object
+    winter_catalog_item.stub( :category ).and_return( categories_proxy.second )    
     winter_catalog_item.stub( :type ).and_return( "WinterCatalogItem" )
     [ winter_catalog_item ]
 end
+
+def seasons_proxy
+    [ mock_model( Season, valid_season_attributes ).as_null_object,
+      mock_model( Season, valid_season_attributes2 ).as_null_object ]  
+end
+
+
 
 def forum_posts_proxy
       [ mock_model(ForumPost, valid_forum_post_attributes).as_null_object ]
@@ -58,14 +66,7 @@ end
 
 def photos_proxy
     photo = mock_model( Photo, valid_photo_attributes ).as_null_object
-#    thumb1 = "photo_of_jacket_small"
-#    url1 = "photo_of_jacket1.jpg"
-#    comment1 = "Photo of jacket"
-#    photo.stub( :photo_url ).and_return( url1 )
-#    photo.stub( :comment ).and_return( comment1 )    
     photo.stub_chain(:photo, :thumb, :url).and_return( "photo_of_jacket_small" )
-#    photo.stub( :link_to_show ).with( :page ).and_return( page.link_to( page.image_tag( thumb1 ), url1 ) )
-#    photo.stub( :link_to_show_with_comment ).with( :page ).and_return( page.link_to( page.image_tag( thumb1 ) + comment1, url1 ) )    
     [ photo ]
 end
 
@@ -115,7 +116,9 @@ def valid_item_attributes1
               :created_at => Time.now,
               :updated_at => Time.now,
               :thumb_path => SharedPath,
-              :partial_path => "catalog_items"              
+              :partial_path => "catalog_items",
+              :row_partial => "catalog_item",
+              :new_partial => "form"
               }
 end
 def valid_item_attributes2
@@ -132,6 +135,26 @@ def valid_item_attributes2
               :created_at => Time.now,
               :updated_at => Time.now }          
 end
+def valid_item_attributes3
+              { :name => "Jacket",
+              :price => 700,
+              :created_at => Time.now,
+              :updated_at => Time.now,
+              :category => categories_proxy.first,
+              :type => "SummerCatalogItem", 
+              :sizes => sizes_proxy,
+              :colours => colours_proxy,
+              :photos => photos_proxy,
+              :blurb => "New jacket",
+              :created_at => Time.now,
+              :updated_at => Time.now,
+              :thumb_path => SharedPath,
+              :partial_path => "items",
+              :row_partial => "item"
+              }
+end
+
+
 
 def valid_forum_post_attributes
               { :name => "Oleg",
@@ -167,7 +190,9 @@ def valid_order_attributes
               :ship_to_address => "Address1",
               :comments => "Comments1",
               :status => "ProcessedOrder",
-              :captcha_validated => true
+              :captcha_validated => true,
+              :partial_path => "orders",
+              :row_partial => "order"
   }  
 end
 
@@ -183,37 +208,53 @@ def valid_order_attributes1
               :created_at => Time.now,
               :updated_at => Time.now + 1,
               :items => items_proxy,
-              :order_items => order_items_proxy }
+              :order_items => order_items_proxy,
+              :partial_path => "orders",
+              :row_partial => "order"
+  }
 end              
 
 def valid_processed_order_attributes
    { :email => "obp2000@mail.ru",
-                            :phone_number => "123-45-67",
-                            :ship_to_first_name => "John" }
+     :phone_number => "123-45-67",
+     :ship_to_first_name => "John",
+  }
 end
 
 def valid_category_attributes
-  { :name => "Shirts" }
+  { :name => "Shirts", :row_partial => "category",
+    :hidden_field_name => "item[category_id]", :partial_path => "categories" }
 end
 
 def valid_category_attributes2
-  { :name => "Jackets" }
+  { :name => "Jackets", :row_partial => "category",
+    :hidden_field_name => "item[category_id]", :partial_path => "categories" }
+end
+
+def valid_season_attributes
+  { :name => "Весна/Лето" }
+end
+
+def valid_season_attributes2
+  { :name => "Осень/Зима" }
 end
 
 def valid_size_attributes
-  { :name => "XL", :row_partial => "size"  }
+  { :name => "XL", :row_partial => "size", :hidden_field_name => "item[size_ids][]", :partial_path => "sizes" }
 end
 
 def valid_size_attributes2
-  { :name => "L", :row_partial => "size"  }
+  { :name => "L", :row_partial => "size", :hidden_field_name => "item[size_ids][]", :partial_path => "sizes" }
 end
 
 def valid_colour_attributes
-  { :name => "Red", :html_code => "#FF0000", :row_partial => "colour"  }
+  { :name => "Red", :html_code => "#FF0000", :row_partial => "colour",
+      :hidden_field_name => "item[colour_ids][]", :partial_path => "colours"  }
 end
 
 def valid_colour_attributes2
-  { :name => "Green", :html_code => "#AAFF00", :row_partial => "colour"  }
+  { :name => "Green", :html_code => "#AAFF00", :row_partial => "colour",
+      :hidden_field_name => "item[colour_ids][]", :partial_path => "colours" }
 end
 
 def valid_photo_attributes
@@ -223,7 +264,11 @@ end
 def valid_carts_attributes
             { :cart_items => cart_items_proxy,
             :total_items => 1,
-            :total => 500 }
+            :total => 500,
+            :link_to_new_order_form => "link_to_new_order_form",
+            :total_items_dom_id => "cart_total_items",
+            :total_sum_dom_id => "cart_total_sum",
+            :link_to_clear_cart => "link_to_clear_cart" }
 end            
 
 def valid_cart_item_attributes
@@ -261,7 +306,13 @@ def valid_contact_attributes
             :phone => "123-45-67",
             :icq => "123-456-789",
             :address => "Moscow",
-            :photo => "photo1" }  
+            :photo => "photo1",
+            :name_image => "loginmanager.png",
+            :email_image => "mail_generic.png",
+            :phone_image => "kcall.png",  
+            :address_image => "kfm_home.png",
+            :icq_image => "icq_protocol.png"            
+            }  
 end
 
 def valid_user_attributes

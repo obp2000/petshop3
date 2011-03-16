@@ -1,10 +1,9 @@
 = form_for @object, :remote => true, :html => { :class => "ui-widget-content" } do |f|
   = f.error_messages
   = f.hidden_field :parent_id
-  - with_options :f => f do |in_form|
-    %p= in_form.render_name_field_of @object
+  = with_options :f => f do |in_form|
+    %p= in_form.render_name_field_of @object, {}
     %p= in_form.render_subject_field_of @object, :size => 100
     %p
-      = in_form.render_body_field_of @object
+      = in_form.render_body_field_of @object, {}
       = submit_to @object
-    

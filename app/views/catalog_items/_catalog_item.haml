@@ -1,4 +1,4 @@
-.ui-widget-content.catalog_item{ :id => dom_id( catalog_item ) }
+.ui-widget-content{ :id => dom_id( catalog_item ), :class => dom_class( catalog_item ) }
   .thumbs.yoxview= render_thumbs_of catalog_item    
   = form_for catalog_item, :url => cart_item_path( catalog_item ), :remote => true do   
     %h4
@@ -6,8 +6,8 @@
       %div
         = roubles( catalog_item.price ) + " " + RUB
         = submit_to session.cart
-    %div{ :class => catalog_item.sizes.dom_id }= render_sizes_choose_partial_of catalog_item
-    %div{ :class => catalog_item.colours.dom_id }= render_colours_choose_partial_of catalog_item                      
+    %div= render_sizes_choose_partial_of catalog_item
+    %div= render_colours_choose_partial_of catalog_item                      
   .blurb= catalog_item.blurb
 = draggable_element dom_id( catalog_item ), :revert => true
       

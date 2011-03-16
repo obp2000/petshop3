@@ -3,23 +3,21 @@ require 'spec_helper'
 describe "items/_item" do
 
   before do
-    @item = items_proxy.first
-    view.stub( :link_to_delete ).with( @item ).and_return( link_to "Test", @item, :remote => true, :method => :delete )       
+    @items = items_proxy
   end
   
   it "renders item" do
-#    view.should_receive( :render_attrs ).with( @item.sizes )
-#    view.should_receive( :render_attrs ).with( @item.colours )  
-#    view.should_receive( :link_to_delete ).with( @item )    
-    render :partial => "items/item", :locals => { :item => @item }
-    rendered.should have_selector( "tr", :onclick => "$.get('#{edit_item_path(@item)}')" )
-    rendered.should contain(@item.name)
-    rendered.should contain(@item.category.name)
-    rendered.should contain( @item.sizes.first.name )
-    rendered.should have_colour( @item.colours.first.html_code )     
-    rendered.should contain(@item.price.to_s)
-#    rendered.should have_link_to_remote_delete( item_path( @item ) )
-    rendered.should have_selector( "a", :href => send( "#{@item.class.name.underscore}_path", @item ), "data-method" => "delete" )    
+    view.should_receive( :link_to_delete ).with( @items.first ).and_return(
+          link_to "Test", @items.first, :remote => true, :method => :delete )     
+    render "items/item", :item => @items.first
+    rendered.should have_selector( "tr", :onclick => "$.get('#{edit_item_path( @items.first )}')" )
+    rendered.should contain(@items.first.name)
+    rendered.should contain(@items.first.category.name)
+    rendered.should contain( @items.first.sizes.first.name )
+    rendered.should have_colour( @items.first.colours.first.html_code )     
+    rendered.should contain(@items.first.price.to_s)
+    rendered.should have_selector( "a", :href => send( "#{@items.first.class.name.underscore}_path",
+          @items.first ), "data-method" => "delete" )    
   end
 
 end

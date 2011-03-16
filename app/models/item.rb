@@ -32,8 +32,8 @@ class Item < ActiveRecord1
   self.season_rus = "Сезон"
   self.style = "margin-left: 10px;"
 
-  class_inheritable_accessor :thumb_show_path
-  self.thumb_show_path = SharedPath
+#  class_inheritable_accessor :thumb_show_path
+#  self.thumb_show_path = SharedPath
   
   attr_accessor_with_default( :create_or_update_tag ) { tag }
   attr_accessor_with_default( :create_or_update_partial ) { row_partial }  
@@ -68,7 +68,6 @@ class Item < ActiveRecord1
     attr_accessor_with_default( :index_page_title_for ) { "Список #{class_name_rus}ов" }
     attr_accessor_with_default( :new_tag ) { "item_content" }
     attr_accessor_with_default( :show_tag ) { new_tag }
-#    attr_accessor_with_default( :partial_path ) { "attr" }   
     
     include ReplaceContent      
 

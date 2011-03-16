@@ -1,15 +1,15 @@
 %h2= new_page_title_for @object 
 = form_for @object, :remote => true do |f|
   = f.error_messages
-  - with_options :f => f do |in_form|
+  = with_options :f => f do |in_form|
     %fieldset.ui-widget-content
-      %div= in_form.render_email_field_of @object      
-      %div= in_form.render_phone_number_field_of @object
-      %div= in_form.render_ship_to_first_name_field_of @object
-      %div= in_form.render_ship_to_city_field_of @object
-      %div= in_form.render_ship_to_address_field_of @object                             
+      %div= in_form.render_email_field_of @object, {}      
+      %div= in_form.render_phone_number_field_of @object, {}
+      %div= in_form.render_ship_to_first_name_field_of @object, {}
+      %div= in_form.render_ship_to_city_field_of @object, {}
+      %div= in_form.render_ship_to_address_field_of @object, {}                             
     %fieldset.ui-widget-content
-      %div= in_form.render_comments_field_of @object        
+      %div= in_form.render_comments_field_of @object, {}        
   %fieldset.ui-widget-content= render "processed_orders/captcha"
   %div
     = render "shared/red_star"

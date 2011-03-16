@@ -1,5 +1,5 @@
 = f.text_field :name
 = f.text_field :html_code
-= link_to_add_html_code_to attr.class
+= link_to_add_html_code_to attr
 = content_tag :input, "", :type => "color", :hex => true, :value => "#ffffff"
 = render "shared/colour", :colour => attr unless attr.new_record?

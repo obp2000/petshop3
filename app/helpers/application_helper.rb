@@ -3,20 +3,21 @@
 module ApplicationHelper
 
   [ :link_to_show, :link_to_delete, :link_to_close, :link_to_new,
-    :submit_to, :link_to_season, :link_to_show_with_comment, :link_to_reply_to,
-    :link_to_add_html_code_to, :link_to_change,
+    :link_to_season, :link_to_show_with_comment, :link_to_reply_to,
+    :link_to_change,
     :link_to_index_local, :link_to_cart, :closed_at_or_link_to_close ].each do |method|
     define_method( method ) { |object| object.send( method, self ) }
   end
 
-  [ :submit_to, :link_to_remove_from_item ].each do |method|
+  [ :submit_to, :link_to_remove_from_item, :link_to_add_html_code_to ].each do |method|
     define_method( method ) { |object| object.class.send( method, self ) }
   end
-
 
   [ :index_page_title_for, :show_page_title_for, :new_page_title_for ].each do |method|
     define_method( method ) { |objects| Array( objects ).first.class.send( method, params ) }
   end
+
+  def submit_to( object ); send( *object.submit_with_options ) end
 
   def link_to_logout( class_const ); link_to class_const.logout_text, logout_path end
 
@@ -64,12 +65,12 @@ module ApplicationHelper
     category.link_to_category( self, season_class.name.tableize )
   end
 
-  def link_to_close_window( class_const )
-    link_to_function( image_tag *class_const.close_window_image ) { |page| class_const.close_window( page ) }
+  def link_to_close_window( object )
+    link_to_function( image_tag *object.close_window_image ) { |page| object.class.close_window( page ) }
   end
 
-  def link_to_back( class_const )
-    link_to_function( image_tag *class_const.back_image ) { |page| class_const.back( page ) }
+  def link_to_back( object )
+    link_to_function( image_tag *object.back_image ) { |page| object.class.back( page ) }
   end
 
   def link_to_add_to_item( object )
@@ -120,7 +121,7 @@ module ApplicationHelper
   def colour_render( colour ); ( "&nbsp;&nbsp;" ).html_safe * ( colour.html_code.split.many? ? 1 : 2 ) end
     
 ####################    
-  def render_collection_of( objects, opts = nil )
+  def render_collection_of( objects )
     render :partial => objects.instance_exec { "#{partial_path}/#{row_partial}" },
           :collection => objects
   end
@@ -162,7 +163,7 @@ module ApplicationHelper
   end           
      
   def render_thumbs_of( object, locals = {} )
-    render :partial => "#{object.thumb_show_path}/photo", :collection => object.photos,
+    render :partial => "#{SharedPath}/photo", :collection => object.photos,
     :locals => { :attrs => object.photos }.merge( locals ) unless object.photos.empty?     
   end
 
