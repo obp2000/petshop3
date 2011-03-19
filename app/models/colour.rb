@@ -33,9 +33,9 @@ class Colour < ItemAttribute
   class << self
      
 # links     
-    def link_to_add_html_code_to( page )
-      page.link_to_function page.image_tag( *add_html_code_to_colour_image ), add_html_code_to_colour_js_string
-    end
+#    def link_to_add_html_code_to( page )
+#      page.link_to_function page.image_tag( *add_html_code_to_colour_image ), add_html_code_to_colour_js_string
+#    end
      
   end
     

@@ -1,18 +1,10 @@
 = form_tag session_path do
-  %br
-  %label(for="login")
-    %b Имя пользователя:
-  %br
+  %div
+    %label( for="login" ) Имя пользователя:
   = text_field_tag :login
-  %br
-  %label(for="password")
-    %b Пароль:
-  %br
+  %div
+    %label( for="password" ) Пароль:
   = password_field_tag :password
-  %br
-  %br
-  = submit_tag 'Войти'
-  %br
-  %br
-  = link_to "Забыли пароль?", forgot_password_session_path
+  %div= submit_tag 'Войти'
+  %div= link_to "Забыли пароль?", forgot_password_session_path
     

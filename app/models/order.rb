@@ -35,6 +35,7 @@ class Order < ActiveRecord1
   self.status_rus_nav = ""
   self.status_rus = ""
   self.blank = ""
+  self.show_tag = "order_details"
 
   cattr_accessor :row_partial, :partial_path
   self.row_partial = name.underscore  
@@ -50,15 +51,13 @@ class Order < ActiveRecord1
 # tags
     include ReplaceContent      
     
-    def index_page_title_for( params ); "Список #{class_name_rus}ов" + params[ :controller ].classify.constantize.status_rus_nav end
+    def index_page_title_for( params )
+      "Список #{class_name_rus}ов" + params[ :controller ].classify.constantize.status_rus_nav
+    end
   
     def headers
       [ "id_rus", "status_header_rus", "total_rus", "count_rus", "created_at_rus", "updated_at_rus", "blank" ]
     end
-
-#tags and partials
-    attr_accessor_with_default( :show_tag ) { "order_details" }
-#    attr_accessor_with_default( :partial_path ) { "orders" }    
   
   end
 
@@ -71,6 +70,6 @@ class Order < ActiveRecord1
     page.update_processed_orders_amount ProcessedOrder.update_amount
   end 
 
-  def closed_at_or_link_to_close( page ); closed? ? page.date_time_rus( updated_at ) : page.link_to_close( self ) end
+#  def closed_at_or_link_to_close( page ); closed? ? page.date_time_rus( updated_at ) : page.link_to_close( self ) end
        
 end

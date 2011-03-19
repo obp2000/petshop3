@@ -119,8 +119,24 @@ class User < ActiveRecord1
   end
   
   def activate_user_notice; "Регистрация закончена!" end
+    
+  def activation_url
+    { :host => "localhost:3001", :controller => "sessions", :action => "create",
+          :user => login, :password => password }    
+  end
+  
+  def forgot_password_url
+    { :host => "localhost:3001", :controller => "sessions", :action => "reset_password",
+          :id => pw_reset_code }    
+  end
+
+  def signup_notification_url
+    { :host => "localhost:3001", :controller => "users", :action => "activate", :id => activation_code }    
+  end
 
   def self.logout_text; "Выйти" end
+    
+  def self.link_to_logout( page ); [ logout_text, page.logout_path ] end
 
   def self.login_rus; "Имя пользователя" end
 

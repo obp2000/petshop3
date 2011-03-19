@@ -2,11 +2,12 @@
 class ProcessedOrder < Order
 
   self.class_name_rus_cap = "Заказ для исполнения"
-#  self.replace = :replace_html
   self.new_image = [ "tick_16.png" ]
   self.new_text = "Оформить #{class_name_rus}"   
   self.submit_with_options = [ "submit_tag", "Разместить #{class_name_rus}",
         { :onclick => "$(this).fadeOut().fadeIn()" } ]
+  self.new_page_title = "Оформление #{class_name_rus}а"
+  self.edit_partial = "form"
   
   class_inheritable_accessor :close_image, :close_confirm, :captcha_text, :fade_duration,
         :close_render_block, :update_amount, :processed_orders_amount_dom_id
@@ -19,9 +20,7 @@ class ProcessedOrder < Order
   self.status_rus_nav = " со статусом \"для исполнения\""
   self.status_rus = "для исп."
   self.processed_orders_amount_dom_id = "processed_orders_amount"
-
-  attr_accessor_with_default( :new_tag ) { ContentTag }
-  attr_accessor_with_default( :change_to_closed ) { [ :replace_html, status_tag, ClosedOrder.status_rus ] }  
+  self.new_tag = ContentTag
     
   validate :must_have_ship_to_first_name, :must_have_long_phone_number, :must_have_valid_email, :must_have_valid_captcha,
         :cart_must_have_cart_items
@@ -46,17 +45,16 @@ class ProcessedOrder < Order
 
 # actions    
     def close_object( params, session, flash )
-      find_current_object( params, session ).tap { |result| result.set_close_notice( flash ); result.close_object }
+      find_current_object( params, session ).tap {
+          |result| result.set_close_notice( flash ); result.close_object }
     end
 
 # partials
     attr_accessor_with_default( :update_amount ) { [ :replace_html, "processed_orders_amount", count ] }
-
-    attr_accessor_with_default( :new_page_title_for ) { "Оформление #{class_name_rus}а" }
-    
-    attr_accessor_with_default( :edit_partial ) { "form" }      
            
   end
+
+  attr_accessor_with_default( :change_to_closed ) { [ :replace_html, status_tag, ClosedOrder.status_rus ] } 
 
 # actions  
   def save_object( session, flash )
@@ -87,8 +85,8 @@ class ProcessedOrder < Order
 
 # links
   def link_to_close( page )
-    page.link_to_remote2 close_image, "", page.send( "close_#{to_underscore}_path", self ), :id => close_tag,
-            :confirm => close_confirm
+      [ page.image_tag( *close_image ), page.send( "close_#{to_underscore}_path", self ),
+      { :remote => true, :id => close_tag, :confirm => close_confirm } ]            
   end
 
 # renders

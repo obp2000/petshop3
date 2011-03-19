@@ -158,15 +158,15 @@ describe ApplicationHelper do
     
   end
 
-  describe "#index_page_title_for( class_const )" do
+  describe "#index_page_title_for( objects )" do
     
     before do
-      @class_const = catalog_items_proxy.first.class
+      @objects = catalog_items_proxy
     end
     
     it "renders page title" do
-      @class_const.should_receive( :index_page_title_for )       
-      helper.index_page_title_for( @class_const ) 
+      @objects.first.class.should_receive( :index_page_title_for )       
+      helper.index_page_title_for( @objects ) 
     end
     
   end
@@ -188,16 +188,16 @@ describe ApplicationHelper do
        
     context "when order is closed" do
       it "renders close time" do
-        @order.stub( :updated_at_or_link_to_close ).with( helper ).and_return( date_time_rus( @order.updated_at ) )         
-        helper.updated_at_or_link_to_close( @order ).should contain( date_time_rus( @order.updated_at ) )
+        @order.stub( :closed_at_or_link_to_close ).with( helper ).and_return( date_time_rus( @order.updated_at ) )         
+        helper.closed_at_or_link_to_close( @order ).should contain( date_time_rus( @order.updated_at ) )
       end
     end
 
     context "when order is not closed" do
       it "renders link to close order" do
-        @order.stub( :updated_at_or_link_to_close ).with( helper ).and_return( link_to "Test", close_processed_order_path( @order ),
+        @order.stub( :closed_at_or_link_to_close ).with( helper ).and_return( link_to "Test", close_processed_order_path( @order ),
             :remote => true, :method => :get )        
-        helper.updated_at_or_link_to_close( @order ).should have_link_to_remote_close( close_processed_order_path( @order ) )           
+        helper.closed_at_or_link_to_close( @order ).should have_link_to_remote_close( close_processed_order_path( @order ) )           
       end
     end  
   

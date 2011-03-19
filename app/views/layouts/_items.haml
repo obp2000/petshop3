@@ -8,13 +8,7 @@
   %body
     #header
       %h2= ADMIN_TITLE
-    #tabs.ui-tabs
-      %ul.ui-tabs-nav.ui-widget-header.ui-helper-clearfix
-        %li.ui-state-default= link_to_index Order
-        %li.ui-state-default= link_to_index Item            
-        %li.ui-state-default= link_to_index Contact            
-        %li.ui-state-default= link_to_index_local CatalogItem            
-        %li.ui-state-default= link_to_logout User
+    #tabs.ui-tabs= render "layouts/admin_header"
     %div{ :id => ContentTag, :style => Item.style }= yield
     %iframe{ :id => Photo.upload_frame, :name => Photo.upload_frame }
           

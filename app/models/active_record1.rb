@@ -13,7 +13,7 @@
    
   class_inheritable_accessor :class_name_rus, :class_name_rus_cap, :back_image, :delete_image, :delete_title,
     :close_window_image, :submit_image, :submit_text, :created_at_rus, :updated_at_rus,
-    :index_image, :index_text, :replace, :delete_text, :nav_image, :nav_text, 
+    :index_image, :index_text, :replace, :delete_text, 
     :new_image, :new_text, :show_image, :name_rus, :submit_with_options, :change_text,
     :paginate_options, :insert_or_replace,    
     :index_render_block, :show_render_block, :new_render_block, :edit_render_block, :create_render_block,
@@ -27,7 +27,9 @@
     :row_partial,
     :dom_id,
     :headers,
-    :create_or_update_partial
+    :create_or_update_partial,
+    :link_to_new_dom_id,
+    :new_page_title, :link_to_season_dom_class
     
   self.class_name_rus = ""
   self.class_name_rus_cap = ""  
@@ -42,8 +44,6 @@
   self.index_text = ""
   self.show_image = []
 #  self.replace = :replace     
-  self.nav_image = []
-  self.nav_text = ""
   self.new_image = []
   self.new_text = ""
   self.name_rus = ""
@@ -57,6 +57,11 @@
   self.js_for_show = []
   self.js_for_new_or_edit = []
   self.js_for_create_or_update = []
+  self.change_text = ""
+  self.link_to_new_dom_id = "link_to_new"
+  self.new_page_title = ""
+  self.link_to_season_dom_class = "link_to_season"
+  
   attr_accessor_with_default( :show_text ) { name }
   attr_accessor_with_default( :delete_title ) { "Удалить #{class_name_rus} #{name rescue id}?" }
   attr_accessor_with_default( :tag ) { "#{to_underscore}_#{id}" }
@@ -115,22 +120,25 @@
       page.attach_chain( js_for_show )      
     end       
       
-# links back
+# links
     def link_to_new( page )
-      page.link_to_remote2 new_image, new_text, page.send( "new_#{name.underscore}_path" ), :id => "link_to_new"
+      [ ( page.image_tag( *new_image ) rescue "" ) + new_text.html_safe,
+        page.send( "new_#{name.underscore}_path" ), { :remote => true, :id => link_to_new_dom_id } ]      
     end
 
-    def link_to_index( page, params = nil )
-      page.link_to_remote2 index_image, ( params[ :index_text ] rescue class_name_rus_cap.pluralize ),
-          page.send( "#{name.tableize}_path", params )      
+    def link_to_index( page, params )
+      [ ( page.image_tag( *index_image ) rescue "" ) +
+      ( params[ :index_text ] rescue class_name_rus_cap.pluralize ),
+      page.send( "#{name.tableize}_path", params ), { :remote => true } ]
     end
 
-    def link_to_season( page ); page.link_to_remote2 nil, "Всего (#{count})", self end      
-      
-#    def submit_to( page ); page.send( *submit_with_options ) end      
+    def link_to_season_header( page )
+      [ page.image_tag( season_icon ) + season_name ] 
+    end
 
 # tags and partials
     attr_accessor_with_default( :new_tag ) { "new_#{name.underscore}" }
+    attr_accessor_with_default( :edit_partial ) { name.underscore }    
     attr_accessor_with_default( :new_partial ) { edit_partial }
     
     attr_accessor_with_default( :row_partial ) { name.underscore }    
@@ -145,6 +153,20 @@
 
     attr_accessor_with_default( :class_name_rus_cap_first ) { class_name_rus_cap.split.first }
 
+    def link_to_change( page )
+      [ page.image_tag( change_image, { :title => "Изменить #{class_name_rus.pluralize}" } ) +
+      change_text.html_safe, self, { :remote => true } ]
+    end
+
+    def link_to_season( object )
+      [ "Всего (#{count})", self, { :remote => true } ]
+    end
+
+  end
+
+  def link_to_reply( page )
+    [ ( page.image_tag( *reply_image ) rescue "" ) + reply_text.html_safe,
+    page.send( "reply_#{to_underscore}_path", self ), { :remote => true, :id => link_to_reply_dom_id } ]      
   end
 
   attr_accessor_with_default( :to_underscore ) { self.class.name.underscore }
@@ -178,15 +200,21 @@
 
 # links
   def link_to_category( page, seasons )
-    page.link_to_remote2 [], name + " (#{send( seasons ).size})",
-          page.send( "category_#{seasons}_path", self ), :class => "category"
+#    page.link_to_remote2 [], name + " (#{send( seasons ).size})",
+#          page.send( "category_#{seasons}_path", self ), :class => "category"
+    [ name + " (#{send( seasons ).size})",
+          page.send( "category_#{seasons}_path", self ), { :remote => true, :class => "category" } ]
   end
 
-  def link_to_show( page ); ( page.link_to_remote2 show_image, show_text, self ) rescue deleted_notice end    
+  def link_to_show( page )
+#    ( page.link_to_remote2 show_image, show_text, self ) rescue deleted_notice
+    [ ( show_image.empty? ? "" : page.image_tag( *show_image ) ) + show_text.html_safe, self,
+          { :remote => true } ]
+  end    
 
   def link_to_delete( page ) 
-    page.link_to_remote2 [ delete_image, { :title => delete_title } ], delete_text, self, :method => :delete,
-            :confirm => delete_title
+    [ page.image_tag( delete_image, { :title => delete_title } ) + delete_text.html_safe, self,
+      { :remote => true, :method => :delete, :confirm => delete_title } ]
   end
 
 end

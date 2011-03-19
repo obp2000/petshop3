@@ -15,8 +15,6 @@ class CatalogItem < Item
   cattr_accessor :row_partial, :partial_path
   self.row_partial = name.underscore  
   self.partial_path = name.tableize
-  
-#  self.thumb_show_path = SharedPath
 
   scope :ordered_by_id, order( :id )
   scope :with_category, lambda { |params| where( :category_id => params[ :category_id ] ) if params[ :category_id ] }
@@ -27,7 +25,7 @@ class CatalogItem < Item
     
     attr_accessor_with_default( :js_for_index ) { superclass.js_for_index << "attach_shadowOn" }
     
-    def back( page ); page.fade_appear( show_tag, dom_id ) end     
+    def back( page ); page.fade_appear( show_tag, dom_id ) end
 
     def render_show( page ); super; page.fade_appear dom_id, show_tag end
 
@@ -38,7 +36,7 @@ class CatalogItem < Item
     end
 
 # links    
-    def link_to_index_local( page ); page.link_to index_text, self end
+    def link_to_index_local( page ); [ index_text, self ] end
 
 # tags and partials
     attr_accessor_with_default( :show_tag ) { "details" }
@@ -78,4 +76,3 @@ class Hash
   def search_args; [ self[ :q ], { :page => self[ :page ], :per_page => 8, :order => :id, :sort_mode => :desc } ] end
   
 end
-

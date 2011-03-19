@@ -12,7 +12,8 @@ describe "items/_form" do
       @colour = @item.colours.first
       @photo = @item.photos.first
       @photo.stub( :link_to_show ).and_return( link_to image_tag( @photo.photo.thumb.url ), @photo.photo_url )
-      view.stub( :submit_to ).and_return( image_submit_tag "test.png" )       
+      view.stub( :submit_to ).and_return( image_submit_tag "test.png" )
+      view.stub( :link_to_remove_from_item )      
     end    
 
   describe "when the item is an existing record" do
@@ -24,9 +25,11 @@ describe "items/_form" do
     it_should_behave_like "new or edit item form"
     
     it "renders the form for edit item" do
-      @size.class.should_receive( :link_to_remove_from_item ).exactly( 2 ).times
-      @colour.class.should_receive( :link_to_remove_from_item ).exactly( 2 ).times
-      @photo.class.should_receive( :link_to_remove_from_item ).once       
+      view.should_receive( :link_to_remove_from_item ).with( @item.sizes.first ).once
+      view.should_receive( :link_to_remove_from_item ).with( @item.sizes.second ).once      
+      view.should_receive( :link_to_remove_from_item ).with( @item.colours.first ).once
+      view.should_receive( :link_to_remove_from_item ).with( @item.colours.second ).once      
+      view.should_receive( :link_to_remove_from_item ).with( @item.photos.first ).once       
       render
       rendered.should have_selector( "form", :method => "post", :action => item_path( @item ) )
     end

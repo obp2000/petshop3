@@ -258,7 +258,7 @@ def valid_colour_attributes2
 end
 
 def valid_photo_attributes
-  { :photo_url => "photo_of_jacket.jpg", :comment => "Photo of jacket" }
+  { :photo_url => "photo_of_jacket.jpg", :comment => "Photo of jacket", :partial_path => "photos" }
 end
 
 def valid_carts_attributes
@@ -311,8 +311,8 @@ def valid_contact_attributes
             :email_image => "mail_generic.png",
             :phone_image => "kcall.png",  
             :address_image => "kfm_home.png",
-            :icq_image => "icq_protocol.png"            
-            }  
+            :icq_image => "icq_protocol.png",
+            :partial_path => "contacts" }  
 end
 
 def valid_user_attributes

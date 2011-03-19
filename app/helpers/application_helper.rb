@@ -2,24 +2,50 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
-  [ :link_to_show, :link_to_delete, :link_to_close, :link_to_new,
-    :link_to_season, :link_to_show_with_comment, :link_to_reply_to,
-    :link_to_change,
-    :link_to_index_local, :link_to_cart, :closed_at_or_link_to_close ].each do |method|
-    define_method( method ) { |object| object.send( method, self ) }
-  end
-
-  [ :submit_to, :link_to_remove_from_item, :link_to_add_html_code_to ].each do |method|
+  [ :submit_to ].each do |method|
     define_method( method ) { |object| object.class.send( method, self ) }
   end
 
-  [ :index_page_title_for, :show_page_title_for, :new_page_title_for ].each do |method|
+  [ :index_page_title_for ].each do |method|
     define_method( method ) { |objects| Array( objects ).first.class.send( method, params ) }
   end
 
+  def link_to_season_header( object ); link_to *object.link_to_season_header( self ) end
+
+  def link_to_show_with_comment( object ); link_to *object.link_to_show_with_comment( self ) end
+
+  def link_to_show( object ); link_to *object.link_to_show( self ) end
+
+  def link_to_close( object ); link_to *object.link_to_close( self ) end
+
+  def link_to_new( object ); link_to *object.link_to_new( self ) end
+
+  def link_to_cart( object ); link_to *object.link_to_cart( self ) end
+
+  def new_page_title_for( object ); object.new_page_title end
+
+  def show_page_title_for( object ); object.class_name_rus_cap.pluralize end
+
+  def link_to_remove_from_item( object )
+    link_to_function image_tag( *object.delete_from_item_image ), object.delete_from_item_js_string    
+  end
+
+  def link_to_add_html_code_to( object )
+    link_to_function image_tag( *object.add_html_code_to_colour_image ),
+      object.add_html_code_to_colour_js_string    
+  end
+
+  def link_to_index_local( object ); link_to *object.link_to_index_local( self ) end
+
+  def link_to_change( object ); link_to *object.link_to_change( self ) end
+
+  def link_to_delete( object ); link_to *object.link_to_delete( self ) end
+
+  def link_to_season( object ); link_to *object.link_to_season( self ) end
+
   def submit_to( object ); send( *object.submit_with_options ) end
 
-  def link_to_logout( class_const ); link_to class_const.logout_text, logout_path end
+  def link_to_logout( object ); link_to *object.link_to_logout( self ) end
 
   def attach_js( js ); delay( DURATION + 0.2 ) { call( js ) } end
 
@@ -59,14 +85,14 @@ module ApplicationHelper
   def do_not_show_nav; controller_name == "sessions" or controller_name == "users" end
   
 # links
-  def link_to_index( class_const, params = nil ); class_const.link_to_index( self, params ) end    
+  def link_to_index( class_const, params = nil ); link_to *class_const.link_to_index( self, params ) end    
 
   def link_to_category( category, season_class )
-    category.link_to_category( self, season_class.name.tableize )
+    link_to *category.link_to_category( self, season_class.name.tableize )
   end
 
-  def link_to_close_window( object )
-    link_to_function( image_tag *object.close_window_image ) { |page| object.class.close_window( page ) }
+  def link_to_close_window( objects )
+    link_to_function( image_tag *objects.close_window_image ) { |page| objects.close_window( page ) }
   end
 
   def link_to_back( object )
@@ -77,9 +103,9 @@ module ApplicationHelper
     link_to_function( image_tag *object.add_to_item_image ) { |page| object.add_to_item( page ) }
   end  
     
-  def link_to_remote2( image = [], text = "", url = nil, opts = {} )
-    link_to( ( image_tag( *image ) rescue "" ) + text.html_safe, url, { :remote => true }.merge( opts )  )
-  end     
+#  def link_to_remote2( image = [], text = "", url = nil, opts = {} )
+#    link_to( ( image_tag( *image ) rescue "" ) + text.html_safe, url, { :remote => true }.merge( opts )  )
+#  end     
 
   def render_show( appear_tag, fade_tag, show_partial )
     action :replace_html, appear_tag, :partial => show_partial
@@ -88,11 +114,12 @@ module ApplicationHelper
   end
 
   def insert_index_tag( index_tag, index_partial, objects )
-    remove_and_insert [ :remove, index_tag ], [ :after, "tabs", { :partial => index_partial, :locals => { :objects => objects } } ]       
+    remove_and_insert [ :remove, index_tag ], [ :after, "tabs",
+          { :partial => index_partial, :locals => { :objects => objects } } ]       
   end
 
   def replace_index_tag( index_tag, index_partial, objects )
-    page.action :replace_html, index_tag, :partial => index_partial, :locals => { :objects => objects }
+    action :replace_html, index_tag, :partial => index_partial, :locals => { :objects => objects }
   end
   
   def render_destroy( edit_tag, tag ); [ edit_tag, tag ].each { |tag1| action :remove, tag1 rescue nil } end
@@ -110,7 +137,7 @@ module ApplicationHelper
   end
 
   def remove_and_insert( remove_args, insert_args )
-    action *remove_args   
+    action *remove_args
     delay( DURATION ) { insert_html *insert_args }
   end
 
@@ -122,8 +149,7 @@ module ApplicationHelper
     
 ####################    
   def render_collection_of( objects )
-    render :partial => objects.instance_exec { "#{partial_path}/#{row_partial}" },
-          :collection => objects
+    render *objects.instance_exec { [ :partial => "#{partial_path}/#{row_partial}", :collection => self ] }
   end
 
   def render_single( attr )
@@ -142,7 +168,7 @@ module ApplicationHelper
     end
   end
 
-  [ "address", "body", "blurb", "ship_to_address", "comments" ].each do |attr|
+  [ "body", "blurb", "ship_to_address", "comments" ].each do |attr|
     define_method( "render_#{attr}_field_of" ) do |object, locals|
       render "text_area", { :object => object, :text_area => :"#{attr}" }.merge( locals )     
     end
@@ -163,8 +189,8 @@ module ApplicationHelper
   end           
      
   def render_thumbs_of( object, locals = {} )
-    render :partial => "#{SharedPath}/photo", :collection => object.photos,
-    :locals => { :attrs => object.photos }.merge( locals ) unless object.photos.empty?     
+    render *object.instance_exec { [ :partial => "#{SharedPath}/photo", :collection => photos,
+    :locals => { :attrs => photos }.merge( locals ) ] } unless object.photos.empty?     
   end
 
   [ "size", "colour" ].each do |attr|
@@ -175,8 +201,8 @@ module ApplicationHelper
   end 
 
   def render_headers_of( objects )
-    render :partial => "#{objects.partial_path}/header", :collection => objects.headers,
-          :locals => { :objects => objects }   
+    render *objects.instance_exec { [ :partial => "#{partial_path}/header",
+          :collection => headers, :locals => { :objects => self } ] }   
   end        
           
 end
@@ -185,9 +211,15 @@ class Array
 
   def paginate_objects( params ); paginate first.class.paginate_hash( params ) end 
 
-  def render_destroy( page, session ); each { |object| object.render_destroy( page, session ) }; page.show_notice end   
+  def render_destroy( page, session )
+    each { |object| object.render_destroy( page, session ) }
+    page.show_notice
+  end   
   
-  def render_index( page ); first.class.render_index( page, self ) rescue nil; page.show_notice end
+  def render_index( page )
+    first.class.render_index( page, self ) rescue nil
+    page.show_notice
+  end
     
   def dom_id; first.dom_id end     
   
@@ -201,11 +233,21 @@ class Array
     
   def row_partial; first.row_partial end      
     
+#  def method_missing( method, *args, &block )
+#    first.method *args, &block
+#  end
+    
   def headers; first.headers end
   
   def partial_path; first.partial_path end  
     
   def no_forum_posts_text; "В форуме пока ещё нет сообщений. Будьте первым!" end
+    
+  def close_window_image; first.close_window_image end
+    
+  def close_window( page ); first.class.close_window page end
+    
+  def link_to_index( page, params ); first.class.link_to_index( page, params ) end
   
 end
 

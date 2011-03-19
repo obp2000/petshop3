@@ -1,4 +1,4 @@
-%h3= link_to image_tag( season_class.season_icon ) + season_class.season_name       
+%h3= link_to_season_header( season_class )       
 %div
-  %b= link_to_season( season_class )
+  %span{ :class => season_class.link_to_season_dom_class }= link_to_season( season_class )
   = render_categories_of( season_class )

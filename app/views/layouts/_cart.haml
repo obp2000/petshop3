@@ -1,0 +1,3 @@
+%h3= link_to_cart cart
+%div{ :id => cart.content_tag }= render cart.index_partial, :cart => cart
+= set_drop_receiving_element cart.content_tag

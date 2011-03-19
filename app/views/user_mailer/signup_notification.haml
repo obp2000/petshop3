@@ -4,4 +4,4 @@
 Пароль:
 = @user.password
 Для активации Вашей учётной записи перейдите, пожалуйста, по этой ссылке:
-= url_for(:host => 'localhost:3001', :controller => "users", :action => "activate", :id => @user.activation_code)
+= url_for( @user.signup_notification_url )

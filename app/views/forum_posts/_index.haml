@@ -1,5 +1,5 @@
 %h2= index_page_title_for @objects
-%fieldset#forum.ui-widget-content
+%fieldset.ui-widget-content
   = link_to_new @objects.first.class
   - if @objects.empty?
     = @objects.no_forum_posts_text

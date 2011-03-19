@@ -11,12 +11,15 @@ class ForumPost < ActiveRecord1
   self.submit_with_options = [ "submit_tag", "Отправить", { :onclick => "$(this).fadeOut().fadeIn()" } ]
   self.name_rus = "Автор"
   self.paginate_options = { :per_page => 15 }
+  self.new_tag = "post_new"
+  self.show_tag = "post"
+  self.edit_partial = "form"
 
-  class_inheritable_accessor :subject_rus, :body_rus, :reply_image,
-          :reply_text, :reply_render_block, :link_to_reply_dom_id, :parent_tag
+  class_inheritable_accessor :subject_rus, :body_rus, :reply_image, :reply_text, :reply_render_block,
+      :link_to_reply_dom_id, :parent_tag
   self.subject_rus = "Тема"
   self.body_rus = "Сообщение"
-  self.reply_image = new_image
+  self.reply_image = [ new_image ]
   self.reply_text = "Ответить"
   self.reply_render_block = lambda { render :template => "shared/reply.rjs" }
   self.link_to_reply_dom_id = "link_to_reply"
@@ -42,10 +45,6 @@ class ForumPost < ActiveRecord1
 
     include ReplaceContent  
 
-    attr_accessor_with_default( :new_tag ) { "post_new" }
-    attr_accessor_with_default( :show_tag ) { "post" }
-    attr_accessor_with_default( :edit_partial ) { "form" }      
-
     def render_show( page ); super; page.fade new_tag end
 
   end
@@ -70,14 +69,7 @@ class ForumPost < ActiveRecord1
 
   def set_destroy_notice( flash ); flash.now[ :notice ] = "Ветвь сообщений удалена" end
 
-# links
-  def link_to_reply_to( page )
-    page.link_to_remote2 [ reply_image ], reply_text, page.send( "reply_#{to_underscore}_path", self ),
-          :id => link_to_reply_dom_id  
-  end
-
 # renders  
- 
   def render_new_or_edit( page ); super; page.fade show_tag end 
 
   attr_accessor_with_default( :parent_tag ) { "#{to_underscore}_#{parent_id}" }

@@ -10,13 +10,14 @@ module ItemsHelper
   end
 
   def render_attrs_with_link_to_remove_of( object, attrs, locals = {} )
-    render :partial => "#{object.partial_path}/#{object.send( attrs ).partial_for_attr_with_link_to_remove}",
-          :collection => object.send( attrs ), :locals => locals    
+    render *object.instance_exec {
+          [ :partial => "#{partial_path}/#{send( attrs ).partial_for_attr_with_link_to_remove}",
+          :collection => send( attrs ), :locals => locals ] }    
   end
 
   [ "created", "updated" ].each do |time|
-    define_method( :"render_#{time}_time_of" ) do |object|
-      render "time_rus", { :object => object, :time => :"#{time}_at" } 
+    define_method( :"render_#{time}_time_of" ) do |object, locals|
+      render "time_rus", { :object => object, :time => :"#{time}_at" }.merge( locals ) 
     end
   end
 

@@ -2,6 +2,6 @@
   = link_to_show cart_item.catalog_item
   = render_size_of cart_item
   = render_colour_of cart_item  
-  %p
+  %div
     = "#{roubles cart_item.price} #{RUB} / #{cart_item.amount} #{SHT}"
     = link_to_delete cart_item unless do_not_show( session.cart )

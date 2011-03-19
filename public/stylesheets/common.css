@@ -85,6 +85,9 @@ img, form *, h2, h3, #cart * {
 form, fieldset, td, th, dl, #cart {
   padding: 0.3em; }
 
+label {
+  font-weight: bold; }
+
 img {
   padding-bottom: 0;
   margin-bottom: 0; }
@@ -125,6 +128,9 @@ img {
   width: 230px; }
   #nav h3 img {
     margin-left: 15px; }
+
+.link_to_season, #processed_orders_amount, #cart_totals {
+  font-weight: bold; }
 
 .category {
   display: block; }

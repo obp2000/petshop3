@@ -18,16 +18,18 @@ class Cart < ActiveRecord1
      :onmouseout => "$(this).attr('src', 'images/basket_add.png')",
      :onclick => "$(this).fadeOut().fadeIn()" } ]
   self.delete_text = "Очистить корзину"
-  self.nav_image = "basket.png"
-  self.nav_text = "Корзина"
           
   class_inheritable_accessor :cart, :link_to_new_order_form, :link_to_clear_cart,
-        :total_items_dom_id, :total_sum_dom_id, :content_tag
+        :total_items_dom_id, :total_sum_dom_id, :content_tag, :cart_image, :cart_text,
+        :cart_totals_dom_id
   self.link_to_new_order_form = "link_to_new_order_form"
   self.link_to_clear_cart = "link_to_clear_cart"
   self.total_items_dom_id = "cart_total_items"
   self.total_sum_dom_id = "cart_total_sum"
   self.content_tag = "cart"
+  self.cart_image = "basket.png"
+  self.cart_text = "Корзина"
+  self.cart_totals_dom_id = "cart_totals"
 
   attr_accessor_with_default( :delete_title ) { nil }
   attr_accessor_with_default( :cart_totals ) { [ [ Cart.total_items_dom_id, cart_items_sum_amount ],
@@ -41,9 +43,6 @@ class Cart < ActiveRecord1
     end
 
     def find_current_object( params, session ); session.cart end
- 
- # links
-    def link_to_cart( page ); page.image_tag( nav_image ) + nav_text end
   
   end
 
@@ -55,5 +54,8 @@ class Cart < ActiveRecord1
 
 # notices
   def set_destroy_notice( flash ); flash.now[ :notice ] = "Корзина очищена" end  
+
+# links
+  def link_to_cart( page ); page.image_tag( cart_image ) + cart_text end
 
 end

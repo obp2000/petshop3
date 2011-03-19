@@ -14,6 +14,7 @@ class Photo < ItemAttribute
   self.paginate_options = { :per_page => 5  }
   self.js_for_add_to_item = self.js_for_create_or_update = [ "attach_mColorPicker" ]
   self.partial_for_attr_with_link_to_remove = "photo"  
+  self.new_partial = "photos/upload_photo"
   
   class_inheritable_accessor :upload_frame
   self.upload_frame = "upload_frame"
@@ -24,14 +25,8 @@ class Photo < ItemAttribute
  
   scope :index_scope, where( :item_id => nil ).order( :id ) 
 
-  class << self
-    attr_accessor_with_default( :new_partial ) { "upload_photo" }
-  end
-
 # links
-  def link_to_show( page, comment = "" )
-    page.link_to page.image_tag( photo.thumb.url ) + comment, photo_url rescue nil
-  end
+  def link_to_show( page, comment = "" ); [ page.image_tag( photo.thumb.url ) + comment, photo_url ] end
 
   def link_to_show_with_comment( page ); link_to_show page, comment end
   

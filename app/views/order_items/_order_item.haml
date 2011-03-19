@@ -1,8 +1,11 @@
-= link_to_show order_item.item rescue nil
-= render_size_of order_item
-= render_colour_of order_item   
-= order_item.amount
-= SHT + ","
-= roubles order_item.order_item_sum
-= RUB
-%br
+%div
+  -if order_item.item
+    = link_to_show order_item.item
+    = render_size_of order_item
+    = render_colour_of order_item   
+    = order_item.amount
+    = SHT + ","
+    = roubles order_item.order_item_sum
+    = RUB
+  -else
+    = order_item.removed_item_message
