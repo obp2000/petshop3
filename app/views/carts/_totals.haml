@@ -1,6 +1,5 @@
-= ITOGO.colon
+= t( :totals ).colon
 %span{ :id => cart.total_items_dom_id }= cart.cart_items_sum_amount
-= SHT
+= t( :amount )
 \/
-%span{ :id => cart.total_sum_dom_id }= roubles cart.total
-= RUB
+%span{ :id => cart.total_sum_dom_id }= number_to_currency cart.total

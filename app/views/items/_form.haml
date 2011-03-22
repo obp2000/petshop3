@@ -1,17 +1,29 @@
 = form_for @object, :remote => true, :html => { :class => "ui-widget-content" } do |f|
   = f.error_messages
-  = with_options :f => f do |in_form|
+  %div
+    = f.label :name
+    = render "shared/red_star"
+    = f.text_field :name
+    = f.label :price
+    = render "shared/red_star"
+    = f.text_field :price 
+  - with_options :f => f, :object => @object do |in_form|
     %div
-      = in_form.render_name_field_of @object, :required => true     
-      = in_form.render_price_field_of @object, :required => true
-    %div
-      = in_form.render_categories_choose_partial_of @object, :required => true     
-      = in_form.render_seasons_choose_partial_of @object, :required => true 
-    %div= in_form.render_sizes_choose_partial_of @object, :required => false
-    %div= in_form.render_colours_choose_partial_of @object, :required => false
-    %div= in_form.render_blurb_field_of @object, {}
-    %div= in_form.render_photos_choose_partial_of @object, :required => false      
-    = in_form.render_created_time_of @object, {}
-    = in_form.render_updated_time_of @object, {}  
+      = f.label :category
+      = render "shared/red_star" 
+      %span{ :id => "form_#{Category.dom_id}" }
+        = render "items/category", :category => @object.category unless @object.category.blank? 
+      = link_to_change Category
+      = f.label :season
+      = render "shared/red_star"
+      - [ SummerCatalogItem, WinterCatalogItem ].each do |season|
+        = f.radio_button :type, season
+        = image_tag season.season_icon, :size => "24x24"      
+    %div= in_form.render "items/attrs", :attrs => "sizes"
+    %div= in_form.render "items/attrs", :attrs => "colours"   
+    %div{ :id => "form_blurb" }= f.text_area :blurb, :rows => 3    
+    %div= in_form.render "items/attrs", :attrs => "photos"       
+    = in_form.render "items/time", :time => "created_at"
+    = in_form.render "items/time", :time => "updated_at"
     = submit_to @object 
     

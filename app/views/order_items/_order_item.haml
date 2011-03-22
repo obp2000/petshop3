@@ -1,11 +1,10 @@
 %div
   -if order_item.item
     = link_to_show order_item.item
-    = render_size_of order_item
-    = render_colour_of order_item   
+    = render "#{SharedPath}/size", :size => order_item.size unless order_item.size.blank?
+    = render "#{SharedPath}/colour", :colour => order_item.colour unless order_item.colour.blank?        
     = order_item.amount
-    = SHT + ","
-    = roubles order_item.order_item_sum
-    = RUB
+    = t( :amount ) + ","
+    = number_to_currency order_item.order_item_sum
   -else
-    = order_item.removed_item_message
+    = order_item.class.human_attribute_name( :removed_item_message )

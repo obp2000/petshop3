@@ -17,7 +17,7 @@ module ItemsHelper
 
   [ "created", "updated" ].each do |time|
     define_method( :"render_#{time}_time_of" ) do |object, locals|
-      render "time_rus", { :object => object, :time => :"#{time}_at" }.merge( locals ) 
+      render "time", { :object => object, :time => :"#{time}_at" }.merge( locals ) 
     end
   end
 

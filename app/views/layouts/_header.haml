@@ -1,6 +1,6 @@
 = render "layouts/search"
 = link_to_index ForumPost
 = link_to_show Contact.first
-%h3= ( "одежда для<br/>русских тоев" ).html_safe
+%h3= t( :header_title ).html_safe
 = image_tag "bestic.png"
-%h5= link_to DEMO, items_path 
+%h5= link_to t( :demo ), items_path 

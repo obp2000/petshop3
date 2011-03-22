@@ -2,9 +2,9 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
-  [ :submit_to ].each do |method|
-    define_method( method ) { |object| object.class.send( method, self ) }
-  end
+#  [ :submit_to ].each do |method|
+#    define_method( method ) { |object| object.class.send( method, self ) }
+#  end
 
   [ :index_page_title_for ].each do |method|
     define_method( method ) { |objects| Array( objects ).first.class.send( method, params ) }
@@ -22,9 +22,9 @@ module ApplicationHelper
 
   def link_to_cart( object ); link_to *object.link_to_cart( self ) end
 
-  def new_page_title_for( object ); object.new_page_title end
+  def new_page_title_for( object ); object.class.human_attribute_name( :new_page_title ) end
 
-  def show_page_title_for( object ); object.class_name_rus_cap.pluralize end
+  def show_page_title_for( object ); object.class.human_name end
 
   def link_to_remove_from_item( object )
     link_to_function image_tag( *object.delete_from_item_image ), object.delete_from_item_js_string    
@@ -43,7 +43,7 @@ module ApplicationHelper
 
   def link_to_season( object ); link_to *object.link_to_season( self ) end
 
-  def submit_to( object ); send( *object.submit_with_options ) end
+  def submit_to( object ); image_submit_tag *object.submit_image end
 
   def link_to_logout( object ); link_to *object.link_to_logout( self ) end
 
@@ -74,9 +74,9 @@ module ApplicationHelper
 
   def check_cart_totals( session ); session.cart.cart_totals.each { |args| replace_html *args } end
     
-  def roubles( arg ); number_to_currency( arg, :unit => "", :precision => 0, :delimiter => " ") end
+#  def roubles( arg ); number_to_currency( arg, :unit => "", :precision => 0, :delimiter => " ") end
 
-  def date_time_rus( arg ); arg.strftime( "%d.%m.%yг. %H:%M:%S" ) rescue "" end
+#  def date_time_rus( arg ); arg.strftime( "%d.%m.%yг. %H:%M:%S" ) rescue "" end
 
   def do_not_show( cart )
     controller_name == 'processed_orders' or cart.cart_items.empty?
@@ -186,8 +186,8 @@ module ApplicationHelper
     define_method( "render_#{attr}_of" ) do |object|
       render "attr", { :object => object, :attr => attr }
     end
-  end           
-     
+  end        
+       
   def render_thumbs_of( object, locals = {} )
     render *object.instance_exec { [ :partial => "#{SharedPath}/photo", :collection => photos,
     :locals => { :attrs => photos }.merge( locals ) ] } unless object.photos.empty?     
@@ -248,6 +248,8 @@ class Array
   def close_window( page ); first.class.close_window page end
     
   def link_to_index( page, params ); first.class.link_to_index( page, params ) end
+    
+  def new1; first.class.new1 end
   
 end
 
@@ -271,18 +273,8 @@ class Hash
   
 end
 
-APPLICATION_TITLE = "Одежда для русских тоев BEST&C"
-ADMIN_TITLE = "Администрирование магазина BEST&C"
-RUB = "руб."
-SHT = "шт."  
-DEMO = "Демо"
-REQUIRED_FIELDS = "обязательные поля"
-ITOGO = "Итого"
-VSE = "все"
 DURATION = 0.5
 HIGHLIGHT_DURATION = 2
-SEASON = "Сезон"
-AnyAttr = "Любой"
 
 WillPaginate::ViewHelpers.pagination_options[ :previous_label ] = 'Пред.'
 WillPaginate::ViewHelpers.pagination_options[ :next_label ] = 'След.'

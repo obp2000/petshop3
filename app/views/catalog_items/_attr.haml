@@ -1,3 +1,3 @@
-= radio_button_tag "#{attr.to_underscore}_id", attr.id, ( true unless many ), many ? {} : { :style => "visibility: hidden" }
+= radio_button_tag attr.to_underscore.foreign_key, attr.id, ( true unless many ), many ? {} : { :style => "visibility: hidden" }
 =# hidden_field_tag "#{dom_id(attr)}", attr.id
 = render_single attr

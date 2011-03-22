@@ -1,10 +1,8 @@
 # encoding: utf-8
 class ClosedOrder < Order
 
-  self.class_name_rus_cap = "Закрытые заказ"
-  self.status_eng = "ClosedOrder"
-  self.status_rus_nav = " со статусом \"закрытые\""
-  self.status_rus = "закрыт"   
+  self.status_nav = human_attribute_name( :status_nav )
+  self.status_ = human_attribute_name( :status_ )   
 
   def closed?; true end
      

@@ -1,7 +1,8 @@
 %h2= show_page_title_for @object
 %dl.ui-widget-content
-  %dd= render_name_of @object
-  %dd= render_email_of @object
-  %dd= render_phone_of @object
-  %dd= render_icq_of @object
-  %dd= render_address_of @object
+  - with_options :object => @object do |for_object|
+    %dd= for_object.render "attr", :attr => "name"
+    %dd= for_object.render "email", :attr => "email"
+    %dd= for_object.render "attr", :attr => "phone"
+    %dd= for_object.render "attr", :attr => "icq"
+    %dd= for_object.render "attr", :attr => "address"  

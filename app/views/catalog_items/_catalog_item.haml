@@ -1,13 +1,13 @@
-.ui-widget-content{ :id => dom_id( catalog_item ), :class => dom_class( catalog_item ) }
+.ui-widget-content{ :id => dom_id( catalog_item ), :class => dom_class( CatalogItem ) }
   .thumbs.yoxview= render_thumbs_of catalog_item    
   = form_for catalog_item, :url => cart_item_path( catalog_item ), :remote => true do   
     %h4
       = link_to_show catalog_item
       %div
-        = roubles( catalog_item.price ) + " " + RUB
+        = number_to_currency( catalog_item.price )
         = submit_to session.cart
-    %div= render_sizes_choose_partial_of catalog_item
-    %div= render_colours_choose_partial_of catalog_item                      
+    %div= render "catalog_items/attrs", :attrs => catalog_item.sizes    
+    %div= render "catalog_items/attrs", :attrs => catalog_item.colours                           
   .blurb= catalog_item.blurb
 = draggable_element dom_id( catalog_item ), :revert => true
       

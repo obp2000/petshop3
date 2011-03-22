@@ -3,10 +3,9 @@ class CatalogItem < Item
 
   class_inheritable_accessor :season_icon, :season_name
   self.season_icon = "amor.png"
-  self.season_name = "Все сезоны"
-  
-  self.index_text = "Назад в магазин"    
-  self.submit_with_options = [ "image_submit_tag", "search_32.png", { :title => "Поиск #{class_name_rus}а" } ]
+  self.season_name = I18n.t( :all_seasons )
+   
+  self.submit_image = [ "search_32.png", { :title => human_attribute_name( :submit_title ) } ]
   self.index_render_block =
     lambda { render request.xhr? ? Index_template_hash : { :partial => "index", :layout => "application" } }
   self.paginate_options = { :per_page => 8 }
@@ -17,7 +16,8 @@ class CatalogItem < Item
   self.partial_path = name.tableize
 
   scope :ordered_by_id, order( :id )
-  scope :with_category, lambda { |params| where( :category_id => params[ :category_id ] ) if params[ :category_id ] }
+  scope :with_category, lambda { |params| where( :category_id => params[ :category_id ] ) if
+        params[ :category_id ] }
   scope :index_scope, lambda { |params| with_category( params ).ordered_by_id }
 #  scope :group_by_category, group( :category_id )
 
@@ -31,32 +31,31 @@ class CatalogItem < Item
 
 # actions
     def search_results( params, flash )
-      not_found_notice( params, flash ) if ( results = search( *params.search_args ) ).empty?              
+      flash.now[ :notice ] = not_found_notice( params ) if
+          ( results = search( *params.search_args ) ).empty?              
       results
     end
 
 # links    
-    def link_to_index_local( page ); [ index_text, self ] end
+    def link_to_index_local( page ); [ human_attribute_name( :link_to_index_local ), self ] end
 
 # tags and partials
     attr_accessor_with_default( :show_tag ) { "details" }
 
 # notices
-    def not_found_notice( params, flash )
-      flash.now[ :notice ] = "По Вашему запросу \"#{params[ :q ]}\" #{class_name_rus}ы не найдены"         
+    def not_found_notice( params )
+      "#{I18n.t( :on_your_query )} \"#{params[ :q ]}\" #{human_attribute_name( :not_found_notice )}"         
     end
 
     def index_page_title_for( params )
       if params[ :q ]
-        "Результаты поиска по запросу \"#{params[ :q ]}\" ( всего найдено #{class_name_rus}ов: #{search( *params.search_args ).size} )"
+        "#{I18n.t( :query_results )} \"#{params[ :q ]}\" ( #{human_attribute_name( :all_found_items )}: #{search( *params.search_args ).size} )"
       else
-        "Каталог #{class_name_rus}ов#{': ' + season_name}#{': ' + Category.find( params[ :category_id ] ).name rescue ''}"      
+        "#{model_name.human + ': ' + season_name}#{': ' + Category.find( params[ :category_id ] ).name rescue ''}"      
       end
     end
 
   end
-
-#  attr_accessor_with_default( :edit_tag ) { self.class.name.underscore }
 
 #ts
   define_index do

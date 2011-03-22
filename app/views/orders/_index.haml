@@ -1,8 +1,8 @@
 %div
   %h2= index_page_title_for @objects 
   = render 'orders/navigation'
-  %table{:summary => ""}
+  %table{ :summary => "" }
     %caption= will_paginate @objects
-    %tr= render_headers_of @objects
+    %tr= render :partial => "orders/header", :collection => @objects.headers
     = render_collection_of @objects
   %div{ :id => @objects.show_tag }

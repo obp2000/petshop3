@@ -3,6 +3,6 @@
 В ближайшее время наши менеджеры свяжутся с Вами.
 Информация о заказе:
 = render :partial => 'order_notice/order_item', :collection => @order.order_items
-= "Общая сумма заказа: #{@order.total.to_i} #{RUB}".html_safe
+= "Общая сумма заказа: #{@order.total.to_i} #{t(:currency)}".html_safe
 Спасибо за заказ!
 С уважением, интернет-магазин BEST&C.

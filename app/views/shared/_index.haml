@@ -1,7 +1,7 @@
 .ui-widget-content{ :id => objects.dom_id }
   = link_to_close_window objects
   = will_paginate objects
-  = render *objects.instance_exec { [ :partial => new_partial, :object => first.class.new1 ] } unless objects.first.class.new1.blank?
+  = render *objects.instance_exec { [ :partial => new_partial, :object => new1 ] } unless objects.new1.blank?
   = render *objects.instance_exec { [ :partial => edit_partial, :collection => self ] } unless objects.first.new_record?  
   = draggable_element objects.dom_id
   

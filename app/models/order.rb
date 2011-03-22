@@ -11,31 +11,15 @@ class Order < ActiveRecord1
 
   set_inheritance_column "status"
 
-  self.class_name_rus = "заказ"  
-  self.class_name_rus_cap = "Заказ"
-  self.updated_at_rus = "Закрыт"
   self.paginate_options = { :per_page => 14 }
 
-  class_inheritable_accessor :id_rus, :status_header_rus, :total_rus, :count_rus, :email_rus, :phone_number_rus,
-    :ship_to_first_name_rus, :ship_to_city_rus, :ship_to_address_rus, :comments_rus, :details_title,
-    :status_eng, :status_rus_nav, :status_rus, :blank
+  class_inheritable_accessor :status_nav, :status_, :blank, :headers
     
-  self.id_rus = "№"
-  self.status_header_rus = "Статус"
-  self.total_rus = "Сумма"    
-  self.count_rus = "Всего"    
-  self.email_rus = "Адрес электронной почты"
-  self.phone_number_rus = "Контактный телефон"    
-  self.ship_to_first_name_rus = "Имя"    
-  self.ship_to_city_rus = "Город"    
-  self.ship_to_address_rus = "Адрес"    
-  self.comments_rus = "Комментарии к #{class_name_rus}у"    
-  self.details_title = "Детали #{class_name_rus}а"
-  self.status_eng = ""
-  self.status_rus_nav = ""
-  self.status_rus = ""
-  self.blank = ""
+  self.status_nav = ""
+  self.status_ = ""
   self.show_tag = "order_details"
+  self.headers = [ "№", I18n.t( :status ), I18n.t( :sum ), I18n.t( :count ),
+          I18n.t( :created_at ), I18n.t( :updated_at ), "" ]
 
   cattr_accessor :row_partial, :partial_path
   self.row_partial = name.underscore  
@@ -52,17 +36,15 @@ class Order < ActiveRecord1
     include ReplaceContent      
     
     def index_page_title_for( params )
-      "Список #{class_name_rus}ов" + params[ :controller ].classify.constantize.status_rus_nav
+      "#{human_attribute_name(:index_page_title)}" + params[ :controller ].classify.constantize.status_nav
     end
-  
-    def headers
-      [ "id_rus", "status_header_rus", "total_rus", "count_rus", "created_at_rus", "updated_at_rus", "blank" ]
-    end
-  
+
   end
 
 # notices
-  def set_destroy_notice( flash ); flash.now[ :notice ] = "#{class_name_rus_cap} № #{id} успешно удалён." end
+  def set_destroy_notice
+    "#{self.class.model_name.human} № #{id} #{Order.human_attribute_name( :destroy_notice )}."
+  end
 
 # renders
   def render_destroy( page, session )

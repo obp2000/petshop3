@@ -4,8 +4,6 @@ class Photo < ItemAttribute
 
   mount_uploader :photo, PhotoUploader
 
-  self.class_name_rus = "фотография"  
-  self.class_name_rus_cap = "Фотография"
   self.change_image = "insert-image.png"
   self.delete_from_item_js_string =
     "$(this).siblings(':checkbox').removeAttr('checked');$(this).siblings(':not(:checkbox)').remove();$(this).remove();"  
@@ -19,9 +17,7 @@ class Photo < ItemAttribute
   class_inheritable_accessor :upload_frame
   self.upload_frame = "upload_frame"
 
-  validate :must_have_photo
-  
-  def must_have_photo; errors.add :base, "Не выбрана #{class_name_rus} для загрузки" unless photo_url end
+  validates_presence_of :photo_url
  
   scope :index_scope, where( :item_id => nil ).order( :id ) 
 

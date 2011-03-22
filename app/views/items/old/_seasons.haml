@@ -1,0 +1,5 @@
+= f.label :season
+= render "shared/red_star" if required
+- [ SummerCatalogItem, WinterCatalogItem ].each do |season|
+  = f.radio_button :type, season
+  = image_tag season.season_icon, :size => "24x24"

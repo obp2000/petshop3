@@ -24,7 +24,7 @@ describe "orders/_show" do
     rendered.should contain(@order_item.size.name)
     rendered.should have_colour(@order_item.colour.html_code)    
     rendered.should contain(@order_item.amount.to_s)
-    rendered.should contain( roubles @order_item.order_item_sum.to_s )    
+    rendered.should contain( number_to_currency @order_item.order_item_sum )    
   end
 
 end

@@ -1,0 +1,4 @@
+= f.label :category
+= render "shared/red_star" if required 
+%span{ :id => "form_#{Category.dom_id}" }= render_category_of object, :f => f  
+= link_to_change Category

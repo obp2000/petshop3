@@ -1,1 +1,1 @@
-= order_item.instance_exec { "#{name} #{size.name rescue ""} #{colour.name rescue ""} (#{ price.to_i } #{RUB}) - #{amount} #{SHT}".html_safe }
+= order_item.instance_exec { "#{name} #{size.name rescue ""} #{colour.name rescue ""} (#{ price.to_i } #{I18n.t(:currency)}) - #{amount} #{I18n.t(:amount)}".html_safe }

@@ -1,5 +1,6 @@
-%fieldset.ui-widget-content  
-  = render_subject_of @object
-  = render_name_of @object  
-  %p= render_body_of @object
-  %p= link_to_reply_to @object
+%fieldset.ui-widget-content
+  - with_options :object => @object do |for_forum_post|  
+    = for_forum_post.render "attr", :attr => "subject" 
+    = for_forum_post.render "attr", :attr => "name"
+    %div= for_forum_post.render "attr", :attr => "body"     
+  %div= link_to_reply_to @object

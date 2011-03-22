@@ -33,6 +33,7 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.plural "Фотография", "Фотографии"
   inflect.plural "Сезон", "Сезоны"
   inflect.plural "Размер одежды", "Размеры одежды"
+  inflect.plural "Размер", "Размеры"
   inflect.plural "Пользователь", "Пользователи" 
   
 end

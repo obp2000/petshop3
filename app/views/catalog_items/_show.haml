@@ -2,15 +2,18 @@
   = link_to_back @object
   = @object.name
 = form_for @object, :url => cart_item_path( @object ), :remote => true, :html => { :class => "ui-widget-content" } do 
-  = render_price_of @object
-  = render_category_of @object
-  = render_season_of @object    
+  = label :item, :price
+  = number_to_currency( @object.price )   
+  = label :item, :category
+  = @object.category.name  
+  = label :item, :season
+  = @object.season.name
   = submit_to session.cart  
   %div
-    %b= @object.sizes.class_name_rus_cap.pluralize.colon      
-    = render_sizes_choose_partial_of @object
-    %b= @object.colours.class_name_rus_cap.pluralize.colon       
-    = render_colours_choose_partial_of @object
+    = label :item, :sizes      
+    = render "catalog_items/attrs", :attrs => @object.sizes
+    = label :item, :colours       
+    = render "catalog_items/attrs", :attrs => @object.colours      
     = @object.blurb
-    = render_photos_of @object    
+    = render :partial => "catalog_items/photo", :collection => @object.photos unless @object.photos.empty?        
 .clear

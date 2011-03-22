@@ -49,6 +49,7 @@ group :test, :development do
   gem 'rspec-rails', '>= 2.5.0'
 end
 gem 'milhouse-spork'
+# gem 'russian'
 
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators

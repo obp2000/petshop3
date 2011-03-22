@@ -3,21 +3,3 @@
 
 en:
   hello: "Hello world"
-  carrierwave:
-    errors:
-      integrity: 'Here be an error message'
-      processing: 'Here be an error message'
-    
-
-  helpers:
-    label:
-      item:
-        name: "Название"
-        price: "Цена"
-        category: "Вид"
-        season: "Сезон"
-        sizes: "Размеры"
-        colours: "Цвета"
-        photos: "Фото"
-        created_at: "Создан"
-        updated_at: "Изменён"

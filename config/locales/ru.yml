@@ -1,0 +1,333 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+ru:
+  helpers:
+    label:
+      item:
+        name: "Название"
+        price: "Цена"
+        category: "Вид"
+        season: "Сезон"
+        sizes: "Размеры"
+        colours: "Цвета"
+        photos: "Фото"
+        created_at: "Создан"
+        updated_at: "Изменён"
+      processed_order:
+        email: "Адрес электронной почты"
+        phone_number: "Телефон"
+        ship_to_first_name: "Имя"
+        ship_to_city: "Город"
+        ship_to_address: "Адрес"
+        comments: "Комментарии к заказу"
+        captcha: "Введите, пожалуйста, проверочный код"
+      contact:
+        name: "Имя"
+        email: "e-mail"
+        phone: "Телефон"
+        icq: "ICQ"
+        address: "Адрес"
+      forum_post:
+        name: "Автор"
+        subject: "Тема"
+        body: "Сообщение"
+      user:
+        login: Имя пользователя
+        password: Пароль
+        email: E-mail
+        password_confirmation: Введите пароль ещё раз
+        first_name: Имя
+        last_name: Фамилия
+        
+    submit:
+      forum_post:
+        create: Отправить
+      processed_order:
+        create: Разместить заказ
+      user:
+        create: Создать учётную запись
+      
+        
+
+  application_title: "Одежда для русских тоев BEST&C"
+  admin_title: "Администрирование магазина BEST&C"
+  header_title: "одежда для<br/>русских тоев"  
+  demo: Демо
+  totals: Итого
+  required_fields: "обязательные поля"
+  any_attr: Любой
+  currency1: руб.
+  amount: шт.
+  year: г.
+  remove: Удалить
+  change: Изменить
+  count: Всего
+  save: Сохранить
+  back: Назад
+  close_window: Закрыть окно
+  created_at: Создан
+  updated_at: Изменён
+  status: Статус
+  sum: Сумма
+  email: Адрес электронной почты
+  name: Имя
+  city: Город
+  address: Адрес
+  price: Цена
+  spring_summer: Весна/Лето
+  fall_winter: Осень/Зима
+  all_seasons: Все сезоны
+  on_your_query: По Вашему запросу
+  query_results: Результаты поиска по запросу
+  that: Такой
+
+
+
+  
+  time:
+    formats:
+      default: "%a, %d %b %Y, %H:%M:%S %z"
+      short: "%d %b, %H:%M"
+      long: "%d.%m.%yг. %H:%M:%S"
+
+    am: "утра"
+    pm: "вечера"
+
+  number:
+    format:
+      separator: "."
+      delimiter: " "
+      precision: 3
+      significant: false
+      strip_insignificant_zeros: false
+      
+    currency:
+      format:
+        format: "%n %u"
+        unit: "руб."
+        separator: "."
+        delimiter: " "
+        precision: 2
+        significant: false
+        strip_insignificant_zeros: false
+    
+  activerecord:
+    models:
+      cart_item: Товар
+      cart: Корзина
+      catalog_item: Каталог товаров
+      category: Вид одежды
+      closed_order: Закрытые заказ
+      colour: Цвет
+      contact: Контакт
+      forum_post: Форум
+      item_attribute: Атрибут товара     
+      item: Товар
+      order_item: Товар
+      order: Заказ
+      photo: Фото
+      processed_order: Заказ для исполнения
+      season: Сезон
+      size: Размер
+      summer_catalog_item: Каталог товаров
+      user: Пользователь
+      winter_catalog_item: Каталог товаров
+      
+    errors:
+      models:
+        contact:
+          attributes:
+            email:
+              invalid: " - неверный формат"
+            name:
+              too_short: слишком короткое (минимум 2 буквы)
+            phone:
+              too_short: слишком короткий (минимум 7 цифр)
+        processed_order:
+          attributes:
+            email:
+              invalid: " имеет неверный формат!"
+            ship_to_first_name:
+              too_short: слишком короткое (минимум 2 буквы)
+            phone_number:
+              too_short: слишком короткий (минимум 7 цифр)
+        category:
+          attributes:
+            name:
+              blank: не может быть пустым!
+              taken: должно быть уникальным!
+        colour:
+          attributes:
+            name:
+              blank: не может быть пустым!
+              taken: должно быть уникальным!                            
+            html_code:
+              blank: не может быть пустым!
+              taken: должен быть уникальным!
+        size:
+          attributes:
+            name:
+              blank: не может быть пустым!
+              taken: должно быть уникальным!
+        forum_post:
+          attributes:
+            name:
+              too_short: слишком короткое (минимум 2 буквы)
+            subject:
+              too_short: слишком короткая (минимум 5 букв)              
+            body:
+              too_short: слишком короткое (минимум 5 букв)          
+        item:
+          attributes:
+            name:
+              too_short: слишком короткое (минимум 2 буквы)
+            category:
+              blank: должен быть выбран
+            type:
+              blank: должен быть выбран
+            price:
+              not_a_number: должна быть целым числом
+        photo:                                
+          attributes:
+            photo_url:
+              blank: не выбрана!             
+
+
+    attributes:
+   
+      active_record1:
+        must_have_long_name: В имени должно быть не менее двух символов
+        must_have_valid_email: Неверный формат адреса электронной почты
+        must_have_name: не может быть пустым
+        create_notice: создан удачно
+        update_notice: удачно обновлён
+        destroy_notice: удалён 
+        
+      cart_item:
+        update_notice: Добавлен товар
+        destroy_notice: Удалён товар
+        
+      cart:
+        delete_text: Очистить корзину
+        submit_title: Добавить этот товар в корзину
+        destroy_notice: Корзина очищена
+        
+      category:
+        name: Наименование вида одежды        
+    
+      colour:
+        add_html_code_to_colour_title: Добавить в цвет
+        must_have_unique_html_code: Такой цвет уже есть
+        name: Название цвета
+        html_code: Код цвета
+    
+      contact:
+        update_notice: Контакты успешно обновлены!
+        change_text: Изменить контакты
+        email_subject: Сообщение от пользователя интернет-магазина BEST&C
+        name: Имя
+        email: E-mail
+        phone: Номер телефона
+
+      forum_post:
+        new_text: Новая тема
+        submit_text: Отправить
+        must_have_long_subject: Тема слишком короткая (минимум 5 букв)
+        must_have_long_body: Сообщение слишком короткое (минимум 5 букв)
+        create_notice: Новая тема создана
+        send_notice: Сообщение отправлено
+        destroy_notice: Ветвь сообщений удалена
+        reply_text: Ответить
+        name: Имя
+        subject: Тема
+        body: Сообщение
+        
+      item_attribute:
+        must_have_unique_name: уже есть 
+        
+      item:
+        new_title: Добавить
+        submit_title: Сохранить изменения
+        index_page_title: Список товаров
+        delete_from_item_title: Удалить из товара
+        add_to_item_title: Добавить к товару
+        name: Название
+        price: Цена
+        must_have_category: Необходимо выбрать вид одежды
+        must_have_type: Необходимо выбрать сезон одежды        
+        must_have_valid_price: Цена должна быть целым числом
+        category: Вид одежды
+        type: Сезон        
+        
+      catalog_item:
+        link_to_index_local: Назад в магазин
+        price: Цены
+        submit_title: Поиск товара
+        not_found_notice: товары не найдены
+        all_found_items: всего найдено товаров
+      
+      closed_order:
+        status_nav: " со статусом \"закрытые\""
+        status_: закрыт
+        
+      order:
+        details_title: Детали заказа
+        index_page_title: Список заказов
+        destroy_notice: успешно удалён
+        id: № заказа
+        ship_to_first_name: Имя заказчика
+        ship_to_last_name: Фамилия заказчика
+        email: E-mail
+        phone_number: Телефон
+        ship_to_city: Город
+        address: Адрес
+        comments: Комментарии
+        
+        
+        
+        
+        
+      order_item:
+        removed_item_message: Товар удален из каталога!        
+
+      photo:
+        must_have_photo: Не выбрана фотография для загрузки
+        photo_url: Фотография для загрузки
+
+      processed_order:
+        new_page_title: Оформление заказа
+        new_text: Оформить заказ
+        close_title: Закрыть заказ
+        submit_text: Разместить заказ
+        close_confirm: Закрыть заказ?
+        captcha_text: "Введите, пожалуйста, проверочный код:"
+        status_nav: " со статусом \"для исполнения\""
+        status_: "для исп."
+        must_have_ship_to_first_name: Имя слишком короткое (минимум 2 буквы)
+        must_have_long_phone_number: Номер телефона слишком короткий (минимум 7 цифр)
+        must_have_valid_captcha: Проверочный код неверен
+        cart_must_have_cart_items: Корзина пустая
+        close_notice: успешно закрыт
+        create_notice:
+        email: E-mail
+        
+      size:
+        name: Наименование размера
+
+      user:
+        new_page_title: Новый администратор
+        logout_text: Выйти
+        
+   
+
+        
+
+        
+        
+        
+
+        
+        
+        
+ 

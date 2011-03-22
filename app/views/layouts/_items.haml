@@ -1,13 +1,13 @@
 !!! Strict
 %html
   %head
-    %title= ADMIN_TITLE
+    %title= t :admin_title
     = javascript_include_tag items_javascripts
     = stylesheet_link_tag items_stylesheets
     = csrf_meta_tag
   %body
     #header
-      %h2= ADMIN_TITLE
+      %h2= t :admin_title
     #tabs.ui-tabs= render "layouts/admin_header"
     %div{ :id => ContentTag, :style => Item.style }= yield
     %iframe{ :id => Photo.upload_frame, :name => Photo.upload_frame }

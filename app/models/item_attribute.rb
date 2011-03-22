@@ -3,18 +3,19 @@ class ItemAttribute < ActiveRecord1
   
   self.abstract_class = true
   
-  class_inheritable_accessor :delete_from_item_title, :delete_from_item_js_string, :insert_attr,
+  class_inheritable_accessor :delete_from_item_js_string, :insert_attr,
     :change_image, :add_to_item_image, :attr_partial, :options_for_replace_new_tag, :js_for_add_to_item,
     :partial_for_attr_with_link_to_remove, :attr_choose_partial, :hidden_field_index, :hidden_field_name,
     :delete_from_item_image, :index_partial, :edit_partial
   
-  self.delete_from_item_title = "Удалить из #{Item.class_name_rus}а"
   self.delete_from_item_js_string =
     "$(this).prev().remove();$(this).next(':hidden').remove();$(this).next(':checked').remove();$(this).next('textarea').remove();$(this).remove()"
-  self.delete_from_item_image = [ delete_image, { :title => delete_from_item_title } ]     
+  self.delete_from_item_image = [ delete_image,
+        { :title => Item.human_attribute_name( :delete_from_item_title ) } ]     
   self.insert_attr = "attr"      
   self.change_image = []
-  self.add_to_item_image = [ "arrow_large_right.png", { :title =>"Добавить к #{Item.class_name_rus}у" } ]
+  self.add_to_item_image = [ "arrow_large_right.png",
+        { :title => Item.human_attribute_name( :add_to_item_title ) } ]
   self.attr_partial = "attr"
   self.js_for_add_to_item = []
   self.partial_for_attr_with_link_to_remove = "attr"
@@ -25,9 +26,8 @@ class ItemAttribute < ActiveRecord1
   attr_accessor_with_default( :options_for_replace_item_attributes ) {
           [ tag, { :partial => "items/" + attr_partial, :object => self } ] }
 
-  def must_have_unique_name
-    errors.add :base, "Такой #{class_name_rus} уже есть" if new_record? && self.class.where( :name => name ).first     
-  end
+  validates_presence_of :name 
+  validates_uniqueness_of :name
 
   class << self
 

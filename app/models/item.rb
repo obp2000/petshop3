@@ -15,11 +15,8 @@ class Item < ActiveRecord1
   
   set_inheritance_column nil  
 
-  self.class_name_rus = "товар"
-  self.class_name_rus_cap = "Товар"
-  self.submit_with_options = [ "image_submit_tag", "document-save.png", { :title => "Сохранить изменения" } ]     
-  self.new_image = [ "newdoc.png", { :title => "Добавить " } ]
-  self.name_rus = "Название"
+  self.submit_image = [ "document-save.png", { :title => human_attribute_name( :submit_title ) } ]     
+  self.new_image = [ "newdoc.png", { :title => human_attribute_name( :new_title ) } ]
   self.index_render_block = lambda { render request.xhr? ? Index_template_hash :
         { :partial => "index", :layout => "items" } }
   self.paginate_options = { :per_page => 14 }
@@ -28,26 +25,13 @@ class Item < ActiveRecord1
   self.edit_partial = "form"
   self.show_tag = new_tag  
 
-  class_inheritable_accessor :price_rus, :season_rus, :style, :edit_tag
-  self.price_rus = "Цена"
-  self.season_rus = "Сезон"
+  class_inheritable_accessor :style, :edit_tag
   self.style = "margin-left: 10px;"
   self.edit_tag = new_tag
 
-  validate :must_have_long_name, :must_have_valid_price, :must_have_category, :must_have_type
-  
-  def must_have_valid_price
-    errors.add :base, "#{price_rus} #{class_name_rus}а должна быть целым числом" unless
-            price_before_type_cast && price_before_type_cast[/^[1-9][\d]*$/]      
-  end
-
-  def must_have_category
-    errors.add :base, "Необходимо выбрать #{Category.class_name_rus}" if category_id.blank?      
-  end
-
-  def must_have_type
-    errors.add :base, "Необходимо выбрать сезон одежды" if type.blank?     
-  end
+  validates_length_of :name, :minimum => 2
+  validates_presence_of :category, :type
+  validates_numericality_of :price, :only_integer => true
 
   def season; Season.new( self ) end
 
@@ -57,14 +41,16 @@ class Item < ActiveRecord1
     def index_scope( params ); all.sort_by { |item| eval( "item." + params[ :sort_by ] ) rescue "" } end
 
 # tags and partials
-    attr_accessor_with_default( :index_page_title_for ) { "Список #{class_name_rus}ов" }
+    attr_accessor_with_default( :index_page_title_for ) { human_attribute_name( :index_page_title ) }
     
     include ReplaceContent      
 
     def headers
-      [ [ "name", "Название" ], [ "sizes.first.name", Size.class_name_rus_cap_first],
-          [ "colours.first.name", Colour.class_name_rus_cap_first ], [ "category.name", Category.class_name_rus_cap_first ],
-          [ "price", price_rus ] ]
+      [ [ "name", human_attribute_name( :name ) ],
+        [ "sizes.first.name", Size.model_name.human.pluralize ],
+        [ "colours.first.name", Colour.model_name.human.pluralize ],
+        [ "category.name", Category.model_name.human ],
+        [ "price", human_attribute_name( :price ) ] ]
     end
   
   end

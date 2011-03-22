@@ -1,7 +1,7 @@
 .ui-widget-content{ :id => dom_id( cart_item ) }
   = link_to_show cart_item.catalog_item
-  = render_size_of cart_item
-  = render_colour_of cart_item  
+  = render "#{SharedPath}/size", :size => cart_item.size unless cart_item.size.blank?
+  = render "#{SharedPath}/colour", :colour => cart_item.colour unless cart_item.colour.blank?      
   %div
-    = "#{roubles cart_item.price} #{RUB} / #{cart_item.amount} #{SHT}"
+    = "#{number_to_currency cart_item.price} / #{cart_item.amount} #{t(:amount)}"
     = link_to_delete cart_item unless do_not_show( session.cart )

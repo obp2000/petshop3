@@ -8,9 +8,6 @@ class CartItem < ActiveRecord1
   
   delegate :name, :price, :to => :item
   
-  self.class_name_rus = "товар"
-  self.class_name_rus_cap = "Товар"
-  
   attr_accessor_with_default( :create_or_update_tag ) { tag }
   
   class << self
@@ -37,9 +34,13 @@ class CartItem < ActiveRecord1
   end
 
 # notices
-  def set_update_notice( flash ); flash.now[ :notice ] = "Добавлен товар<br /> <em>#{name}</em>".html_safe end
+  def set_update_notice
+    "#{self.class.human_attribute_name( :update_notice )}<br/><em>#{name}</em>".html_safe
+  end
 
-  def set_destroy_notice( flash ); flash.now[ :notice ] = "Удален товар <em>#{name}</em>".html_safe end  
+  def set_destroy_notice
+    "#{self.class.human_attribute_name( :destroy_notice )} <em>#{name}</em>".html_safe
+  end  
   
 # renders    
   def render_create_or_update( page, session )
@@ -56,8 +57,8 @@ end
 class Hash
   
   def conditions_hash( session )
-    { :item_id => self[ :id ].gsub(/\D/u, ""), :size_id => self[ :size_id ], :colour_id => self[ :colour_id ],
-          :cart_id => session.cart.id }
+    { :item_id => self[ :id ].gsub(/\D/u, ""), :size_id => self[ :size_id ],
+      :colour_id => self[ :colour_id ], :cart_id => session.cart.id }
   end  
   
 end

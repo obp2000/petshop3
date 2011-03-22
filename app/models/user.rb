@@ -21,10 +21,6 @@ class User < ActiveRecord1
   # anything else you want your user to change should be added here.
 #  attr_accessible :login, :email, :password, :password_confirmation
 
-  self.class_name_rus = "пользователь"    
-  self.class_name_rus_cap = "Пользователь"
-  self.submit_text = "Создать учётную запись"  
-
   # Activates the user in the database.
   def activate
     @activated = true
@@ -134,13 +130,13 @@ class User < ActiveRecord1
     { :host => "localhost:3001", :controller => "users", :action => "activate", :id => activation_code }    
   end
 
-  def self.logout_text; "Выйти" end
+  def self.logout_text; human_attribute_name( :logout_text ) end
     
   def self.link_to_logout( page ); [ logout_text, page.logout_path ] end
 
   def self.login_rus; "Имя пользователя" end
 
-  def self.email_rus; "Адрес электронной почты" end
+#  def self.email_rus; "Адрес электронной почты" end
   
   def self.last_name_rus; "Фамилия" end
   

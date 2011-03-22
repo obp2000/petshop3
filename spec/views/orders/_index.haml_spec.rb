@@ -26,7 +26,7 @@ describe "orders/_index" do
     rendered.should contain( ProcessedOrder.count.to_s )
     rendered.should have_selector( "tr", :onclick => "$.get('#{order_path(@order)}')" )
     rendered.should contain(@order.to_param)
-    rendered.should contain(@order.class.status_rus)
+    rendered.should contain(@order.class.status_)
     rendered.should contain(@order.total.to_s)
     rendered.should contain(@order.items.size.to_s)
     rendered.should contain(@order.created_at.strftime("%d.%m.%y"))

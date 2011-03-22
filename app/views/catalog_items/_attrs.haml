@@ -1,2 +1,2 @@
-= send( "render_#{attrs}_with_options_of", object )
-= render "catalog_items/any_attr", :any_attr => object.send( attrs ).first.class.new1 if object.send( attrs ).many?                    
+= render :partial => "catalog_items/attr", :collection => attrs, :locals => { :many => attrs.many? }
+= render "catalog_items/any_attr", :any_attr => attrs.first.class.new1 if attrs.many?                    

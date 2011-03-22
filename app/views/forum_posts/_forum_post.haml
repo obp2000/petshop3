@@ -1,6 +1,6 @@
 %div{ :id => dom_id( forum_post ), :style => forum_post.style }
-  %b= link_to_show forum_post 
-  = render_name_of forum_post
+  = link_to_show forum_post 
+  = render "attr", :attr => "name", :object => forum_post
   \....
-  = date_time_rus forum_post.created_at
+  = l forum_post.created_at, :format => :long
   = link_to_delete forum_post if self.current_user

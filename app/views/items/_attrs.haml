@@ -1,3 +1,4 @@
 = f.label attrs      
-%span{ :id => "form_#{attrs}" }= send( "render_attrs_with_link_to_remove_of", object, attrs, :f => f )
+%span{ :id => "form_#{attrs}" }
+  = render :partial => "items/#{object.send( attrs ).partial_for_attr_with_link_to_remove}", :collection => object.send( attrs ), :locals => { :f => f } 
 = link_to_change attrs.classify.constantize

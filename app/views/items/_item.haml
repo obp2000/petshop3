@@ -1,7 +1,7 @@
 %tr{ :id => dom_id( item ), :onclick => "$.get('#{edit_item_path(item)}')" }
   %td= item.name
-  %td= render_sizes_of item
-  %td= render_colours_of item 
-  %td= render_category_of item
-  %td.align_right= roubles item.price
+  %td= render :partial => "#{SharedPath}/size", :collection => item.sizes unless item.sizes.empty?  
+  %td= render :partial => "#{SharedPath}/colour", :collection => item.colours unless item.colours.empty? 
+  %td= item.category.name
+  %td.align_right= number_to_currency item.price
   %td= link_to_delete item

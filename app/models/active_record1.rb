@@ -11,10 +11,10 @@
   Create_or_update_template_hash = { :template => "shared/create_or_update.rjs" }
   Destroy_template_hash = { :template => "shared/destroy.rjs" }
    
-  class_inheritable_accessor :class_name_rus, :class_name_rus_cap, :back_image, :delete_image, :delete_title,
-    :close_window_image, :submit_image, :submit_text, :created_at_rus, :updated_at_rus,
-    :index_image, :index_text, :replace, :delete_text, 
-    :new_image, :new_text, :show_image, :name_rus, :submit_with_options, :change_text,
+  class_inheritable_accessor :back_image, :delete_image, :delete_title,
+    :close_window_image,
+    :index_image, :replace, :delete_text, 
+    :new_image, :new_text, :show_image, :submit_image, :change_text,
     :paginate_options, :insert_or_replace,    
     :index_render_block, :show_render_block, :new_render_block, :edit_render_block, :create_render_block,
     :update_render_block, :destroy_render_block,
@@ -29,24 +29,17 @@
     :headers,
     :create_or_update_partial,
     :link_to_new_dom_id,
-    :new_page_title, :link_to_season_dom_class
+    :link_to_season_dom_class
     
-  self.class_name_rus = ""
-  self.class_name_rus_cap = ""  
-  self.back_image = [ "back1.png", { :title => "Назад" } ]
+  self.back_image = [ "back1.png", { :title => I18n.t( :back ) } ]
   self.delete_image = "delete.png"
   self.delete_text = ""
-  self.close_window_image = [ "close.png", { :title => "Закрыть окно" } ]
-  self.submit_with_options = [ "image_submit_tag", "document-save-16.png", { :title => "Сохранить" } ]    
-  self.created_at_rus = "Создан"  
-  self.updated_at_rus = "Изменён"
+  self.close_window_image = [ "close.png", { :title => I18n.t( :close_window ) } ]
+  self.submit_image = [ "document-save-16.png", { :title => I18n.t( :save ) } ]    
   self.index_image = []
-  self.index_text = ""
   self.show_image = []
-#  self.replace = :replace     
   self.new_image = []
   self.new_text = ""
-  self.name_rus = ""
   self.index_render_block = lambda { render Index_template_hash }
   self.show_render_block = lambda { render Show_template_hash }
   self.new_render_block = self.edit_render_block = lambda { render New_or_edit_template_hash }
@@ -59,28 +52,16 @@
   self.js_for_create_or_update = []
   self.change_text = ""
   self.link_to_new_dom_id = "link_to_new"
-  self.new_page_title = ""
   self.link_to_season_dom_class = "link_to_season"
   
   attr_accessor_with_default( :show_text ) { name }
-  attr_accessor_with_default( :delete_title ) { "Удалить #{class_name_rus} #{name rescue id}?" }
+  attr_accessor_with_default( :delete_title ) {
+        "#{I18n.t(:remove)} #{self.class.model_name.human} #{name rescue id}?" }
   attr_accessor_with_default( :tag ) { "#{to_underscore}_#{id}" }
   attr_accessor_with_default( :edit_tag ) { "edit_#{to_underscore}_#{id}" }
   attr_accessor_with_default( :create_or_update_tag ) { edit_tag }
   attr_accessor_with_default( :create_or_update_partial ) { edit_partial }
   attr_accessor_with_default( :single_path ) { [ "#{to_underscore}_path", self ] }      
-  
-  def must_have_name
-    errors.add :base, "#{class_name_rus_cap} не может быть пустым" if name.blank?      
-  end  
-  
-  def must_have_long_name
-    errors.add :base, "В имени должно быть не менее двух символов" if name.size < 2     
-  end  
-
-  def must_have_valid_email
-    errors.add :base, "Неверный формат адреса электронной почты" if email !~ /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i     
-  end 
   
   scope :index_scope
     
@@ -97,12 +78,15 @@
     alias_method :find_object_for_update, :find_current_object
 
     def update_object( params, session, flash )
-      find_object_for_update( params, session ).update_object( params ).tap {
-            |result| result.first.set_update_notice( flash ) if result.second }
+      find_object_for_update( params, session ).update_object( params ).tap do |result|
+        flash.now[ :notice ] = result.first.set_update_notice if result.second
+      end
     end
 
     def destroy_object( params, session, flash )
-      find_current_object( params, session ).tap { |result| result.set_destroy_notice( flash ) }.destroy_object
+      find_current_object( params, session ).tap do |result|
+        flash.now[ :notice ] = result.set_destroy_notice 
+      end.destroy_object
     end     
 
     attr_accessor_with_default( :new1 ) { new }      
@@ -128,13 +112,11 @@
 
     def link_to_index( page, params )
       [ ( page.image_tag( *index_image ) rescue "" ) +
-      ( params[ :index_text ] rescue class_name_rus_cap.pluralize ),
+      ( params[ :index_text ] rescue model_name.human.pluralize ),
       page.send( "#{name.tableize}_path", params ), { :remote => true } ]
     end
 
-    def link_to_season_header( page )
-      [ page.image_tag( season_icon ) + season_name ] 
-    end
+    def link_to_season_header( page ); [ page.image_tag( season_icon ) + season_name ] end
 
 # tags and partials
     attr_accessor_with_default( :new_tag ) { "new_#{name.underscore}" }
@@ -151,22 +133,15 @@
 # JS
     def close_window( page ); page.action :remove, dom_id end  
 
-    attr_accessor_with_default( :class_name_rus_cap_first ) { class_name_rus_cap.split.first }
+#    attr_accessor_with_default( :class_name_rus_cap_first ) { class_name_rus_cap.split.first }
 
     def link_to_change( page )
-      [ page.image_tag( change_image, { :title => "Изменить #{class_name_rus.pluralize}" } ) +
+      [ page.image_tag( change_image, { :title => "#{I18n.t(:change)} #{model_name.human.pluralize}" } ) +
       change_text.html_safe, self, { :remote => true } ]
     end
 
-    def link_to_season( object )
-      [ "Всего (#{count})", self, { :remote => true } ]
-    end
+    def link_to_season( object ); [ "#{I18n.t(:count)} (#{count})", self, { :remote => true } ] end
 
-  end
-
-  def link_to_reply( page )
-    [ ( page.image_tag( *reply_image ) rescue "" ) + reply_text.html_safe,
-    page.send( "reply_#{to_underscore}_path", self ), { :remote => true, :id => link_to_reply_dom_id } ]      
   end
 
   attr_accessor_with_default( :to_underscore ) { self.class.name.underscore }
@@ -176,12 +151,24 @@
     
   def destroy_object; destroy end     
   
-  def save_object( session, flash ); save.tap { |success| set_create_notice( flash ) if success } end
+  def save_object( session, flash )
+    save.tap do |success|
+      flash.now[ :notice ] = set_create_notice if success
+    end
+  end
     
 # notices
-  def set_create_notice( flash ); flash.now[ :notice ] = "#{class_name_rus_cap} создан удачно." end
-  def set_update_notice( flash ); flash.now[ :notice ] = "#{class_name_rus_cap} удачно обновлён." end
-  def set_destroy_notice( flash ); flash.now[ :notice ] = "#{class_name_rus_cap} удалён." end     
+  def set_create_notice
+    "#{self.class.model_name.human} #{ActiveRecord1.human_attribute_name( :create_notice )}."
+  end
+  
+  def set_update_notice
+    "#{self.class.model_name.human} #{ActiveRecord1.human_attribute_name( :update_notice )}."
+  end
+  
+  def set_destroy_notice
+    "#{self.class.model_name.human} #{ActiveRecord1.human_attribute_name( :destroy_notice )}."
+  end     
 
 # renders
   def render_new_or_edit( page )

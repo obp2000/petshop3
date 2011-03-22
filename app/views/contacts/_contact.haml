@@ -1,10 +1,9 @@
-= form_for contact, :remote => true do |f|
+- form_for contact, :remote => true do |f|
   = f.error_messages
-  = with_options :f => f do |in_form|
-    %div= in_form.render_name_field_of contact, {}
-    %div= in_form.render_email_field_of contact, {}
-    %div= in_form.render_phone_field_of contact, {}     
-    %div= in_form.render_icq_field_of contact, {}         
-    %div
-      = in_form.render_address_field_of contact, {}         
-      = submit_to contact
+  - with_options :f => f, :object => contact do |in_form|
+    %div= in_form.render "shared/text_field", :text_field => :name 
+    %div= in_form.render "shared/text_field", :text_field => :email     
+    %div= in_form.render "shared/text_field", :text_field => :phone 
+    %div= in_form.render "shared/text_field", :text_field => :icq 
+    %div= in_form.render "text_area", :text_area => :address                
+    = submit_to contact
