@@ -2,50 +2,39 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
-#  [ :submit_to ].each do |method|
-#    define_method( method ) { |object| object.class.send( method, self ) }
-#  end
-
-  [ :index_page_title_for ].each do |method|
-    define_method( method ) { |objects| Array( objects ).first.class.send( method, params ) }
+  def link_to_enlarge_with_comment( object )
+    link_to *object.link_to_enlarge_with_comment( self )
   end
 
-  def link_to_season_header( object ); link_to *object.link_to_season_header( self ) end
+  def link_to_enlarge( photo )
+    link_to *photo.link_to_enlarge( self )
+  end
 
-  def link_to_show_with_comment( object ); link_to *object.link_to_show_with_comment( self ) end
-
-  def link_to_show( object ); link_to *object.link_to_show( self ) end
-
-  def link_to_close( object ); link_to *object.link_to_close( self ) end
-
-  def link_to_new( object ); link_to *object.link_to_new( self ) end
-
-  def link_to_cart( object ); link_to *object.link_to_cart( self ) end
-
-  def new_page_title_for( object ); object.class.human_attribute_name( :new_page_title ) end
-
-  def show_page_title_for( object ); object.class.human_name end
+  def link_to_close( object )
+#    link_to *object.link_to_close( self )
+      link_to image_tag( CloseProcessedOrderImage, :title => object.class.human_attribute_name( :close_title ) ),
+      close_processed_order_path( object ), :remote => true, :id => object.close_tag,
+        :confirm => object.class.human_attribute_name( :close_title ) + "?"   
+  end
 
   def link_to_remove_from_item( object )
-    link_to_function image_tag( *object.delete_from_item_image ), object.delete_from_item_js_string    
+    link_to_function image_tag( DeleteImage, :title => Item.human_attribute_name( :delete_from_item_title ) ),
+        object.delete_from_item_js    
   end
 
-  def link_to_add_html_code_to( object )
-    link_to_function image_tag( *object.add_html_code_to_colour_image ),
-      object.add_html_code_to_colour_js_string    
+  def link_to_change( object )
+    link_to image_tag( object.change_image,
+      { :title => "#{t(:change)} #{object.model_name.human.pluralize}" } ), object, { :remote => true }    
   end
 
-  def link_to_index_local( object ); link_to *object.link_to_index_local( self ) end
+  def link_to_delete( object )
+    link_to image_tag( DeleteImage, { :title => object.delete_title } ), object,
+          :remote => true, :method => :delete, :confirm => object.delete_title + "?"    
+  end
 
-  def link_to_change( object ); link_to *object.link_to_change( self ) end
-
-  def link_to_delete( object ); link_to *object.link_to_delete( self ) end
-
-  def link_to_season( object ); link_to *object.link_to_season( self ) end
-
-  def submit_to( object ); image_submit_tag *object.submit_image end
-
-  def link_to_logout( object ); link_to *object.link_to_logout( self ) end
+  def small_submit_button
+    image_submit_tag SaveImageSmall, :title => t( :save )
+  end
 
   def attach_js( js ); delay( DURATION + 0.2 ) { call( js ) } end
 
@@ -64,7 +53,9 @@ module ApplicationHelper
     insert_html :top, :content, :partial => "shared/notice"
     self[ :notice ].hide
     appear_with_duration :notice, appear_duration    
-    delay( appear_duration ) { fade_with_duration :notice, fade_duration; delay( fade_duration ) { self[ :notice ].remove } }
+    delay( appear_duration ) do
+      fade_with_duration :notice, fade_duration; delay( fade_duration ) { self[ :notice ].remove }
+    end
   end
 
   def check_cart_links
@@ -72,40 +63,38 @@ module ApplicationHelper
         |link| replace_html link, :partial => "carts/#{link}" }
   end
 
-  def check_cart_totals( session ); session.cart.cart_totals.each { |args| replace_html *args } end
-    
-#  def roubles( arg ); number_to_currency( arg, :unit => "", :precision => 0, :delimiter => " ") end
-
-#  def date_time_rus( arg ); arg.strftime( "%d.%m.%yг. %H:%M:%S" ) rescue "" end
+  def check_cart_totals( session )
+    session.cart.cart_totals.each { |args| replace_html *args }
+  end
 
   def do_not_show( cart )
     controller_name == 'processed_orders' or cart.cart_items.empty?
   end
     
-  def do_not_show_nav; controller_name == "sessions" or controller_name == "users" end
-  
-# links
-  def link_to_index( class_const, params = nil ); link_to *class_const.link_to_index( self, params ) end    
+  def do_not_show_nav
+    controller_name == "sessions" or controller_name == "users"
+  end
 
-  def link_to_category( category, season_class )
-    link_to *category.link_to_category( self, season_class.name.tableize )
+  def link_to_category( category, season_catalog_items )
+    link_to category.link_to_category( season_catalog_items ),
+      send( "category_#{season_catalog_items}_path", category ), :remote => true, :class => "category"
   end
 
   def link_to_close_window( objects )
-    link_to_function( image_tag *objects.close_window_image ) { |page| objects.close_window( page ) }
+    link_to_function(
+      image_tag CloseWindowImage, :title => t( :close_window ) ) {
+        |page| page.action :remove, objects.dom_id }
   end
 
   def link_to_back( object )
-    link_to_function( image_tag *object.back_image ) { |page| object.class.back( page ) }
+    link_to_function( image_tag BackImage, :title => t( :back ) ) { |page| object.class.back( page ) }
   end
 
   def link_to_add_to_item( object )
-    link_to_function( image_tag *object.add_to_item_image ) { |page| object.add_to_item( page ) }
+    link_to_function(
+      image_tag AddToItemImage, :title => Item.human_attribute_name( :add_to_item_title ) ) {
+      |page| object.add_to_item( page ) }
   end  
-    
-#  def link_to_remote2( image = [], text = "", url = nil, opts = {} )
-#    link_to( ( image_tag( *image ) rescue "" ) + text.html_safe, url, { :remote => true }.merge( opts )  )
-#  end     
 
   def render_show( appear_tag, fade_tag, show_partial )
     action :replace_html, appear_tag, :partial => show_partial
@@ -154,11 +143,6 @@ module ApplicationHelper
 
   def render_single( attr )
     render :partial => "#{SharedPath}/#{attr.row_partial}", :object => attr unless attr.blank?
-  end
-  
-  def render_categories_of( season_class )
-    render :partial => "layouts/grouped_by_category", :locals => { :season_class => season_class },
-            :collection => season_class.find( :all, :select => "category_id", :group => "category_id" )    
   end
 
   [ "name", "price", "email", "phone", "icq", "subject", "phone_number", "ship_to_first_name",
@@ -233,21 +217,9 @@ class Array
     
   def row_partial; first.row_partial end      
     
-#  def method_missing( method, *args, &block )
-#    first.method *args, &block
-#  end
-    
   def headers; first.headers end
   
   def partial_path; first.partial_path end  
-    
-  def no_forum_posts_text; "В форуме пока ещё нет сообщений. Будьте первым!" end
-    
-  def close_window_image; first.close_window_image end
-    
-  def close_window( page ); first.class.close_window page end
-    
-  def link_to_index( page, params ); first.class.link_to_index( page, params ) end
     
   def new1; first.class.new1 end
   
@@ -262,8 +234,6 @@ class Object
   attr_accessor_with_default( :sum_amount ) { sum( :amount ) }
     
   attr_accessor_with_default( :dom_id ) { self.class.name.tableize }
-  
-#  def link_to_new_order_form; cart.link_to_new_order_form end
 
 end
 
@@ -272,9 +242,6 @@ class Hash
   attr_accessor_with_default( :cart ) { Cart.find_or_create self }
   
 end
-
-DURATION = 0.5
-HIGHLIGHT_DURATION = 2
 
 WillPaginate::ViewHelpers.pagination_options[ :previous_label ] = 'Пред.'
 WillPaginate::ViewHelpers.pagination_options[ :next_label ] = 'След.'

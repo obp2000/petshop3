@@ -1,6 +1,6 @@
 %div
   -if order_item.item
-    = link_to_show order_item.item
+    = link_to order_item.name, order_item.item, :remote => true
     = render "#{SharedPath}/size", :size => order_item.size unless order_item.size.blank?
     = render "#{SharedPath}/colour", :colour => order_item.colour unless order_item.colour.blank?        
     = order_item.amount

@@ -25,5 +25,5 @@
     %div= in_form.render "items/attrs", :attrs => "photos"       
     = in_form.render "items/time", :time => "created_at"
     = in_form.render "items/time", :time => "updated_at"
-    = submit_to @object 
+    = image_submit_tag SaveImageLarge, :title => t( :save_changes ) 
     

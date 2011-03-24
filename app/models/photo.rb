@@ -4,9 +4,14 @@ class Photo < ItemAttribute
 
   mount_uploader :photo, PhotoUploader
 
-  self.change_image = "insert-image.png"
-  self.delete_from_item_js_string =
-    "$(this).siblings(':checkbox').removeAttr('checked');$(this).siblings(':not(:checkbox)').remove();$(this).remove();"  
+  DeleteFromItemJS = "$(this).siblings(':checkbox').removeAttr('checked');
+                      $(this).siblings(':not(:checkbox)').remove();
+                      $(this).remove();"
+
+  self.change_image = ChangePhotoImage
+  self.delete_from_item_js = "$(this).siblings(':checkbox').removeAttr('checked');
+                              $(this).siblings(':not(:checkbox)').remove();
+                              $(this).remove();"  
   self.insert_attr = "photo"
   self.create_render_block = lambda { responds_to_parent { render Create_or_update_template_hash } }
   self.paginate_options = { :per_page => 5  }
@@ -22,8 +27,8 @@ class Photo < ItemAttribute
   scope :index_scope, where( :item_id => nil ).order( :id ) 
 
 # links
-  def link_to_show( page, comment = "" ); [ page.image_tag( photo.thumb.url ) + comment, photo_url ] end
+  def link_to_enlarge( page, comment = "" ); [ page.image_tag( photo.thumb.url ) + comment, photo_url ] end
 
-  def link_to_show_with_comment( page ); link_to_show page, comment end
+  def link_to_enlarge_with_comment( page ); link_to_enlarge page, comment end
   
 end

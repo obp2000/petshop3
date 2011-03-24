@@ -1,13 +1,11 @@
 # encoding: utf-8
 class ProcessedOrder < Order
-
-  self.new_image = [ "tick_16.png" ]
-  self.new_text = human_attribute_name( :new_text )   
+  
   self.edit_partial = "form"
   
   class_inheritable_accessor :close_image, :captcha_text, :fade_duration,
         :close_render_block, :update_amount, :processed_orders_amount_dom_id
-  self.close_image = [ "page_table_close.png", { :title => human_attribute_name( :close_title ) } ]
+  self.close_image = [ CloseProcessedOrderImage, { :title => human_attribute_name( :close_title ) } ]
   self.captcha_text = human_attribute_name( :captcha_text )
   self.fade_duration = 20
   self.close_render_block = lambda { render :template => "shared/close.rjs" }
@@ -78,11 +76,12 @@ class ProcessedOrder < Order
   end
 
 # links
-  def link_to_close( page )
-      [ page.image_tag( *close_image ), page.send( "close_#{to_underscore}_path", self ),
-      { :remote => true, :id => close_tag,
-        :confirm => self.class.human_attribute_name( :close_confirm ) } ]            
-  end
+#  def link_to_close( page )
+#      [ page.image_tag( CloseProcessedOrderImage, :title => human_attribute_name( :close_title ) ),
+#      page.send( "close_#{to_underscore}_path", self ),
+#      { :remote => true, :id => close_tag,
+#        :confirm => self.class.human_attribute_name( :close_confirm ) } ]            
+#  end
 
 # renders
   def render_close( page )

@@ -1,6 +1,6 @@
 %ul.ui-tabs-nav.ui-widget-header.ui-helper-clearfix
-  %li.ui-state-default= link_to_index Order
-  %li.ui-state-default= link_to_index Item            
-  %li.ui-state-default= link_to_index Contact            
-  %li.ui-state-default= link_to_index_local CatalogItem            
-  %li.ui-state-default= link_to_logout User
+  %li.ui-state-default= link_to Order.model_name.human.pluralize, orders_path, :remote => true  
+  %li.ui-state-default= link_to Item.model_name.human.pluralize, items_path, :remote => true               
+  %li.ui-state-default= link_to Contact.model_name.human.pluralize, contacts_path, :remote => true
+  %li.ui-state-default= link_to t( :back_to_shop ), CatalogItem            
+  %li.ui-state-default= link_to t( :logout ), logout_path

@@ -1,8 +1,8 @@
 %div 
-  Показать:
-  = link_to_index Order
+  = t( :show ).colon
+  = link_to Order.model_name.human.pluralize, orders_path, :remote => true
   \//
-  = link_to_index ProcessedOrder    
+  = link_to ProcessedOrder.model_name.human.pluralize, processed_orders_path, :remote => true       
   = render "orders/processed_orders_amount" 
   \//
-  = link_to_index ClosedOrder     
+  = link_to ClosedOrder.model_name.human.pluralize, closed_orders_path, :remote => true 

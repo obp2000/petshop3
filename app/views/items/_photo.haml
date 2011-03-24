@@ -1,5 +1,5 @@
 %span{ :id => dom_id( photo ) }
-  %span.yoxview= link_to_show photo
+  %span.yoxview= link_to_enlarge photo
   = link_to_remove_from_item photo
   %div
     = fields_for "item[existing_photo_attributes][]", photo do |photo_form|

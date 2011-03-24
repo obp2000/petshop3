@@ -1,9 +1,11 @@
 %div
-  %h2= index_page_title_for @objects
+  %h2= Item.model_name.human.pluralize
   %table{ :id => @objects.dom_id }
     %caption= will_paginate @objects
     %tr
-      = render_headers_of @objects
-      %th{:scope => "col"}= link_to_new @object.class
+      - @objects.headers.each do |header|
+        %th{ :scope => "col" }= link_to header[ 1 ], items_path( :sort_by => header[ 0 ] ), :remote => true                
+      %th{:scope => "col"}
+        = link_to image_tag( NewItemImage, :title => Item.human_attribute_name( :new_title ) ), new_item_path, :remote => true
     = render @objects
   %div{ :id => @object.new_tag }= render @object.new_partial

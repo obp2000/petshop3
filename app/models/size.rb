@@ -6,7 +6,10 @@ class Size < ItemAttribute
   has_many :cart_items
   has_many :order_items
 
-  self.change_image = "pencil-ruler.png"
+  validates_presence_of :name 
+  validates_uniqueness_of :name
+
+  self.change_image = ChangeSizeImage
   
   class_inheritable_accessor :style
   self.style = "margin-left: -2px; margin-right: -1px"

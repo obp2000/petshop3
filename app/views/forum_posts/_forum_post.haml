@@ -1,5 +1,5 @@
 %div{ :id => dom_id( forum_post ), :style => forum_post.style }
-  = link_to_show forum_post 
+  = link_to forum_post.subject.html_safe, forum_post, :remote => true 
   = render "attr", :attr => "name", :object => forum_post
   \....
   = l forum_post.created_at, :format => :long

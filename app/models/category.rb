@@ -1,12 +1,15 @@
 # encoding: utf-8
 class Category < ItemAttribute
+
   has_many :items, :include => [:sizes, :colours, :photos]
   has_many :catalog_items, :include => [:sizes, :colours, :photos]
   has_many :summer_catalog_items, :include => [:sizes, :colours, :photos]
   has_many :winter_catalog_items, :include => [:sizes, :colours, :photos]
 
+  validates_presence_of :name 
+  validates_uniqueness_of :name
 
-  self.change_image = "color_line.png"
+  self.change_image = ChangeCategoryImage
   self.attr_partial = "category"
   self.attr_choose_partial = name.tableize
   self.hidden_field_name = "item[category_id]"

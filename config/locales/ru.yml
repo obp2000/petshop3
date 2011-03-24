@@ -81,8 +81,20 @@ ru:
   on_your_query: По Вашему запросу
   query_results: Результаты поиска по запросу
   that: Такой
-
-
+  show: Показать
+  search_catalog_item: Поиск товара
+  save_changes: Сохранить изменения
+  back_to_shop: Назад в магазин
+  logout: Выйти
+  reply: Ответить
+  empty_forum_message: В форуме пока ещё нет сообщений. Будьте первым!
+  clear_cart: Очистить корзину
+  new_subject: Новая тема  
+  all_found_items: всего найдено товаров
+  add_this_catalog_item_to_cart: Добавить этот товар в корзину
+  successfully_created: создан удачно
+  successfully_updated: удачно обновлён
+  deleted: удалён 
 
   
   time:
@@ -200,17 +212,12 @@ ru:
         must_have_long_name: В имени должно быть не менее двух символов
         must_have_valid_email: Неверный формат адреса электронной почты
         must_have_name: не может быть пустым
-        create_notice: создан удачно
-        update_notice: удачно обновлён
-        destroy_notice: удалён 
         
       cart_item:
         update_notice: Добавлен товар
         destroy_notice: Удалён товар
         
       cart:
-        delete_text: Очистить корзину
-        submit_title: Добавить этот товар в корзину
         destroy_notice: Корзина очищена
         
       category:
@@ -231,14 +238,12 @@ ru:
         phone: Номер телефона
 
       forum_post:
-        new_text: Новая тема
         submit_text: Отправить
         must_have_long_subject: Тема слишком короткая (минимум 5 букв)
         must_have_long_body: Сообщение слишком короткое (минимум 5 букв)
         create_notice: Новая тема создана
         send_notice: Сообщение отправлено
         destroy_notice: Ветвь сообщений удалена
-        reply_text: Ответить
         name: Имя
         subject: Тема
         body: Сообщение
@@ -248,7 +253,6 @@ ru:
         
       item:
         new_title: Добавить
-        submit_title: Сохранить изменения
         index_page_title: Список товаров
         delete_from_item_title: Удалить из товара
         add_to_item_title: Добавить к товару
@@ -261,19 +265,16 @@ ru:
         type: Сезон        
         
       catalog_item:
-        link_to_index_local: Назад в магазин
         price: Цены
         submit_title: Поиск товара
         not_found_notice: товары не найдены
-        all_found_items: всего найдено товаров
-      
+        
       closed_order:
         status_nav: " со статусом \"закрытые\""
         status_: закрыт
         
       order:
         details_title: Детали заказа
-        index_page_title: Список заказов
         destroy_notice: успешно удалён
         id: № заказа
         ship_to_first_name: Имя заказчика
@@ -283,11 +284,7 @@ ru:
         ship_to_city: Город
         address: Адрес
         comments: Комментарии
-        
-        
-        
-        
-        
+       
       order_item:
         removed_item_message: Товар удален из каталога!        
 
@@ -300,7 +297,6 @@ ru:
         new_text: Оформить заказ
         close_title: Закрыть заказ
         submit_text: Разместить заказ
-        close_confirm: Закрыть заказ?
         captcha_text: "Введите, пожалуйста, проверочный код:"
         status_nav: " со статусом \"для исполнения\""
         status_: "для исп."
@@ -317,17 +313,4 @@ ru:
 
       user:
         new_page_title: Новый администратор
-        logout_text: Выйти
         
-   
-
-        
-
-        
-        
-        
-
-        
-        
-        
- 

@@ -132,7 +132,7 @@ class User < ActiveRecord1
 
   def self.logout_text; human_attribute_name( :logout_text ) end
     
-  def self.link_to_logout( page ); [ logout_text, page.logout_path ] end
+#  def self.link_to_logout( page ); [ logout_text, page.logout_path ] end
 
   def self.login_rus; "Имя пользователя" end
 

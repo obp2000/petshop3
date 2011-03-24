@@ -1,4 +1,4 @@
-%h2= new_page_title_for @object 
+%h2= @object.class.human_attribute_name( :new_page_title ) 
 = form_for @object, :remote => true do |f|
   = f.error_messages
   - with_options :f => f, :object => @object do |in_form|

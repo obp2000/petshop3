@@ -34,10 +34,6 @@ class Order < ActiveRecord1
   class << self
 # tags
     include ReplaceContent      
-    
-    def index_page_title_for( params )
-      "#{human_attribute_name(:index_page_title)}" + params[ :controller ].classify.constantize.status_nav
-    end
 
   end
 

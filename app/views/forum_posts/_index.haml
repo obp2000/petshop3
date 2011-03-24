@@ -1,8 +1,8 @@
-%h2= index_page_title_for @objects
+%h2= ForumPost.model_name.human
 %fieldset.ui-widget-content
-  = link_to_new @objects.first.class
+  = link_to image_tag( NewForumPostImage ) + t( :new_subject ), new_forum_post_path, :remote => true
   - if @objects.empty?
-    = @objects.no_forum_posts_text
+    = t( :empty_forum_message )
   - else
     %div{ :id => @objects.dom_id }= render @objects
     = will_paginate @objects

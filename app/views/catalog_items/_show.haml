@@ -8,7 +8,7 @@
   = @object.category.name  
   = label :item, :season
   = @object.season.name
-  = submit_to session.cart  
+  = submit_to_cart  
   %div
     = label :item, :sizes      
     = render "catalog_items/attrs", :attrs => @object.sizes

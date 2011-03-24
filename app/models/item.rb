@@ -15,8 +15,12 @@ class Item < ActiveRecord1
   
   set_inheritance_column nil  
 
-  self.submit_image = [ "document-save.png", { :title => human_attribute_name( :submit_title ) } ]     
-  self.new_image = [ "newdoc.png", { :title => human_attribute_name( :new_title ) } ]
+  DeleteFromItemJS = "$(this).prev().remove();
+                      $(this).next(':hidden').remove();
+                      $(this).next(':checked').remove();
+                      $(this).next('textarea').remove();
+                      $(this).remove()"
+
   self.index_render_block = lambda { render request.xhr? ? Index_template_hash :
         { :partial => "index", :layout => "items" } }
   self.paginate_options = { :per_page => 14 }
@@ -39,9 +43,6 @@ class Item < ActiveRecord1
 
 # actions
     def index_scope( params ); all.sort_by { |item| eval( "item." + params[ :sort_by ] ) rescue "" } end
-
-# tags and partials
-    attr_accessor_with_default( :index_page_title_for ) { human_attribute_name( :index_page_title ) }
     
     include ReplaceContent      
 

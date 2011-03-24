@@ -1,6 +1,8 @@
-= render "layouts/search"
-= link_to_index ForumPost
-= link_to_show Contact.first
+= form_tag search_catalog_items_path, :remote => true, :id => "search_box" do
+  = search_field_tag :q
+  = image_submit_tag SearchImage, { :title => t( :search_catalog_item ) }
+= link_to image_tag( ForumImage ) + ForumPost.model_name.human.pluralize , forum_posts_path, :remote => true 
+= link_to image_tag( ContactsImage ) + Contact.model_name.human.pluralize, Contact.first, :remote => true 
 %h3= t( :header_title ).html_safe
-= image_tag "bestic.png"
+= image_tag HeaderImage
 %h5= link_to t( :demo ), items_path 

@@ -1,8 +1,10 @@
 %div
-  %h2= index_page_title_for @objects 
+  %h2= "#{Order.model_name.human.pluralize}" + params[ :controller ].classify.constantize.status_nav 
   = render 'orders/navigation'
   %table{ :summary => "" }
     %caption= will_paginate @objects
-    %tr= render :partial => "orders/header", :collection => @objects.headers
+    %tr
+      - @objects.headers.each do |header|
+        %th{:scope => "col"}= header
     = render_collection_of @objects
   %div{ :id => @objects.show_tag }

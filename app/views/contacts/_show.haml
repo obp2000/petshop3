@@ -1,8 +1,17 @@
-%h2= show_page_title_for @object
+%h2= @object.class.model_name.human.pluralize
 %dl.ui-widget-content
-  - with_options :object => @object do |for_object|
-    %dd= for_object.render "attr", :attr => "name"
-    %dd= for_object.render "email", :attr => "email"
-    %dd= for_object.render "attr", :attr => "phone"
-    %dd= for_object.render "attr", :attr => "icq"
-    %dd= for_object.render "attr", :attr => "address"  
+  %dd
+    = image_tag NameImage
+    = @object.name 
+  %dd
+    = image_tag EmailImage
+    = mail_to @object.email, nil, :subject => @object.class.human_attribute_name( "email_subject" )
+  %dd
+    = image_tag PhoneImage
+    = @object.phone    
+  %dd
+    = image_tag ICQImage
+    = @object.icq
+  %dd
+    = image_tag AddressImage
+    = @object.address        
