@@ -1,8 +1,11 @@
-= "Уважаемый(ая) #{@order.ship_to_first_name} !"
-= "Ваш заказ номер #{@order.id} принят."
-В ближайшее время наши менеджеры свяжутся с Вами.
-Информация о заказе:
-= render :partial => 'order_notice/order_item', :collection => @order.order_items
-= "Общая сумма заказа: #{@order.total.to_i} #{t(:currency)}".html_safe
-Спасибо за заказ!
-С уважением, интернет-магазин BEST&C.
+= "#{t(:dear)} #{@order.ship_to_first_name} !"
+= @order.class.human_attribute_name( :order_accepted )
+= @order.class.human_attribute_name( :id ) + ": " + @order.id.to_s
+= @order.class.human_attribute_name( :order_notice_header )
+= @order.class.human_attribute_name( :order_info )
+- @order.order_items.each do |order_item|
+  = order_item.notice( self )
+= @order.class.human_attribute_name( :order_total_sum ) + ": " +  number_to_currency( @order.total )
+= @order.class.human_attribute_name( :thank_you_for_order )
+= @order.class.human_attribute_name( :order_notice_sign ).html_safe
+

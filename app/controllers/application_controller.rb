@@ -18,55 +18,70 @@ class ApplicationController < ActionController::Base
   # filter_parameter_logging :password
   
   include AuthenticatedSystem
+
+  RenderIndex = lambda { render( :update ) { |page| @objects.render_index( page ) } }
+  RenderShow = lambda { render( :update ) { |page| @object.class.render_show( page ) } }
+  RenderNewOrEdit = lambda { render( :update ) { |page| @object.render_new_or_edit( page ) } }  
+  RenderCreateOrUpdate =
+      lambda { render( :update ) { |page| @object.render_create_or_update( page, session ) } }
   
   def index
     @object = controller_name.classify.constantize.new_object( params, session )    
     @objects = controller_name.classify.constantize.all_objects( params, flash )
     @objects = [ @object ] if @objects.empty?
-    render_block_call     
+    if request.xhr?
+      RenderIndex.bind( self )[]
+    else
+      render :partial => "index", :layout => @objects.first.class.index_layout
+    end
   end
 
   def show
     @object = controller_name.classify.constantize.find( params[ :id ] )
-    render_block_call    
+    RenderShow.bind( self )[]    
   end
 
   def new
     @object = controller_name.classify.constantize.new1
-    render_block_call    
+    RenderNewOrEdit.bind( self )[]     
   end
 
   def edit
     @object = controller_name.classify.constantize.find( params[ :id ] )
-    render_block_call    
+    RenderNewOrEdit.bind( self )[]    
   end
 
   def create( captcha_validated = nil )
     @object = controller_name.classify.constantize.new_object( params, session )
     session[ :captcha_validated ] = captcha_validated
-    render_block_call( ( "new" unless @object.save_object( session, flash ) ) )        
+    if @object.save_object( session, flash )
+      flash.now[ :notice ] = @object.create_notice
+      controller_name.classify.constantize.create_render_block.bind( self )[]      
+    else
+      RenderNewOrEdit.bind( self )[]
+    end
   end
 
   def update
-    p params
     @object, success = controller_name.classify.constantize.update_object( params, session, flash )
-    render_block_call( ( "edit" unless success ) )     
+    if success
+      flash.now[ :notice ] = @object.update_notice
+      RenderCreateOrUpdate.bind( self ).call
+    else
+      RenderNewOrEdit.bind( self ).call      
+    end
   end
 
   def destroy
     @objects = @object = controller_name.classify.constantize.destroy_object( params, session, flash )
-    render_block_call    
+    flash.now[ :notice ] = Array( @objects ).first.destroy_notice    
+    render( :update ) { |page| Array( @objects ).render_destroy( page, session ) }    
   end
 
   def close
     @object = controller_name.classify.constantize.close_object( params, session, flash )
-    render_block_call  
+    flash.now[ :notice ] = @object.close_notice    
+    render( :update ) { |page| @object.render_close( page ) }      
   end    
-    
-  private
-  
-    def render_block_call( action = nil )
-      controller_name.classify.constantize.send( "#{action || action_name}_render_block" ).bind( self )[]
-    end
 
 end

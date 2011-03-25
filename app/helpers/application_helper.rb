@@ -164,7 +164,6 @@ module ApplicationHelper
     end
   end
 
-
   [ "phone", "icq", "address", "email", "subject", "name", "body", "id", "ship_to_first_name",
     "phone_number", "ship_to_city", "ship_to_address", "comments" ].each do |attr|
     define_method( "render_#{attr}_of" ) do |object|
@@ -172,10 +171,10 @@ module ApplicationHelper
     end
   end        
        
-  def render_thumbs_of( object, locals = {} )
-    render *object.instance_exec { [ :partial => "#{SharedPath}/photo", :collection => photos,
-    :locals => { :attrs => photos }.merge( locals ) ] } unless object.photos.empty?     
-  end
+#  def render_thumbs_of( object )
+#    render *object.instance_exec { [ :partial => "#{SharedPath}/photo", :collection => photos
+#    ] } unless object.photos.empty?     
+#  end
 
   [ "size", "colour" ].each do |attr|
     define_method( "render_#{attr}_of" ) do |object|
@@ -183,11 +182,6 @@ module ApplicationHelper
           :object => object.send( attr ) unless object.send( attr ).blank?     
     end
   end 
-
-  def render_headers_of( objects )
-    render *objects.instance_exec { [ :partial => "#{partial_path}/header",
-          :collection => headers, :locals => { :objects => self } ] }   
-  end        
           
 end
 

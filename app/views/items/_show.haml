@@ -6,4 +6,5 @@
   = @object.season.name
   %div= number_to_currency @object.price  
   %div= @object.blurb
-  .thumbs.yoxview= render_thumbs_of @object
+  .thumbs.yoxview
+    = render :partial => "#{SharedPath}/photo", :collection => @object.photos unless @object.photos.empty?     

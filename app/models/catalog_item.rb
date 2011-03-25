@@ -6,11 +6,9 @@ class CatalogItem < Item
   self.season_name = I18n.t( :all_seasons )
 
   self.show_tag = "details"
-
-  self.index_render_block =
-    lambda { render request.xhr? ? Index_template_hash : { :partial => "index", :layout => "application" } }
   self.paginate_options = { :per_page => 8 }
   self.js_for_show = []
+  self.index_layout = "application"
   
   cattr_accessor :row_partial, :partial_path
   self.row_partial = name.underscore  
@@ -26,18 +24,19 @@ class CatalogItem < Item
     
     attr_accessor_with_default( :js_for_index ) { superclass.js_for_index << "attach_shadowOn" }
     
-    def back( page ); page.fade_appear( show_tag, dom_id ) end
+    def back( page )
+      page.fade_appear( show_tag, dom_id )
+    end
 
     def render_show( page )
       super
-      page.fade_appear dom_id, show_tag
+      page.fade_appear( dom_id, show_tag )
     end
 
 # actions
     def search_results( params, flash )
-      flash.now[ :notice ] = not_found_notice( params ) if
-          ( results = search( *params.search_args ) ).empty?              
-      results
+      search( *params.search_args )
+#      search( params[ :q ], { :page => params[ :page ], :per_page => 8, :order => :id, :sort_mode => :desc } )
     end
 
 # notices
@@ -45,7 +44,9 @@ class CatalogItem < Item
       "#{I18n.t( :on_your_query )} \"#{params[ :q ]}\" #{human_attribute_name( :not_found_notice )}"         
     end
 
-    def season_page_title; model_name.human + ': ' + season_name end
+    def season_page_title
+      model_name.human + ': ' + season_name
+    end
 
   end
 
@@ -64,6 +65,8 @@ end
 
 class Hash
   
-  def search_args; [ self[ :q ], { :page => self[ :page ], :per_page => 8, :order => :id, :sort_mode => :desc } ] end
+  def search_args
+    [ self[ :q ], { :page => self[ :page ], :per_page => 8, :order => :id, :sort_mode => :desc } ]
+  end
   
 end

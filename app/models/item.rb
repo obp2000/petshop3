@@ -1,5 +1,6 @@
 # encoding: utf-8
 class Item < ActiveRecord1
+  
   has_many :items_sizes, :dependent => :delete_all
   has_many :sizes, :through => :items_sizes
   
@@ -21,13 +22,12 @@ class Item < ActiveRecord1
                       $(this).next('textarea').remove();
                       $(this).remove()"
 
-  self.index_render_block = lambda { render request.xhr? ? Index_template_hash :
-        { :partial => "index", :layout => "items" } }
   self.paginate_options = { :per_page => 14 }
   self.js_for_new_or_edit = self.js_for_show = [ "attach_yoxview" ]
   self.new_tag = "item_content"
   self.edit_partial = "form"
-  self.show_tag = new_tag  
+  self.show_tag = new_tag
+  self.index_layout = "items"
 
   class_inheritable_accessor :style, :edit_tag
   self.style = "margin-left: 10px;"

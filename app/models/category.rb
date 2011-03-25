@@ -8,6 +8,7 @@ class Category < ItemAttribute
 
   validates_presence_of :name 
   validates_uniqueness_of :name
+  validates_length_of :name, :minimum => 2  
 
   self.change_image = ChangeCategoryImage
   self.attr_partial = "category"

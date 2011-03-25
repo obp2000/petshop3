@@ -8,17 +8,17 @@ class UserMailer < ActionMailer::Base
   
   def signup_notification(user)
     setup_email(user)
-    subject      "Магазин одежды для той-терьеров: Активируйте, пожалуйста, Вашу новую учетную запись"
+    subject      User.human_attribute_name( :signup_notificaton_subject )
   end
   
   def activation(user)
     setup_email(user)
-    subject      "Магазин одежды для той-терьеров: Ваша учетная запись активирована!"
+    subject      User.human_attribute_name( :activation_subject )
   end
   
   def forgot_password(user)
     setup_email(user)
-    subject      "Магазин одежды для той-терьеров: Переустановка пароля" 
+    subject      User.human_attribute_name( :forgot_password_subject ) 
   end 
   
   protected

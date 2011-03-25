@@ -21,7 +21,7 @@ ru:
         ship_to_city: "Город"
         ship_to_address: "Адрес"
         comments: "Комментарии к заказу"
-        captcha: "Введите, пожалуйста, проверочный код"
+        captcha: Введите, пожалуйста, проверочный код
       contact:
         name: "Имя"
         email: "e-mail"
@@ -33,12 +33,12 @@ ru:
         subject: "Тема"
         body: "Сообщение"
       user:
-        login: Имя пользователя
+        login: Учетная запись
         password: Пароль
         email: E-mail
         password_confirmation: Введите пароль ещё раз
-        first_name: Имя
-        last_name: Фамилия
+        first_name: Имя пользователя
+        last_name: Фамилия пользователя
         
     submit:
       forum_post:
@@ -55,9 +55,8 @@ ru:
   header_title: "одежда для<br/>русских тоев"  
   demo: Демо
   totals: Итого
-  required_fields: "обязательные поля"
+  required_fields: обязательные поля
   any_attr: Любой
-  currency1: руб.
   amount: шт.
   year: г.
   remove: Удалить
@@ -94,7 +93,11 @@ ru:
   add_this_catalog_item_to_cart: Добавить этот товар в корзину
   successfully_created: создан удачно
   successfully_updated: удачно обновлён
-  deleted: удалён 
+  deleted: удалён
+  send: Отправить
+  enter: Войти
+  forgot_password?: Забыли пароль?
+  dear: Уважаемый(ая)
 
   
   time:
@@ -148,6 +151,10 @@ ru:
       
     errors:
       models:
+        category:
+          attributes:
+            name:
+              too_short: слишком короткая (минимум 2 буквы)              
         contact:
           attributes:
             email:
@@ -284,6 +291,13 @@ ru:
         ship_to_city: Город
         address: Адрес
         comments: Комментарии
+        subject: "Магазин одежды для той-терьеров BEST&C: Информация о заказе номер "
+        order_total_sum: Общая сумма заказ
+        thank_you_for_order: Спасибо за заказ!
+        order_notice_sign: С уважением, интернет-магазин BEST&C.
+        order_notice_header: "В ближайшее время наши менеджеры свяжутся с Вами."
+        order_info: "Информация о заказе:"
+        order_accepted: Ваш заказ принят.
        
       order_item:
         removed_item_message: Товар удален из каталога!        
@@ -305,12 +319,40 @@ ru:
         must_have_valid_captcha: Проверочный код неверен
         cart_must_have_cart_items: Корзина пустая
         close_notice: успешно закрыт
-        create_notice:
+        create_notice: "<h3>Спасибо за заказ!</h3>
+                        <div>В ближайшее время наши менеджеры свяжутся с Вами.</div>
+                        <div>На адрес Вашей электронной почты отправлено информационное сообщение.</div>
+                        В случае необходимости используйте номер заказа "        
         email: E-mail
         
       size:
         name: Наименование размера
 
       user:
+        login: Логин
+        password: Пароль
         new_page_title: Новый администратор
+        forgot_password_notice: "Письмо с инструкциями по<br />
+                                 изменению пароля отправлены на<br />
+                                 Ваш адрес электронной почты."
+        user_not_found_notice: "Пользователь с этим адресом<br />
+                                электронной почты не найден!"
+        reset_password_notice: Пароль удачно изменен.
+        reset_password_page_title: Переустановка пароля
+        new_user_notice: "Спасибо за регистрацию! На Ваш адрес электронной почты
+                          отправлено письмо с инструкцией по активации Вашей учётной записи,
+                          после чего Вы сможете войти в систему."
+        activate_user_notice: "Регистрация закончена!"
+        activation_header: "Ваша учетная запись успешно активирована.<br/>
+                            Для входа на наш сайт перейдите, пожалуйста, по этой ссылке:"
+        forgot_password_header: "Для переустановки пароля перейдите, пожалуйста, по этой ссылке:"
+        signup_notification_header: Ваша учётная запись успешно создана.
+        signup_notification_url: Для активации Вашей учётной записи перейдите, пожалуйста, по этой ссылке                                                                                                                                        
+        forgot_password_header: "Введите, пожалуйста, Ваш адрес электронной почты и
+                                 мы вышлем Вам инструкцию по смене пароля:"
+        signup_notification_subject: "Магазин одежды для той-терьеров:
+                                      Активируйте, пожалуйста, Вашу новую учетную запись"                                         
+        activation_subject: "Магазин одежды для той-терьеров: Ваша учетная запись активирована!"
+        forgot_password_subject: "Магазин одежды для той-терьеров: Переустановка пароля"
+        
         

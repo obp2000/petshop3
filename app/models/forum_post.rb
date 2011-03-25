@@ -8,8 +8,7 @@ class ForumPost < ActiveRecord1
   self.show_tag = "post"
   self.edit_partial = "form"
 
-  class_inheritable_accessor :reply_render_block, :link_to_reply_dom_id, :parent_tag
-  self.reply_render_block = lambda { render :template => "shared/reply.rjs" }
+  class_inheritable_accessor :link_to_reply_dom_id, :parent_tag
   self.link_to_reply_dom_id = "link_to_reply"
   
   validates_length_of :name, :minimum => 2
@@ -54,11 +53,11 @@ class ForumPost < ActiveRecord1
   end
 
 # notices
-  def set_create_notice
+  def create_notice
     self.class.human_attribute_name( parent_id.zero? ? :create_notice : :send_notice ) 
   end
 
-  def set_destroy_notice; self.class.human_attribute_name( :destroy_notice ) end
+  def destroy_notice; self.class.human_attribute_name( :destroy_notice ) end
 
 # renders  
   def render_new_or_edit( page )

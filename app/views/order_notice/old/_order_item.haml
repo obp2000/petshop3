@@ -1,0 +1,1 @@
+= order_item.instance_exec { "#{name} #{size.name rescue ""} #{colour.name rescue ""} (#{ number_to_currency price}) - #{amount} #{I18n.t(:amount)}".html_safe }

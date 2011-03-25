@@ -8,5 +8,9 @@ class OrderItem < ActiveRecord1
   delegate :name, :to => :item 
 
   attr_accessor_with_default( :order_item_sum ) { price * amount }
-
+  
+  def notice( page )
+    "#{name} #{size.name rescue ""} #{colour.name rescue ""} (#{ page.number_to_currency( price )}) - #{amount} #{I18n.t(:amount)}".html_safe  
+  end
+  
 end

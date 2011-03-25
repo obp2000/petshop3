@@ -1,5 +1,6 @@
 # encoding: utf-8
 class CartItem < ActiveRecord1
+  
   belongs_to :cart
   belongs_to :item
   belongs_to :catalog_item, :foreign_key => :item_id  
@@ -34,11 +35,11 @@ class CartItem < ActiveRecord1
   end
 
 # notices
-  def set_update_notice
+  def update_notice
     "#{self.class.human_attribute_name( :update_notice )}<br/><em>#{name}</em>".html_safe
   end
 
-  def set_destroy_notice
+  def destroy_notice
     "#{self.class.human_attribute_name( :destroy_notice )} <em>#{name}</em>".html_safe
   end  
   

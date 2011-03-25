@@ -1,5 +1,6 @@
 # encoding: utf-8
 class Cart < ActiveRecord1
+  
   has_many :cart_items, :dependent => :delete_all do
     def clear_cart; dup.tap { clear } end
     def dom_id; name.tableize end
@@ -35,7 +36,9 @@ class Cart < ActiveRecord1
   end
 
 # actions
-  def clear_cart; cart_items.clear_cart end
+  def clear_cart
+    cart_items.clear_cart
+  end
   alias_method :destroy_object, :clear_cart    
 
   def populate_order( order )
@@ -45,6 +48,6 @@ class Cart < ActiveRecord1
   end
 
 # notices
-  def set_destroy_notice; self.class.human_attribute_name( :update_notice ) end  
+  def destroy_notice; self.class.human_attribute_name( :destroy_notice ) end  
 
 end

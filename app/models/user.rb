@@ -94,27 +94,28 @@ class User < ActiveRecord1
   end 
 
   def self.forgot_password_notice
-    "Письмо с инструкциями по<br />
-     изменению пароля отправлены на<br />
-     Ваш адрес электронной почты." 
+     human_attribute_name( :forgot_password_notice ).html_safe
   end
 
   def self.user_not_found_notice
-    "#{class_name_rus_cap} с этим адресом<br />
-     электронной почты не найден!"
+     human_attribute_name( :user_not_found_notice ).html_safe     
   end
 
-  def reset_password_notice; "Пароль удачно изменен." end
+  def reset_password_notice
+    self.class.human_attribute_name( :reset_password_notice ).html_safe\
+  end
   
-  def reset_password_page_title; "Переустановка пароля" end
+  def reset_password_page_title
+    self.class.human_attribute_name( :reset_password_page_title ).html_safe
+  end
 
   def new_user_notice
-    "Спасибо за регистрацию! На Ваш адрес электронной почты
-     отправлено письмо с инструкцией по активации Вашей учётной записи, после
-     чего Вы сможете войти в систему."    
+    self.class.human_attribute_name( :new_user_notice ).html_safe     
   end
   
-  def activate_user_notice; "Регистрация закончена!" end
+  def activate_user_notice
+    self.class.human_attribute_name( :activate_user_notice ).html_safe    
+  end
     
   def activation_url
     { :host => "localhost:3001", :controller => "sessions", :action => "create",
@@ -129,22 +130,6 @@ class User < ActiveRecord1
   def signup_notification_url
     { :host => "localhost:3001", :controller => "users", :action => "activate", :id => activation_code }    
   end
-
-  def self.logout_text; human_attribute_name( :logout_text ) end
-    
-#  def self.link_to_logout( page ); [ logout_text, page.logout_path ] end
-
-  def self.login_rus; "Имя пользователя" end
-
-#  def self.email_rus; "Адрес электронной почты" end
-  
-  def self.last_name_rus; "Фамилия" end
-  
-  def self.first_name_rus; "Имя" end
-
-  def self.password_rus; "Пароль" end
-  
-  def self.password_confirmation_rus; "Подтверждение пароля" end
         
   protected
   

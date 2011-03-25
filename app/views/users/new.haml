@@ -1,12 +1,28 @@
 %h3= @user.class.human_attribute_name( :new_page_title )
 = form_for @user do |f|
   = error_messages_for :user
-  - with_options :f => f, :object => @user do |in_form|
-    %div= in_form.render "shared/text_field", :text_field => :login          
-    %div= in_form.render "shared/text_field", :text_field => :email             
-    %div= in_form.render "shared/text_field", :text_field => :last_name         
-    %div= in_form.render "shared/text_field", :text_field => :first_name           
-    %div= in_form.render "shared/password_field", :password_field => :password    
-    %div= in_form.render "shared/password_field", :password_field => :password_confirmation        
+  %div
+    = f.label :login
+    = render "shared/red_star"
+    = f.text_field :login              
+  %div
+    = f.label :email
+    = render "shared/red_star"
+    = f.text_field :email                  
+  %div
+    = f.label :last_name
+    = f.text_field :last_name              
+  %div
+    = f.label :first_name
+    = render "shared/red_star"
+    = f.text_field :first_name            
+  %div
+    = f.label :password
+    = render "shared/red_star"
+    = f.password_field :password        
+  %div
+    = f.label :password_confirmation
+    = render "shared/red_star"
+    = f.password_field :password_confirmation             
   %div= f.submit
   

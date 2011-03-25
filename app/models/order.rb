@@ -1,5 +1,6 @@
 # encoding: utf-8
 class Order < ActiveRecord1
+  
   attr_protected :id, :status, :updated_at, :created_at
   attr_accessor :captcha_validated, :cart
 
@@ -38,7 +39,7 @@ class Order < ActiveRecord1
   end
 
 # notices
-  def set_destroy_notice
+  def destroy_notice
     "#{self.class.model_name.human} № #{id} #{Order.human_attribute_name( :destroy_notice )}."
   end
 
@@ -47,7 +48,5 @@ class Order < ActiveRecord1
     super
     page.update_processed_orders_amount ProcessedOrder.update_amount
   end 
-
-#  def closed_at_or_link_to_close( page ); closed? ? page.date_time_rus( updated_at ) : page.link_to_close( self ) end
        
 end
