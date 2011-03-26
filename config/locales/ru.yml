@@ -12,6 +12,7 @@ ru:
         sizes: "Размеры"
         colours: "Цвета"
         photos: "Фото"
+        blurb: "Описание"
         created_at: "Создан"
         updated_at: "Изменён"
       processed_order:
@@ -56,13 +57,11 @@ ru:
   demo: Демо
   totals: Итого
   required_fields: обязательные поля
-  any_attr: Любой
   amount: шт.
   year: г.
   remove: Удалить
   change: Изменить
   count: Всего
-  save: Сохранить
   back: Назад
   close_window: Закрыть окно
   created_at: Создан
@@ -85,12 +84,8 @@ ru:
   save_changes: Сохранить изменения
   back_to_shop: Назад в магазин
   logout: Выйти
-  reply: Ответить
-  empty_forum_message: В форуме пока ещё нет сообщений. Будьте первым!
   clear_cart: Очистить корзину
-  new_subject: Новая тема  
   all_found_items: всего найдено товаров
-  add_this_catalog_item_to_cart: Добавить этот товар в корзину
   successfully_created: создан удачно
   successfully_updated: удачно обновлён
   deleted: удалён
@@ -226,6 +221,7 @@ ru:
         
       cart:
         destroy_notice: Корзина очищена
+        add_this_catalog_item_to_cart: Добавить этот товар в корзину        
         
       category:
         name: Наименование вида одежды        
@@ -254,9 +250,13 @@ ru:
         name: Имя
         subject: Тема
         body: Сообщение
+        empty_forum_message: В форуме пока ещё нет сообщений. Будьте первым!
+        new_subject: Новая тема
+        reply: Ответить                         
         
       item_attribute:
-        must_have_unique_name: уже есть 
+        must_have_unique_name: уже есть
+        save: Сохранить 
         
       item:
         new_title: Добавить
@@ -275,6 +275,7 @@ ru:
         price: Цены
         submit_title: Поиск товара
         not_found_notice: товары не найдены
+        any_attr: Любой
         
       closed_order:
         status_nav: " со статусом \"закрытые\""

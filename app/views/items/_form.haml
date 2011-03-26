@@ -7,23 +7,25 @@
     = f.label :price
     = render "shared/red_star"
     = f.text_field :price 
-  - with_options :f => f, :object => @object do |in_form|
-    %div
-      = f.label :category
-      = render "shared/red_star" 
-      %span{ :id => "form_#{Category.dom_id}" }
-        = render "items/category", :category => @object.category unless @object.category.blank? 
-      = link_to_change Category
-      = f.label :season
-      = render "shared/red_star"
-      - [ SummerCatalogItem, WinterCatalogItem ].each do |season|
-        = f.radio_button :type, season
-        = image_tag season.season_icon, :size => "24x24"      
-    %div= in_form.render "items/attrs", :attrs => "sizes"
-    %div= in_form.render "items/attrs", :attrs => "colours"   
-    %div{ :id => "form_blurb" }= f.text_area :blurb, :rows => 3    
-    %div= in_form.render "items/attrs", :attrs => "photos"       
-    = in_form.render "items/time", :time => "created_at"
-    = in_form.render "items/time", :time => "updated_at"
-    = image_submit_tag SaveImageLarge, :title => t( :save_changes ) 
+  %div
+    = f.label :category
+    = render "shared/red_star" 
+    %span{ :id => "form_#{Category.dom_id}" }
+      = render "items/category", :category => @object.category unless @object.category.blank? 
+    = link_to_change Category
+    = f.label :season
+    = render "shared/red_star"
+    - [ SummerCatalogItem, WinterCatalogItem ].each do |season|
+      = f.radio_button :type, season
+      = image_tag season.season_icon, :size => "24x24"
+  - [ "sizes", "colours", "photos" ].each do |attrs|
+    %div= render "items/attrs", :attrs => attrs, :f => f
+  %div{ :id => "form_blurb" }
+    = f.label :blurb
+    %div= f.text_area :blurb, :rows => 3  
+  = f.label :created_at
+  = l( @object.created_at, :format => :long ) unless @object.created_at.blank?    
+  = f.label :updated_at
+  = l( @object.updated_at, :format => :long ) unless @object.updated_at.blank?    
+  = image_submit_tag SaveImageLarge, :title => t( :save_changes ) 
     

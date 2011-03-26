@@ -240,25 +240,28 @@ def valid_season_attributes2
 end
 
 def valid_size_attributes
-  { :name => "XL", :row_partial => "size", :hidden_field_name => "item[size_ids][]", :partial_path => "sizes" }
+  { :name => "XL", :row_partial => "size",
+  :hidden_field_name => "item[size_ids][]", :partial_path => "sizes", :to_underscore => "size" }
 end
 
 def valid_size_attributes2
-  { :name => "L", :row_partial => "size", :hidden_field_name => "item[size_ids][]", :partial_path => "sizes" }
+  { :name => "L", :row_partial => "size",
+  :hidden_field_name => "item[size_ids][]", :partial_path => "sizes", :to_underscore => "size" }
 end
 
 def valid_colour_attributes
   { :name => "Red", :html_code => "#FF0000", :row_partial => "colour",
-      :hidden_field_name => "item[colour_ids][]", :partial_path => "colours"  }
+      :hidden_field_name => "item[colour_ids][]", :partial_path => "colours", :to_underscore => "colour"  }
 end
 
 def valid_colour_attributes2
   { :name => "Green", :html_code => "#AAFF00", :row_partial => "colour",
-      :hidden_field_name => "item[colour_ids][]", :partial_path => "colours" }
+      :hidden_field_name => "item[colour_ids][]", :partial_path => "colours", :to_underscore => "colour" }
 end
 
 def valid_photo_attributes
-  { :photo_url => "photo_of_jacket.jpg", :comment => "Photo of jacket", :partial_path => "photos" }
+  { :photo_url => "photo_of_jacket.jpg", :comment => "Photo of jacket",
+  :partial_path => "photos", :to_underscore => "photo" }
 end
 
 def valid_carts_attributes
@@ -268,7 +271,8 @@ def valid_carts_attributes
             :link_to_new_order_form => "link_to_new_order_form",
             :total_items_dom_id => "cart_total_items",
             :total_sum_dom_id => "cart_total_sum",
-            :link_to_clear_cart => "link_to_clear_cart" }
+            :link_to_clear_cart => "link_to_clear_cart",
+            :cart_totals_dom_id => "cart_totals" }
 end            
 
 def valid_cart_item_attributes
@@ -278,7 +282,8 @@ def valid_cart_item_attributes
             :catalog_item => catalog_items_proxy.first,
             :size => sizes_proxy.first,
             :colour => colours_proxy.first,
-            :new => CartItem.new }
+            :new => CartItem.new,
+            :link_to_delete_dom_class => "link_to_delete_cart_item" }
 end
 
 def valid_cart_item_attributes2
@@ -287,7 +292,8 @@ def valid_cart_item_attributes2
             :amount => 2,
             :catalog_item => catalog_items_proxy.first,
             :size => sizes_proxy.first,
-            :colour => colours_proxy.first }
+            :colour => colours_proxy.first,
+            :link_to_delete_dom_class => "link_to_delete_cart_item" }
 end
 
 def valid_cart_item_attributes3

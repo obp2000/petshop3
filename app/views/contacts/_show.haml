@@ -5,7 +5,7 @@
     = @object.name 
   %dd
     = image_tag EmailImage
-    = mail_to @object.email, nil, :subject => @object.class.human_attribute_name( "email_subject" )
+    = mail_to @object.email, nil, :subject => @object.class.human_attribute_name( :email_subject )
   %dd
     = image_tag PhoneImage
     = @object.phone    

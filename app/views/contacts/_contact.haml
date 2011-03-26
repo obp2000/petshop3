@@ -1,9 +1,18 @@
 - form_for contact, :remote => true do |f|
   = f.error_messages
-  - with_options :f => f, :object => contact do |in_form|
-    %div= in_form.render "shared/text_field", :text_field => :name 
-    %div= in_form.render "shared/text_field", :text_field => :email     
-    %div= in_form.render "shared/text_field", :text_field => :phone 
-    %div= in_form.render "shared/text_field", :text_field => :icq 
-    %div= in_form.render "text_area", :text_area => :address                
-    = small_submit_button
+  %div
+    = f.label :name
+    = f.text_field :name 
+  %div
+    = f.label :email
+    = f.text_field :email         
+  %div
+    = f.label :phone
+    = f.text_field :phone       
+  %div
+    = f.label :icq
+    = f.text_field :icq       
+  %div
+    = f.label :address
+    = f.text_area :address, :rows => 4                
+  = small_submit_button

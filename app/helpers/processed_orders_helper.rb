@@ -1,8 +1,8 @@
 # coding: utf-8
 module ProcessedOrdersHelper
 
-  def new_processed_order
-    delay( DURATION ) { check_cart_links }
+  def new_processed_order( session, controller_name )
+    delay( DURATION ) { check_cart_links( session, controller_name ) }
   end 
  
   def create_processed_order( fade_duration )

@@ -10,8 +10,7 @@ class CatalogItem < Item
   self.js_for_show = []
   self.index_layout = "application"
   
-  cattr_accessor :row_partial, :partial_path
-  self.row_partial = name.underscore  
+  cattr_accessor :partial_path
   self.partial_path = name.tableize
 
   scope :ordered_by_id, order( :id )

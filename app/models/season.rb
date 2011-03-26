@@ -6,9 +6,9 @@ class Season
     @item = item
   end
 
-  cattr_accessor :attr_choose_partial, :row_partial
+  cattr_accessor :attr_choose_partial
   self.attr_choose_partial = name.tableize
-  self.row_partial = name.underscore
+#  self.row_partial = name.underscore
 
   def name
     @item.type.classify.constantize.season_name

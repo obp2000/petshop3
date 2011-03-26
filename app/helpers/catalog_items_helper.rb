@@ -11,10 +11,8 @@ module CatalogItemsHelper
         :url => { :controller => "cart_items", :action => "update" }, :tolerance => "touch", :hoverClass => "cart_hover "
   end
 
-#  def radio_button_tag_for( attr, checked, visibility ); attr.radio_button_tag1( self, checked, visibility ) end
-
   def submit_to_cart
-    image_submit_tag AddToCartImage, :title => t( :add_this_catalog_item_to_cart ),
+    image_submit_tag AddToCartImage, :title => Cart.human_attribute_name( :add_this_catalog_item_to_cart ),
      :onmouseover => "$(this).attr('src', 'images/" + AddToCartOverImage + "')",
      :onmouseout => "$(this).attr('src', 'images/" + AddToCartImage + "')",
      :onclick => "$(this).fadeOut().fadeIn()"
@@ -28,31 +26,6 @@ module CatalogItemsHelper
       "#{objects.first.class.season_page_title}#{': ' +
             Category.find( params[ :category_id ] ).name rescue ''}"
     end
-  end
-
-##########
-
-  [ "sizes", "colours" ].each do |attrs|
-    define_method( :"render_#{attrs}_with_options_of" ) do |object|
-      render :partial => "#{object.partial_path}/attr", :collection => object.send( attrs ),
-        :locals => { :many => object.send( attrs ).many? }        
-    end    
-  end
-
-  [ "price", "season" ].each do |attr|
-    define_method( :"render_#{attr}_of" ) do |object|    
-      render "#{object.partial_path}/#{attr}", :object => object
-    end
-  end
-
-  def render_category_of( object, locals = {} )
-    render *object.instance_exec { [ :partial => "#{partial_path}/category", :object => category,
-        :locals => locals ] } unless object.category.blank?      
-  end
-
-  def render_photos_of( object )
-    render *object.instance_exec { [ :partial => "#{partial_path}/photo", :collection => photos,
-        :locals => { :attrs => photos } ] } unless object.photos.empty?     
   end
 
 end

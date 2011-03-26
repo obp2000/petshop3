@@ -30,7 +30,8 @@ class Photo < ItemAttribute
   class << self
     
     def create_render_block
-      lambda { responds_to_parent { render( :update ) { |page| @object.render_create_or_update page, session } } }
+      lambda { responds_to_parent {
+          render( :update ) { |page| @object.render_create_or_update page, session, controller_name } } }
     end
     
   end

@@ -1,0 +1,3 @@
+- unless object.send( attr ).blank?
+  = object.class.human_attribute_name( attr ).colon
+  = h object.send( attr )

@@ -1,0 +1,2 @@
+= image_tag object.send( "#{attr}_image" )
+= mail_to object.send( attr ), nil, :subject => object.class.human_attribute_name( "#{attr}_subject" )     

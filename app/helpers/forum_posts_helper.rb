@@ -7,6 +7,4 @@ module ForumPostsHelper
     show_notice
   end
 
-  def link_to_reply_to( object ); link_to *object.link_to_reply( self ) end
-
 end

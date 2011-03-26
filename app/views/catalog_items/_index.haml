@@ -1,5 +1,5 @@
 %div{ :id => @objects.dom_id }
   %h2= index_page_title_for @objects
-  = render_collection_of @objects
+  = render :partial => "catalog_items/catalog_item", :collection => @objects
   = will_paginate @objects
 %div{ :id => @objects.show_tag }

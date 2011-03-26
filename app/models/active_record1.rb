@@ -8,7 +8,7 @@
   class_inheritable_accessor :replace, :paginate_options, :insert_or_replace, :create_render_block,
     :js_for_index, :js_for_show, :js_for_new_or_edit, :js_for_create_or_update,
     :index_tag, :index_partial, :show_tag, :show_partial, :edit_tag, :edit_partial,
-    :new_tag, :new_partial,:row_partial, :create_or_update_partial,
+    :new_tag, :new_partial, :create_or_update_partial,
     :partial_path, :dom_id, :headers, :index_layout
 
   self.paginate_options = {}
@@ -65,7 +65,7 @@
     attr_accessor_with_default( :new_tag ) { "new_#{name.underscore}" }
     attr_accessor_with_default( :edit_partial ) { name.underscore }    
     attr_accessor_with_default( :new_partial ) { edit_partial }
-    attr_accessor_with_default( :row_partial ) { name.underscore }    
+#    attr_accessor_with_default( :row_partial ) { name.underscore }    
     attr_accessor_with_default( :partial_path ) { name.tableize }
     attr_accessor_with_default( :dom_id ) { name.tableize }   
     attr_accessor_with_default( :index_partial ) { "#{partial_path}/index" }
@@ -109,19 +109,21 @@
   end     
 
 # renders
-  def render_new_or_edit( page )
+  def render_new_or_edit( page, session, controller_name )
     page.action replace, ( new_record? ? new_tag : edit_tag ),
           :partial => ( new_record? ? new_partial : edit_partial ), :object => self
     page.attach_chain( js_for_new_or_edit )     
   end 
 
-  def render_create_or_update( page, session )
+  def render_create_or_update( page, session, controller_name )
     page.render_create_or_update [ :remove, create_or_update_tag ],
             [ :bottom, dom_id, { :partial => create_or_update_partial, :object => self } ]
     page.attach_chain( js_for_create_or_update )             
   end  
   
-  def render_destroy( page, session ); page.render_destroy edit_tag, tag end 
+  def render_destroy( page, session, controller_name )
+    page.render_destroy( edit_tag, tag )
+  end 
 
 # links
   def link_to_category( season_catalog_items )

@@ -21,9 +21,10 @@ class ApplicationController < ActionController::Base
 
   RenderIndex = lambda { render( :update ) { |page| @objects.render_index( page ) } }
   RenderShow = lambda { render( :update ) { |page| @object.class.render_show( page ) } }
-  RenderNewOrEdit = lambda { render( :update ) { |page| @object.render_new_or_edit( page ) } }  
+  RenderNewOrEdit =
+      lambda { render( :update ) { |page| @object.render_new_or_edit( page, session, controller_name ) } }  
   RenderCreateOrUpdate =
-      lambda { render( :update ) { |page| @object.render_create_or_update( page, session ) } }
+      lambda { render( :update ) { |page| @object.render_create_or_update( page, session, controller_name ) } }
   
   def index
     @object = controller_name.classify.constantize.new_object( params, session )    
@@ -75,7 +76,7 @@ class ApplicationController < ActionController::Base
   def destroy
     @objects = @object = controller_name.classify.constantize.destroy_object( params, session, flash )
     flash.now[ :notice ] = Array( @objects ).first.destroy_notice    
-    render( :update ) { |page| Array( @objects ).render_destroy( page, session ) }    
+    render( :update ) { |page| Array( @objects ).render_destroy( page, session, controller_name ) }    
   end
 
   def close

@@ -1,8 +1,8 @@
 %h2= ForumPost.model_name.human
 %fieldset.ui-widget-content
-  = link_to image_tag( NewForumPostImage ) + t( :new_subject ), new_forum_post_path, :remote => true
+  = link_to image_tag( NewForumPostImage ) + ForumPost.human_attribute_name( :new_subject ), new_forum_post_path, :remote => true
   - if @objects.empty?
-    = t( :empty_forum_message )
+    = ForumPost.human_attribute_name( :empty_forum_message )
   - else
     %div{ :id => @objects.dom_id }= render @objects
     = will_paginate @objects

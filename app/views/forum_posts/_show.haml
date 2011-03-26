@@ -1,6 +1,9 @@
 %fieldset.ui-widget-content
-  - with_options :object => @object do |for_forum_post|  
-    = for_forum_post.render "attr", :attr => "subject" 
-    = for_forum_post.render "attr", :attr => "name"
-    %div= for_forum_post.render "attr", :attr => "body"     
-  %div= link_to image_tag( NewForumPostImage ) + t( :reply ), reply_forum_post_path( @object ), :remote => true, :id => @object.link_to_reply_dom_id
+  = label :forum_post, :subject
+  = h @object.subject      
+  = label :forum_post, :name
+  = h @object.name      
+  %div
+    = label :forum_post, :body
+    = h @object.body  
+  %div= link_to image_tag( NewForumPostImage ) + ForumPost.human_attribute_name( :reply ), reply_forum_post_path( @object ), :remote => true, :id => @object.link_to_reply_dom_id

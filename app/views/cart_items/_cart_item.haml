@@ -4,4 +4,5 @@
   = render "#{SharedPath}/colour", :colour => cart_item.colour unless cart_item.colour.blank?      
   %div
     = "#{number_to_currency cart_item.price} / #{cart_item.amount} #{t(:amount)}"
-    = link_to_delete cart_item unless do_not_show( session.cart )
+    %span{ :class => cart_item.link_to_delete_dom_class }
+      = render "cart_items/link_to_delete_cart_item", :cart_item => cart_item

@@ -22,8 +22,8 @@ class Order < ActiveRecord1
   self.headers = [ "№", I18n.t( :status ), I18n.t( :sum ), I18n.t( :count ),
           I18n.t( :created_at ), I18n.t( :updated_at ), "" ]
 
-  cattr_accessor :row_partial, :partial_path
-  self.row_partial = name.underscore  
+  cattr_accessor :partial_path
+#  self.row_partial = name.underscore  
   self.partial_path = name.tableize
 
   attr_accessor_with_default( :status_tag ) { "order_status_#{id}" }
@@ -44,7 +44,7 @@ class Order < ActiveRecord1
   end
 
 # renders
-  def render_destroy( page, session )
+  def render_destroy( page, session, controller_name )
     super
     page.update_processed_orders_amount ProcessedOrder.update_amount
   end 

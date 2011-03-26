@@ -1,16 +1,32 @@
 %h2= @object.class.human_attribute_name( :new_page_title ) 
 = form_for @object, :remote => true do |f|
   = f.error_messages
-  - with_options :f => f, :object => @object do |in_form|
-    %fieldset.ui-widget-content
-      %div= in_form.render "shared/text_field", :text_field => :email, :required => true
-      %div= in_form.render "shared/text_field", :text_field => :phone_number, :required => true      
-      %div= in_form.render "shared/text_field", :text_field => :ship_to_first_name, :required => true      
-      %div= in_form.render "shared/text_field", :text_field => :ship_to_city      
-      %div= in_form.render "text_area", :text_area => :ship_to_address
-    %fieldset.ui-widget-content
-      %div= in_form.render "text_area", :text_area => :comments               
-  %fieldset.ui-widget-content= render "processed_orders/captcha"
+  %fieldset.ui-widget-content
+    %div
+      = f.label :email
+      = f.text_field :email
+      = render "shared/red_star"
+    %div
+      = f.label :phone_number
+      = f.text_field :phone_number
+      = render "shared/red_star"                    
+    %div
+      = f.label :ship_to_first_name
+      = f.text_field :ship_to_first_name
+      = render "shared/red_star"            
+    %div
+      = f.label :ship_to_city
+      = f.text_field :ship_to_city              
+    %div
+      = f.label :ship_to_address
+      = f.text_area :ship_to_address, :rows => 4        
+    %div
+      = f.label :comments
+      = f.text_area :comments, :rows => 4        
+    %div
+      = f.label :captcha
+      = render "shared/red_star"
+      = captcha_block
   %div
     = render "shared/red_star"
     = " - " + t( :required_fields )

@@ -9,8 +9,12 @@ class CartItem < ActiveRecord1
   
   delegate :name, :price, :to => :item
   
-  attr_accessor_with_default( :create_or_update_tag ) { tag }
+  class_inheritable_accessor :link_to_delete_dom_class
+  self.link_to_delete_dom_class = "link_to_delete_cart_item"
   
+  
+  attr_accessor_with_default( :create_or_update_tag ) { tag }
+    
   class << self
 
 # actions
@@ -19,7 +23,7 @@ class CartItem < ActiveRecord1
               create( params.conditions_hash( session ).merge :amount => 0 )
     end
 
-    attr_accessor_with_default( :edit_partial ) { "#{partial_path}/#{row_partial}" }  
+    attr_accessor_with_default( :edit_partial ) { "#{partial_path}/#{name.underscore}" }  
 
   end
 
@@ -44,9 +48,10 @@ class CartItem < ActiveRecord1
   end  
   
 # renders    
-  def render_create_or_update( page, session )
+  def render_create_or_update( page, session, controller_name )
     super
-    page.after_create_or_update_cart_item tag, ( amount.zero? or session.cart.cart_items.empty? ), session
+    page.after_create_or_update_cart_item( tag, ( amount.zero? or session.cart.cart_items.empty? ),
+          session, controller_name )
   end
   alias_method :render_destroy, :render_create_or_update
   

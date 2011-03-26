@@ -1,6 +1,7 @@
 %div{ :id => dom_id( forum_post ), :style => forum_post.style }
   = link_to forum_post.subject.html_safe, forum_post, :remote => true 
-  = render "attr", :attr => "name", :object => forum_post
+  = label :forum_post, :name
+  = h forum_post.name   
   \....
   = l forum_post.created_at, :format => :long
   = link_to_delete forum_post if self.current_user

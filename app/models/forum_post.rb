@@ -60,7 +60,7 @@ class ForumPost < ActiveRecord1
   def destroy_notice; self.class.human_attribute_name( :destroy_notice ) end
 
 # renders  
-  def render_new_or_edit( page )
+  def render_new_or_edit( page, session, controller_name )
     super
     page.fade show_tag
   end 
@@ -74,7 +74,7 @@ class ForumPost < ActiveRecord1
     page.fade link_to_reply_dom_id    
   end 
   
-  def render_create_or_update( page, session )
+  def render_create_or_update( page, session, controller_name )
     page.create_forum_post [ ( parent_id.zero? ? "top"  : "after" ),
       ( parent_id.zero? ? dom_id : parent_tag ), { :partial => to_underscore, :object => self } ],
       [ show_tag, new_tag ]    

@@ -13,7 +13,6 @@ describe "catalog_items/_index" do
   
   it "renders collection of only one existing catalog item" do
     view.should_receive( :will_paginate ).with( @objects )
-       
     render
     rendered.should contain( "Index page title" )
     rendered.should have_selector( :div, :id => @objects.show_tag )    

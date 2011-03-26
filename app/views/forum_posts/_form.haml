@@ -1,8 +1,13 @@
 = form_for @object, :remote => true, :html => { :class => "ui-widget-content" } do |f|
   = f.error_messages
   = f.hidden_field :parent_id
-  - with_options :f => f, :object => @object do |in_form|
-    %div= in_form.render "shared/text_field", :text_field => :name
-    %div= in_form.render "shared/text_field", :text_field => :subject     
-    %div= in_form.render "text_area", :text_area => :body
-    = f.submit
+  %div
+    = f.label :name
+    = f.text_field :name         
+  %div
+    = f.label :subject
+    = f.text_field :subject   
+  %div
+    = f.label :body
+    = f.text_area :body, :rows => 5
+  = f.submit

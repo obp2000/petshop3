@@ -43,7 +43,7 @@ class ItemAttribute < ActiveRecord1
   end
   
 # renders  
-  def render_create_or_update( page, session )
+  def render_create_or_update( page, session, controller_name )
     super
     [ options_for_replace_new_tag, options_for_replace_item_attributes ].each do |replace_args|
       page.replace *replace_args rescue nil

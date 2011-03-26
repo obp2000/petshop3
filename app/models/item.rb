@@ -71,7 +71,7 @@ class Item < ActiveRecord1
   end
 
   attr_accessor_with_default( :create_or_update_tag ) { tag }
-  attr_accessor_with_default( :create_or_update_partial ) { row_partial } 
+  attr_accessor_with_default( :create_or_update_partial ) { to_underscore } 
 
   [ "Size", "Colour" ].each do |class_name|
     define_method( "#{class_name.underscore}_ids=" ) { |ids| class_name.constantize.update_attr( self, ids ) }    

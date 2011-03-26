@@ -3,17 +3,18 @@
 module ApplicationHelper
 
   def link_to_enlarge_with_comment( object )
-    link_to *object.link_to_enlarge_with_comment( self )
+#    link_to *object.link_to_enlarge_with_comment( self )
+    link_to image_tag( object.photo.thumb.url ) + object.comment, object.photo_url
   end
 
-  def link_to_enlarge( photo )
-    link_to *photo.link_to_enlarge( self )
+  def link_to_enlarge( object )
+#    link_to *photo.link_to_enlarge( self )
+    link_to image_tag( object.photo.thumb.url ), object.photo_url    
   end
 
   def link_to_close( object )
-#    link_to *object.link_to_close( self )
-      link_to image_tag( CloseProcessedOrderImage, :title => object.class.human_attribute_name( :close_title ) ),
-      close_processed_order_path( object ), :remote => true, :id => object.close_tag,
+    link_to image_tag( CloseProcessedOrderImage, :title => object.class.human_attribute_name( :close_title ) ),
+        close_processed_order_path( object ), :remote => true, :id => object.close_tag,
         :confirm => object.class.human_attribute_name( :close_title ) + "?"   
   end
 
@@ -33,7 +34,7 @@ module ApplicationHelper
   end
 
   def small_submit_button
-    image_submit_tag SaveImageSmall, :title => t( :save )
+    image_submit_tag SaveImageSmall, :title => ItemAttribute.human_attribute_name( :save )
   end
 
   def attach_js( js ); delay( DURATION + 0.2 ) { call( js ) } end
@@ -58,16 +59,17 @@ module ApplicationHelper
     end
   end
 
-  def check_cart_links
-    Cart.instance_exec { [ link_to_new_order_form, link_to_clear_cart ] }.each {
-        |link| replace_html link, :partial => "carts/#{link}" }
+  def check_cart_links( session, controller_name )
+    select(
+      ".#{CartItem.link_to_delete_dom_class}, ##{Cart.link_to_new_order_form}, ##{Cart.link_to_clear_cart}" ).send(
+       do_not_show( session.cart, controller_name ) ? "fadeOut()" : "fadeIn()" )
   end
 
   def check_cart_totals( session )
     session.cart.cart_totals.each { |args| replace_html *args }
   end
 
-  def do_not_show( cart )
+  def do_not_show( cart, controller_name )
     controller_name == 'processed_orders' or cart.cart_items.empty?
   end
     
@@ -135,53 +137,6 @@ module ApplicationHelper
   end
 
   def colour_render( colour ); ( "&nbsp;&nbsp;" ).html_safe * ( colour.html_code.split.many? ? 1 : 2 ) end
-    
-####################    
-  def render_collection_of( objects )
-    render *objects.instance_exec { [ :partial => "#{partial_path}/#{row_partial}", :collection => self ] }
-  end
-
-  def render_single( attr )
-    render :partial => "#{SharedPath}/#{attr.row_partial}", :object => attr unless attr.blank?
-  end
-
-  [ "name", "price", "email", "phone", "icq", "subject", "phone_number", "ship_to_first_name",
-    "ship_to_city", "login", "last_name", "first_name" ].each do |attr|
-    define_method( "render_#{attr}_field_of" ) do |object, locals|
-      render "shared/text_field", { :object => object, :text_field => :"#{attr}" }.merge( locals )     
-    end
-  end
-
-  [ "body", "blurb", "ship_to_address", "comments" ].each do |attr|
-    define_method( "render_#{attr}_field_of" ) do |object, locals|
-      render "text_area", { :object => object, :text_area => :"#{attr}" }.merge( locals )     
-    end
-  end
-
-  [ "password", "password_confirmation" ].each do |attr|
-    define_method( "render_#{attr}_field_of" ) do |object, locals|
-      render "shared/password_field", { :object => object, :password_field => :"#{attr}" }.merge( locals )     
-    end
-  end
-
-  [ "phone", "icq", "address", "email", "subject", "name", "body", "id", "ship_to_first_name",
-    "phone_number", "ship_to_city", "ship_to_address", "comments" ].each do |attr|
-    define_method( "render_#{attr}_of" ) do |object|
-      render "attr", { :object => object, :attr => attr }
-    end
-  end        
-       
-#  def render_thumbs_of( object )
-#    render *object.instance_exec { [ :partial => "#{SharedPath}/photo", :collection => photos
-#    ] } unless object.photos.empty?     
-#  end
-
-  [ "size", "colour" ].each do |attr|
-    define_method( "render_#{attr}_of" ) do |object|
-      render :partial => "#{SharedPath}/#{attr}",
-          :object => object.send( attr ) unless object.send( attr ).blank?     
-    end
-  end 
           
 end
 
@@ -189,8 +144,8 @@ class Array
 
   def paginate_objects( params ); paginate first.class.paginate_hash( params ) end 
 
-  def render_destroy( page, session )
-    each { |object| object.render_destroy( page, session ) }
+  def render_destroy( page, session, controller_name )
+    each { |object| object.render_destroy( page, session, controller_name ) }
     page.show_notice
   end   
   
@@ -209,7 +164,7 @@ class Array
     
   def edit_partial; first.edit_partial end
     
-  def row_partial; first.row_partial end      
+#  def row_partial; first.row_partial end      
     
   def headers; first.headers end
   

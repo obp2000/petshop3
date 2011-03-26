@@ -1,10 +1,10 @@
 shared_examples_for "catalog item" do
   
   it "renders one catalog item" do
-    @object.should_receive( :link_to_show ).and_return( link_to @object.name,
-            @object, :remote => true, :method => :get )
-    @photo.should_receive( :link_to_show_with_comment ).and_return( link_to image_tag(
-            @photo.photo.thumb.url ) + @photo.comment, @photo.photo_url )
+#    @object.should_receive( :link_to_show ).and_return( link_to @object.name,
+#            @object, :remote => true, :method => :get )
+#    @photo.should_receive( :link_to_show_with_comment ).and_return( link_to image_tag(
+#            @photo.photo.thumb.url ) + @photo.comment, @photo.photo_url )
     view.should_receive( :draggable_element ).with( dom_id( @object ), :revert => true )
     render
     rendered.should have_selector( "a[href*=" + @photo.photo_url[0..-5] + "]" ) do |a|
@@ -37,7 +37,7 @@ shared_examples_for "sizes and colours of catalog item" do
       rendered.should have_selector( "input", :type => "radio", :value => @object.colours.first.to_param )    
       rendered.should have_colour( @object.colours.second.html_code )
       rendered.should have_selector( "input", :type => "radio", :value => @object.colours.second.to_param )    
-      rendered.should contain( AnyAttr )     
+      rendered.should contain( @object.class.human_attribute_name( :any_attr ) )     
       rendered.should have_selector( "input", :type => "radio", :id => "size_id_", :checked => "checked" )
       rendered.should have_selector( "input", :type => "radio", :id => "colour_id_", :checked => "checked" )      
       rendered.should contain( @object.blurb )
@@ -57,7 +57,7 @@ shared_examples_for "sizes and colours of catalog item" do
       rendered.should have_colour( @object.colours.first.html_code )
       rendered.should have_selector( "input", :type => "radio", :value => @object.colours.first.to_param,
       :style => "visibility: hidden", :checked => "checked" )       
-      rendered.should_not contain( AnyAttr )       
+      rendered.should_not contain( @object.class.human_attribute_name( :any_attr ) )       
     end
   end   
   

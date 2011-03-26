@@ -1,12 +1,28 @@
 %fieldset.ui-widget-content.yoxview
-  - with_options :object => @object do |for_order|
-    %div= for_order.render "attr", :attr => :id
-    %div= for_order.render "attr", :attr => :ship_to_first_name       
-    %div= for_order.render "email", :attr => :email
-    %div= for_order.render "attr", :attr => :phone_number
-    %div= for_order.render "attr", :attr => :ship_to_city
-    %div= for_order.render "attr", :attr => :ship_to_address
-    %div= for_order.render "attr", :attr => :comments                 
+  %div
+    = @object.class.human_attribute_name( :id ).colon
+    = @object.id    
+  %div
+    = @object.class.human_attribute_name( :ship_to_first_name ).colon
+    = @object.ship_to_first_name        
+  %div
+    = @object.class.human_attribute_name( :email ).colon
+    = mail_to @object.email     
+  %div
+    = @object.class.human_attribute_name( :phone_number ).colon
+    = @object.phone_number
+  - unless @object.ship_to_city.blank?
+    %div
+      = @object.class.human_attribute_name( :ship_to_city ).colon
+      = @object.ship_to_city
+  - unless @object.ship_to_address.blank?
+    %div
+      = @object.class.human_attribute_name( :ship_to_address ).colon
+      = @object.ship_to_address      
+  - unless @object.comments.blank?
+    %div
+      = @object.class.human_attribute_name( :comments ).colon
+      = @object.comments
   %div= @object.class.human_attribute_name( :details_title )
   = render @object.order_items
 %div{ :id => Item.show_tag }
