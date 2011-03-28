@@ -2,13 +2,7 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
-  def link_to_enlarge_with_comment( object )
-#    link_to *object.link_to_enlarge_with_comment( self )
-    link_to image_tag( object.photo.thumb.url ) + object.comment, object.photo_url
-  end
-
   def link_to_enlarge( object )
-#    link_to *photo.link_to_enlarge( self )
     link_to image_tag( object.photo.thumb.url ), object.photo_url    
   end
 
@@ -37,11 +31,17 @@ module ApplicationHelper
     image_submit_tag SaveImageSmall, :title => ItemAttribute.human_attribute_name( :save )
   end
 
-  def attach_js( js ); delay( DURATION + 0.2 ) { call( js ) } end
+  def attach_js( js )
+    delay( DURATION + 0.2 ) { call( js ) }
+  end
 
-  def attach_chain( jses ); delay( DURATION + 0.2 ) { jses.each { |js| call js if js } } end
+  def attach_chain( jses )
+    delay( DURATION + 0.2 ) { jses.each { |js| call js if js } }
+  end
 
-  def fade_appear( fade, appear ); fade_with_duration fade; appear_with_duration appear end
+  def fade_appear( fade, appear )
+    fade_with_duration fade; appear_with_duration appear
+  end
 
   def action( action1, *opts )
     fade_with_duration opts.first
@@ -113,12 +113,19 @@ module ApplicationHelper
     action :replace_html, index_tag, :partial => index_partial, :locals => { :objects => objects }
   end
   
-  def render_destroy( edit_tag, tag ); [ edit_tag, tag ].each { |tag1| action :remove, tag1 rescue nil } end
+  def render_destroy( edit_tag, tag )
+    [ edit_tag, tag ].each { |tag1| action :remove, tag1 rescue nil }
+    show_notice
+  end
   
-  def fade_with_duration( tag, duration = DURATION ); self[ tag ].fadeOut duration * 1000 end
+  def fade_with_duration( tag, duration = DURATION )
+    self[ tag ].fadeOut duration * 1000
+  end
   alias_method :fade, :fade_with_duration
 
-  def appear_with_duration( tag, duration = DURATION );  self[ tag ].fadeIn duration * 1000 end  
+  def appear_with_duration( tag, duration = DURATION )
+    self[ tag ].fadeIn duration * 1000
+  end  
 
   def render_create_or_update( remove_args, insert_args )
     remove_and_insert remove_args, insert_args    
@@ -136,13 +143,17 @@ module ApplicationHelper
     "background-color: #{colour}; border: 1px solid black; margin-left: -#{index.zero? ? 0 : 6}px; margin-right: 0;"
   end
 
-  def colour_render( colour ); ( "&nbsp;&nbsp;" ).html_safe * ( colour.html_code.split.many? ? 1 : 2 ) end
+  def colour_render( colour )
+    ( "&nbsp;&nbsp;" ).html_safe * ( colour.html_code.split.many? ? 1 : 2 )
+  end
           
 end
 
 class Array
 
-  def paginate_objects( params ); paginate first.class.paginate_hash( params ) end 
+  def paginate_objects( params )
+    paginate first.class.paginate_hash( params )
+  end 
 
   def render_destroy( page, session, controller_name )
     each { |object| object.render_destroy( page, session, controller_name ) }
@@ -153,25 +164,14 @@ class Array
     first.class.render_index( page, self ) rescue nil
     page.show_notice
   end
-    
-  def dom_id; first.dom_id end     
-  
-  def show_tag; first.show_tag end
-    
-  def new_tag; first.new_tag end
-    
-  def new_partial; first.new_partial end
-    
-  def edit_partial; first.edit_partial end
-    
-#  def row_partial; first.row_partial end      
-    
-  def headers; first.headers end
-  
-  def partial_path; first.partial_path end  
-    
-  def new1; first.class.new1 end
-  
+
+  delegate :dom_id, :show_tag, :new_tag, :new_partial, :edit_partial, :headers,
+      :partial_path, :new1, :destroy_notice, :to => :first 
+
+#  def destroy_notice
+#    first.destroy_notice
+#  end
+
 end
 
 class Object

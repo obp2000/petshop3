@@ -12,10 +12,6 @@ describe WinterCatalogItem do
       WinterCatalogItem.index_scope( @params ).count.should == 2
       WinterCatalogItem.index_scope( @params ).first.type.should == "WinterCatalogItem"   
     end
- 
-    it "show proper page title" do
-      WinterCatalogItem.index_page_title_for( @params ).should == "Каталог товаров: #{WinterCatalogItem.season_name}"
-    end
   
   end
 
@@ -31,14 +27,7 @@ describe WinterCatalogItem do
         catalog_item.category.name.should == @category1.name
       end
     end
- 
-    it "show proper page title" do
-      WinterCatalogItem.index_page_title_for( @params ).should contain( WinterCatalogItem.season_name )      
-      WinterCatalogItem.index_page_title_for( @params ).should contain( @category1.name )
-    end
   
   end
-
-
 
 end

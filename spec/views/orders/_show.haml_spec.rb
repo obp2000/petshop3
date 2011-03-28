@@ -5,8 +5,6 @@ describe "orders/_show" do
   before do
     assign( :object, @order = orders_proxy.first )
     @order_item = @order.order_items.first
-    @order_item.stub( :link_to_show ).and_return( link_to @order_item.name,
-            item_path( @order_item.item ), :remote => true, :method => :get )      
   end
   
   it "renders existing order details with one order item" do

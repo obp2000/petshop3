@@ -8,8 +8,6 @@ describe Colour do
     @params = { "colour" => valid_colour_attributes }
     @updated_params = { "colour" => { :name => "Green", :html_code => "#00ff00" } }    
     @session = {}
-    @flash = {}
-    @flash.stub( :now ).and_return( @flash )      
   end
 
   it "is valid with valid attributes" do
@@ -57,7 +55,6 @@ describe Colour do
       create_colour
       @colour.reload
       @colour.name.should == valid_colour_attributes[ :name ]
-      @flash.now[ :notice ].should contain( "создан" )         
     end
   
   end  
@@ -66,9 +63,9 @@ describe Colour do
   
     it "updates existing colour" do
       create_colour
-      @colour = Colour.update_object( @updated_params.merge( :id => @colour.id ), @session, @flash ).first
+      @colour = Colour.find_current_object( { :id => @colour.id }, @session )
+      @colour.update_object( @updated_params )
       @colour.name.should == @updated_params[ "colour" ][ :name ]
-      @flash.now[ :notice ].should contain( "обновлён" )        
     end
   
   end
@@ -77,11 +74,10 @@ describe Colour do
   
     it "destroys existing colour" do
       create_colour
-      @params_for_destroy = { :id => @colour.id }
-      @colour = Colour.destroy_object( @params_for_destroy, @session, @flash )
+      @colour = Colour.find_current_object( { :id => @colour.id }, @session )
+      @colour.destroy_object
       @colour.name.should == valid_colour_attributes[ :name ]
       Colour.all.should_not include( @colour )
-      @flash.now[ :notice ].should contain( "удалён" )           
     end
   
   end

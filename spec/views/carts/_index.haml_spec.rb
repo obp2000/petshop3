@@ -12,7 +12,7 @@ describe "carts/_index" do
   it "renders cart with one cart item" do
     render "carts/index", :cart => @cart
     rendered.should have_link_to_remote_get( new_processed_order_path )    
-    rendered.should contain( @cart.total_items.to_s )
+    rendered.should contain( @cart.cart_items_sum_amount.to_s )
     rendered.should contain( @cart.total.to_s )
     rendered.should have_link_to_remote_get( catalog_item_path( @cart_item.catalog_item ) ) do |a|
       a.should contain( @cart_item.name )

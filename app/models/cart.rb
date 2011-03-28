@@ -48,6 +48,8 @@ class Cart < ActiveRecord1
   end
 
 # notices
-  def destroy_notice; self.class.human_attribute_name( :destroy_notice ) end  
+  def destroy_notice
+    self.class.human_attribute_name( :destroy_notice )
+  end  
 
 end

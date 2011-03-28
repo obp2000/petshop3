@@ -4,7 +4,11 @@
   %table{ :summary => "" }
     %caption= will_paginate @objects
     %tr
-      - @objects.headers.each do |header|
-        %th{:scope => "col"}= header
+      %th{:scope => "col"}= "№"
+      %th{:scope => "col"}= t( :status )
+      %th{:scope => "col"}= t( :sum )
+      %th{:scope => "col"}= t( :count )
+      %th{:scope => "col"}= t( :created_at )
+      %th{:scope => "col"}= t( :updated_at )                  
     = render :partial => "orders/order", :collection => @objects
   %div{ :id => @objects.show_tag }

@@ -18,7 +18,7 @@ class CartItem < ActiveRecord1
   class << self
 
 # actions
-    def find_object_for_update( params, session )
+    def find_current_object( params, session )
       where( params.conditions_hash( session ) ).first ||
               create( params.conditions_hash( session ).merge :amount => 0 )
     end
@@ -28,9 +28,16 @@ class CartItem < ActiveRecord1
   end
 
 # actions
-  def destroy_object; tap { update_amount( -1 ); destroy if amount.zero? } end
+  def destroy_object
+    tap do
+      update_amount( -1 )
+      destroy if amount.zero?
+    end
+  end
     
-  def update_object( params ); [ tap { update_amount( 1 ) }, true ] end
+  def update_object( params )
+    update_amount( 1 )
+  end
 
   def populate_order_item_hash
     {}.tap do |order_item_hash|
@@ -56,7 +63,9 @@ class CartItem < ActiveRecord1
   alias_method :render_destroy, :render_create_or_update
   
   private
-    def update_amount( i ); update_attribute :amount, amount + i end     
+    def update_amount( i )
+      update_attribute :amount, amount + i
+    end     
     
 end
 

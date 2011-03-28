@@ -8,8 +8,6 @@ describe "items/_show" do
   end
   
   it "shows only one existing item's details" do
-    @photo.should_receive( :link_to_show_with_comment ).and_return( link_to image_tag(
-            @photo.photo.thumb.url ) + @photo.comment, @photo.photo_url ) 
     render
     rendered.should contain( @item.name  )
     rendered.should contain( @item.category.name )

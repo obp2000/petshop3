@@ -7,13 +7,7 @@ describe "shared/_index" do
       @objects = sizes_proxy
       @objects.stub( :new_partial ).and_return( "shared/attr" )
       @objects.stub( :edit_partial ).and_return( "shared/attr" )    
-      view.stub( :link_to_add_to_item )
-      @objects.first.stub( :link_to_delete ).and_return( link_to "Test", @objects.first, :remote => true,
-            :method => :delete )
-      @objects.second.stub( :link_to_delete ).and_return( link_to "Test", @objects.second, :remote => true,
-            :method => :delete )           
-      @objects.first.class.stub( :new1 ).and_return( sizes_proxy.first.class.new )
-      view.stub( :submit_to ).and_return( image_submit_tag "test.png" )     
+      @objects.stub( :new1 ).and_return( sizes_proxy.first.class.new )
     end
 
     it "renders two existing objects and one new object" do
@@ -46,14 +40,8 @@ describe "shared/_index" do
       @objects = colours_proxy
       @objects.stub( :new_partial ).and_return( "shared/attr" )
       @objects.stub( :edit_partial ).and_return( "shared/attr" )    
-      view.stub( :link_to_add_to_item )
+      @objects.stub( :new1 ).and_return( colours_proxy.first.class.new )
       view.stub( :link_to_add_html_code_to )      
-      @objects.first.stub( :link_to_delete ).and_return( link_to "Test", @objects.first, :remote => true,
-            :method => :delete )
-      @objects.second.stub( :link_to_delete ).and_return( link_to "Test", @objects.second, :remote => true,
-            :method => :delete )           
-      @objects.first.class.stub( :new1 ).and_return( colours_proxy.first.class.new )
-      view.stub( :submit_to ).and_return( image_submit_tag "test.png" )     
     end
 
     it "renders two existing objects and one new object" do
@@ -93,13 +81,7 @@ describe "shared/_index" do
       @objects = categories_proxy
       @objects.stub( :new_partial ).and_return( "shared/attr" )
       @objects.stub( :edit_partial ).and_return( "shared/attr" )    
-      view.stub( :link_to_add_to_item )
-      @objects.first.stub( :link_to_delete ).and_return( link_to "Test", @objects.first, :remote => true,
-            :method => :delete )
-      @objects.second.stub( :link_to_delete ).and_return( link_to "Test", @objects.second, :remote => true,
-            :method => :delete )           
-      @objects.first.class.stub( :new1 ).and_return( categories_proxy.first.class.new )
-      view.stub( :submit_to ).and_return( image_submit_tag "test.png" )     
+      @objects.stub( :new1 ).and_return( categories_proxy.first.class.new )
     end
 
     it "renders two existing objects and one new object" do
@@ -132,11 +114,7 @@ describe "shared/_index" do
       @objects = photos_proxy
       @objects.stub( :new_partial ).and_return( "photos/upload_photo" )
       @objects.stub( :edit_partial ).and_return( "shared/attr" )    
-      view.stub( :link_to_add_to_item )
-      @objects.first.stub( :link_to_delete ).and_return( link_to "Test", @objects.first, :remote => true,
-            :method => :delete )
-      @objects.first.class.stub( :new1 ).and_return( photos_proxy.first.class.new )
-      view.stub( :submit_to ).and_return( image_submit_tag "test.png" )     
+      @objects.stub( :new1 ).and_return( photos_proxy.first.class.new )
     end
 
     it "renders one existing photo and one new photo" do
@@ -144,8 +122,6 @@ describe "shared/_index" do
       view.should_receive( :will_paginate ).with( @objects )
       view.should_receive( :link_to_add_to_item ).with( @objects.first ).once
       view.should_receive( :draggable_element ).with( @objects.first.class.name.tableize )
-      @objects.first.should_receive( :link_to_show ).and_return( link_to image_tag(
-            @objects.first.photo.thumb.url ), @objects.first.photo_url ) 
       render "shared/index", :objects => @objects
       @objects.each do |object|
         rendered.should have_selector( "a", :href => object.photo_url ) do |a|
@@ -173,16 +149,12 @@ describe "shared/_index" do
     before do
       @objects = contacts_proxy
       @objects.stub( :edit_partial ).and_return( "contacts/contact" )    
-      @objects.first.class.stub( :new1 ).and_return( false )
-      view.stub( :submit_to ).and_return( image_submit_tag "test.png" )
+      @objects.stub( :new1 ).and_return( false )
       view.stub( :will_paginate )       
     end
 
     it "renders one existing contact" do
       view.should_receive( :link_to_close_window ).with( @objects )
-#      view.should_receive( :will_paginate ).with( @objects )
-#      view.should_receive( :link_to_add_to_item ).with( @objects.first ).once
-#      view.should_receive( :link_to_add_to_item ).with( @objects.second ).once        
       view.should_receive( :draggable_element ).with( @objects.first.class.name.tableize )
       render "shared/index", :objects => @objects
       @objects.each do |object|
@@ -192,15 +164,12 @@ describe "shared/_index" do
           form.should have_text_field( object, "email" )
           form.should have_text_field( object, "phone" )
           form.should have_text_field( object, "icq" )
-          #form.should have_textarea( object, "address" )           
-  
+          form.should have_textarea( object, "address" )           
           form.should have_image_input         
         end
       end
 
     end
   end
-
-
 
 end

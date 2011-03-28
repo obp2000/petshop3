@@ -37,31 +37,32 @@ class Item < ActiveRecord1
   validates_presence_of :category, :type
   validates_numericality_of :price, :only_integer => true
 
-  def season; Season.new( self ) end
+  def season
+    Season.new( self )
+  end
 
   class << self
 
 # actions
-    def index_scope( params ); all.sort_by { |item| eval( "item." + params[ :sort_by ] ) rescue "" } end
+    def index_scope( params )
+      all.sort_by { |item| eval( "item." + params[ :sort_by ] ) rescue "" }
+    end
     
     include ReplaceContent      
-
-    def headers
-      [ [ "name", human_attribute_name( :name ) ],
-        [ "sizes.first.name", Size.model_name.human.pluralize ],
-        [ "colours.first.name", Colour.model_name.human.pluralize ],
-        [ "category.name", Category.model_name.human ],
-        [ "price", human_attribute_name( :price ) ] ]
-    end
   
   end
 
 # actions
   after_update :save_photos
   
-  def save_photos; photos.each { |photo| photo.save } end
+  def save_photos
+    photos.each { |photo| photo.save }
+  end
   
-  def update_object( params ); params[ "item" ][ :existing_photo_attributes ] ||= {}; super end
+  def update_object( params )
+    params[ "item" ][ :existing_photo_attributes ] ||= {}
+    super
+  end
   
   def existing_photo_attributes=(photo_attributes)
     photos.reject( &:new_record? ).each do |photo|

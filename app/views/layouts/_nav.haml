@@ -3,7 +3,7 @@
     - [ SummerCatalogItem, WinterCatalogItem, CatalogItem ].each do |season_class|
       %h3= link_to image_tag( season_class.season_icon ) + season_class.season_name      
       %div
-        %span.link_to_season= link_to "#{t(:count)} (#{season_class.count})", season_class, :remote => true
+        %span.link_to_season= link_to "#{ CatalogItem.human_attribute_name(:count)} (#{season_class.count})", season_class, :remote => true
         - season_class.group_by_category.each do |grouped_by_category|
           = link_to_category( grouped_by_category.category, season_class.name.tableize )      
     %h3= link_to image_tag( CartImage ) + cart.class.model_name.human

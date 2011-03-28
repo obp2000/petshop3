@@ -27,5 +27,5 @@
   = l( @object.created_at, :format => :long ) unless @object.created_at.blank?    
   = f.label :updated_at
   = l( @object.updated_at, :format => :long ) unless @object.updated_at.blank?    
-  = image_submit_tag SaveImageLarge, :title => t( :save_changes ) 
+  = image_submit_tag SaveImageLarge, :title => @object.class.human_attribute_name( :save_changes ) 
     

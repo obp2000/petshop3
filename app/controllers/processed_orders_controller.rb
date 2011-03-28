@@ -1,9 +1,11 @@
 class ProcessedOrdersController < OrdersController
+before_filter :set_captcha, :only => :create
 
   validates_captcha
-
-  def create
-    super captcha_validated?
-  end
+  
+  private
+    def set_captcha
+      session[ :captcha_validated ] = captcha_validated?       
+    end
   
 end

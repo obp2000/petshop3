@@ -9,8 +9,6 @@ describe Photo do
              "comment" => "Photo of jacket" } }
     @updated_params = { "photo" => { :comment => "Photo of shirt" } }         
     @session = {}
-    @flash = {}
-    @flash.stub( :now ).and_return( @flash )      
   end
 
   it "is valid with valid attributes" do
@@ -38,7 +36,6 @@ describe Photo do
     it "saves new photo" do
       create_photo      
       @photo.photo_url.should =~ /test.jpg/
-      @flash.now[ :notice ].should contain( "создан" )        
     end
   
   end  
@@ -47,9 +44,9 @@ describe Photo do
   
     it "updates existing photo comment" do
       create_photo      
-      @photo = Photo.update_object( @updated_params.merge( :id => @photo.id ), @session, @flash ).first
+      @photo = Photo.find_current_object( { :id => @photo.id }, @session )
+      @photo.update_object( @updated_params )
       @photo.comment.should == @updated_params[ "photo" ][ :comment ]
-      @flash.now[ :notice ].should contain( "обновлён" )      
     end
   
   end
@@ -59,10 +56,10 @@ describe Photo do
     it "destroys existing photo" do
       create_photo
       @params_for_destroy = { :id => @photo.id }
-      @photo = Photo.destroy_object( @params_for_destroy, @session, @flash )
+      @photo = Photo.find_current_object( @params_for_destroy, @session )
+      @photo.destroy_object
       @photo.photo_url.should =~ /test.jpg/
       Photo.all.should_not include( @photo )
-      @flash.now[ :notice ].should contain( "удалён" )                
     end
   
   end  

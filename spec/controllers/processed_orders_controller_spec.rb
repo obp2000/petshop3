@@ -1,6 +1,4 @@
 require 'spec_helper'
-
-#class ProcessedOrder; end  
   
 describe ProcessedOrdersController do
   
@@ -13,11 +11,13 @@ describe ProcessedOrdersController do
  
   describe "GET close" do
     it "closes the requested order and renders close template" do
-      @object.class.should_receive( :close_object ).with( { "action" => "close", "id" => @object.to_param,
-                          "controller" => @object.class.name.tableize }, { "flash" => {} }, {} ).and_return( @object )
+      @object.class.should_receive( :find ).with( @object.to_param ).and_return( @object )      
+      @object.should_receive( :close_object ).and_return( @object )      
+      @object.stub( :close_notice ).and_return( "Test" )
+      @object.should_receive( :render_close )       
       xhr :get, :close, :id => @object.to_param
-      assigns[ :object ].should equal( @object )
-      response.should render_template( "shared/close" )
+      assigns[ :object ].should equal( @object )      
+      flash.now[ :notice ].should == @object.close_notice 
     end
   end 
  

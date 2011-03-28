@@ -27,13 +27,6 @@ class ProcessedOrder < Order
     
   class << self
 
-# actions    
-    def close_object( params, session, flash )
-      find_current_object( params, session ).tap do |result|
-        result.close_object
-      end
-    end
-
 # partials
     def update_amount
       [ :replace_html, "processed_orders_amount", count ]
@@ -44,7 +37,7 @@ class ProcessedOrder < Order
   def closed?; false end
 
 # actions  
-  def save_object( session, flash )
+  def save_object( session )
     self.captcha_validated = session[ :captcha_validated ]
     self.cart = session.cart
     if save && transaction { populate_order( self.cart ); self.cart.clear_cart }

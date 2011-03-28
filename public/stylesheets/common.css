@@ -169,16 +169,16 @@ img {
     max-width: 140px;
     margin-left: 4px; }
 
-.thumbs > * {
-  display: table-cell;
-  vertical-align: top; }
-.thumbs a {
-  max-width: 120px;
+.thumbs {
   font-size: 0.8em;
   line-height: 1em; }
-  .thumbs a img {
-    border: 1px solid #00a7ec;
-    display: block; }
+  .thumbs > * {
+    display: table-cell;
+    vertical-align: top; }
+  .thumbs a {
+    max-width: 120px; }
+    .thumbs a img {
+      border: 1px solid #00a7ec; }
 
 .pagination {
   clear: both;

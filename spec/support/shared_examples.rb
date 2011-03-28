@@ -95,12 +95,9 @@ shared_examples_for "new or edit item form" do
     rendered.should have_link_to_remote_get( colours_path )    
     rendered.should have_link_to_remote_get( photos_path )
     rendered.should have_textarea( @item, "blurb" )      
-    rendered.should contain( @item.created_at.strftime("%d.%m.%y") )
-    rendered.should contain( @item.created_at.strftime("%H:%M:%S") )        
-    rendered.should contain( @item.updated_at.strftime("%d.%m.%y") )
-    rendered.should contain( @item.updated_at.strftime("%H:%M:%S") )       
+    rendered.should contain( l( @item.created_at, :format => :long ) )
+    rendered.should contain( l( @item.updated_at, :format => :long ) )
     rendered.should have_selector( "input", :type => "image" )
-    
     rendered.should contain( @category.name )
     rendered.should have_selector( "input#item_category_id", :type => "hidden", :name => "item[category_id]",
           :value => @category.to_param )
@@ -215,15 +212,13 @@ end
 
 def create_cart_item
   @session = {}
-  @flash = {}
-#  @flash[ :notice ] = "Test"
-  @flash.stub( :now ).and_return( @flash )
   @item = Item.create!( valid_item_attributes )
   @params = { :id => "catalog_item_" + @item.id.to_s,
             :blurb => @item.blurb,
             :category_id => @item.category_id,
             :type => @item.type }
-  @cart_item, @success = CartItem.update_object( @params, @session, @flash )
+  @cart_item = CartItem.find_current_object( @params, @session )
+  @cart_item.update_object( @params )
 end
 
 def create_4_catalog_items_with_different_categories_and_seasons
@@ -268,101 +263,102 @@ end
 
 def create_category
   @category = Category.new_object( @params, @session )
-  @category.save_object( @session, @flash )  
+  @category.save_object( @session )  
 end
 
 def create_colour
   @colour = Colour.new_object( @params, @session )
-  @colour.save_object( @session, @flash )
+  @colour.save_object( @session )
 end
 
 def create_photo
   @photo = Photo.new_object( @params, @session )
-  @photo.save_object( @session, @flash )
+  @photo.save_object( @session )
 end
 
 def create_size
   @size = Size.new_object( @params, @session )
-  @size.save_object( @session, @flash )
+  @size.save_object( @session )
 end
 
 def create_item
   @item = Item.new_object( @params, @session )
-  @item.save_object( @session, @flash )  
+  @item.save_object( @session )  
 end
 
 def create_forum_post
   @forum_post = ForumPost.new_object( @params, @session )
-  @forum_post.save_object( @session, @flash )  
+  @forum_post.save_object( @session )  
 end
 
 shared_examples_for "object" do
 
   before do
-    controller.stub(:current_user).and_return( users_proxy.first )
+    controller.stub( :current_user ).and_return( users_proxy.first )
   end
 
   describe "GET index" do
     it "assigns all objects as @objects, new object as @object and renders index template" do
-      @object.class.should_receive( :all_objects ).and_return( [ @object ] )
+      @object.class.should_receive( :all_objects ).and_return( @objects = [ @object ] )
+      @objects.should_receive( :render_index )
       xhr :get, :index
       assigns[:objects].should == [ @object ]
-      response.should render_template( "shared/index" )
     end
   end
 
   describe "GET show" do
     it "assigns the requested object as @object and renders show template" do
       @object.class.should_receive( :find ).with( @object.to_param ).and_return( @object )
+      @object.class.should_receive( :render_show )      
       xhr :get, :show, :id => @object.to_param
       assigns[ :object ].should equal( @object )
-      response.should render_template( "shared/show" )        
     end
   end
 
   describe "GET new" do
     it "assigns a new object as @object and renders new template" do
       @object.class.should_receive( :new1 ).and_return( @object )
+      @object.should_receive( :render_new_or_edit )      
       xhr :get, :new
       assigns[ :object ].should equal( @object )
-      response.should render_template( "shared/new_or_edit" )           
     end
   end
 
   describe "GET edit" do
     it "assigns the requested object as @object and renders new template" do
       @object.class.should_receive( :find ).with( @object.to_param ).and_return( @object )
-      get :edit, :id => @object.to_param
+      @object.should_receive( :render_new_or_edit )
+      xhr :get, :edit, :id => @object.to_param
       assigns[ :object ].should equal( @object )
-      response.should render_template( "shared/new_or_edit" )            
     end
   end
 
   describe "POST create" do
     it "creates a new object" do
-      @object.class.should_receive( :new_object ).with( { @object.class.name.underscore => { "name"=>@object.name },
-                        "action" => "create", "controller" => @object.class.name.tableize }, { "flash" => {} } ).and_return( @object )
-      @object.should_receive( :save_object )
-      xhr :post, :create, @object.class.name.underscore => { :name => @object.name }
+      @object.class.should_receive( :new ).with( "name" => @object.name ).and_return( @object )            
+      @object.should_receive( :save_object ).with( session )
+      xhr :post, :create, @object.class.name.underscore => { "name" => @object.name }
     end
 
     context "with valid params" do
       it "assigns a newly created object as @object and renders create/update template" do
-        @object.class.should_receive( :new_object ).and_return( @object )
-        @object.stub( :save_object ).and_return( true )        
+        @object.class.should_receive( :new ).and_return( @object )
+        @object.stub( :save_object ).and_return( true )
+        @object.stub( :create_notice ).and_return( "Test" )
+        @object.should_receive( :render_create_or_update )        
         xhr :post, :create, @object.class.name.underscore => { "name" => @object.name }
         assigns[ :object ].should equal( @object )
-        response.should render_template( "shared/create_or_update" )
+        flash.now[ :notice ].should == @object.create_notice 
       end
     end
 
     context "with invalid params" do
       it "assigns a newly created but unsaved object as @object and re-renders new/edit template" do
         @object.class.should_receive( :new_object ).and_return( @object )
-        @object.stub( :save_object ).and_return(false)
+        @object.stub( :save_object ).and_return( false )
+        @object.should_receive( :render_new_or_edit )
         xhr :post, :create, @object.class.name.underscore => { "name" => @object.name }
         assigns[ :object ].should equal( @object )
-        response.should render_template( "shared/new_or_edit" )               
       end
     end
 
@@ -370,26 +366,35 @@ shared_examples_for "object" do
 
   describe "PUT update" do
     it "updates the requested object" do
-      @object.class.should_receive( :update_object ).with( { @object.class.name.underscore => { "name" => "Test" }, "action" => "update",
-                              "id" => @object.to_param, "controller" => @object.class.name.tableize }, { "flash" => {} }, {} )
+      @object.class.should_receive( :find ).with( @object.to_param ).and_return( @object )
+      @object.should_receive( :update_object ).with( 
+            { @object.class.name.underscore => { "name" => "Test" },
+            "action" => "update",
+            "id" => @object.to_param,
+            "controller" => @object.class.name.tableize }      
+            ).and_return( [ @object, true ] )
       xhr :put, :update, :id => @object.to_param, @object.class.name.underscore => { "name" => "Test" }
     end
 
     context "with valid params" do
       it "assigns the requested object as @object and renders create/update template" do
-        @object.class.stub( :update_object ).and_return( [ @object, true ] )
+        @object.class.stub( :find ).with( @object.to_param ).and_return( @object )
+        @object.stub( :update_object ).and_return( true )
+        @object.stub( :update_notice ).and_return( "Test" )        
+        @object.should_receive( :render_create_or_update )
         xhr :put, :update, :id => @object.to_param
         assigns[ :object ].should == @object
-        response.should render_template( "shared/create_or_update" )
+        flash.now[ :notice ].should == @object.update_notice        
       end
     end
 
     context "with invalid params" do
       it "assigns the object as @object and re-renders new/edit template" do
-        @object.class.stub( :update_object ).and_return( [ @object, false ] )
+        @object.class.stub( :find ).with( @object.to_param ).and_return( @object )        
+        @object.stub( :update_object ).and_return( false )
+        @object.should_receive( :render_new_or_edit )
         xhr :put, :update, :id => @object.to_param
         assigns[ :object ].should equal( @object )
-        response.should render_template( "shared/new_or_edit" )          
       end
     end
 
@@ -397,12 +402,39 @@ shared_examples_for "object" do
 
   describe "DELETE destroy" do
     it "destroys the requested object and renders destroy template" do
-      @object.class.should_receive( :destroy_object ).with( { "action" => "destroy", "id" => @object.to_param,
-                          "controller" => @object.class.name.tableize }, { "flash" => {} }, {} ).and_return( @object )
+      @object.class.should_receive( :find ).with( @object.to_param ).and_return( @object )      
+      @object.should_receive( :destroy_object ).and_return( @object )
+      @object.stub( :destroy_notice ).and_return( "Test" )      
+      @object.should_receive( :render_destroy )            
       xhr :delete, :destroy, :id => @object.to_param
       assigns[ :object ].should equal( @object )
-      response.should render_template( "shared/destroy" )
+      flash.now[ :notice ].should == @object.destroy_notice       
     end
   end  
     
+end    
+    
+shared_examples_for "search" do
+    
+  describe "GET search" do
+    
+    it "assigns found catalog items as @objects index template" do
+      @object.class.should_receive( :search_results ).and_return( @objects = [ @object ] )
+      @objects.should_receive( :render_index )      
+      xhr :get, :search
+      assigns[ :objects ].should == [ @object ]
+      flash.now[ :notice ].should be_blank       
+    end
+    
+    context "when found nothing" do
+      it "render not found notice" do
+        @object.class.should_receive( :search_results ).and_return( [ ] )
+        xhr :get, :search
+        assigns[ :objects ].should == [ ]
+        flash.now[ :notice ].should contain( @object.class.human_attribute_name( :not_found_notice ) )         
+      end
+    end
+    
+  end    
+   
 end

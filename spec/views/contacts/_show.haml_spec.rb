@@ -8,7 +8,6 @@ describe "contacts/_show" do
   end
   
   it "renders contact information" do
-#    view.should_receive( :show_page_title_for ).with( @contact ).and_return( "Show page title" )
     render
     rendered.should contain( @contact.class.model_name.human.pluralize )    
     rendered.should contain( @contact.name )

@@ -7,8 +7,6 @@ describe Category do
     @category = Category.new( @valid_attributes )
     @params = { "category" => valid_category_attributes }
     @session = {}
-    @flash = {}
-    @flash.stub( :now ).and_return( @flash )      
   end
 
   it "is valid with valid attributes" do
@@ -21,8 +19,8 @@ describe Category do
   end
   
   it "should have unique name" do
-    @category = Category.create(@valid_attributes)
-    @category = Category.create(@valid_attributes)    
+    @category = Category.create( @valid_attributes )
+    @category = Category.create( @valid_attributes )    
     @category.errors.size.should == 1
   end
   
@@ -41,7 +39,6 @@ describe Category do
       create_category      
       @category.reload
       @category.name.should == valid_category_attributes[ :name ]
-      @flash.now[ :notice ].should contain( "создан" )        
     end
   
   end  
@@ -54,9 +51,10 @@ describe Category do
   
     it "updates existing category" do
       create_category
-      @category = Category.update_object( @updated_params.merge( :id => @category.id ), @session, @flash ).first
+      @category = Category.find_current_object(
+            @updated_params.merge( :id => @category.id ), @session )
+      @category.update_object( @updated_params )
       @category.name.should == @updated_params[ "category" ][ :name ]
-      @flash.now[ :notice ].should contain( "обновлён" )       
     end
   
   end
@@ -66,10 +64,10 @@ describe Category do
     it "destroys existing category" do
       create_category
       @params_for_destroy = { :id => @category.id }
-      @category = Category.destroy_object( @params_for_destroy, @session, @flash )
+      @category = Category.find_current_object( @params_for_destroy, @session )
+      @category.destroy_object
       @category.name.should == @params[ "category" ][ :name ]
       Category.all.should_not include( @category )
-      @flash.now[ :notice ].should contain( "удалён" )       
     end
   
   end  

@@ -4,8 +4,6 @@ describe "shared/_photo" do
 
   before do
     @photo = photos_proxy.first
-    view.stub( :link_to_show_with_comment ).with( @photo ).and_return( link_to image_tag( @photo.photo.thumb.url ) +
-            @photo.comment, @photo.photo_url )              
   end
   
   it "renders thumbnail and comment of photo" do

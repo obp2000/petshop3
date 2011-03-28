@@ -13,8 +13,6 @@ describe Item do
             :type => "SummerCatalogItem" 
             } }    
     @session = {}
-    @flash = {}
-    @flash.stub( :now ).and_return( @flash )      
   end
 
   it "is valid with valid attributes" do
@@ -61,7 +59,7 @@ describe Item do
       create_item
       @item.reload
       @item.name.should == valid_item_attributes[ :name ]
-      @flash.now[ :notice ].should contain( "создан" )        
+#      @flash.now[ :notice ].should contain( "создан" )        
     end
   
   end  
@@ -70,9 +68,9 @@ describe Item do
   
     it "updates existing item" do
       create_item
-      @item = Item.update_object( @updated_params.merge( :id => @item.id ), @session, @flash ).first
+      @item = Item.find_current_object( { :id => @item.id }, @session )
+      @item.update_object( @updated_params )
       @item.name.should == @updated_params[ "item" ][ :name ]
-      @flash.now[ :notice ].should contain( "обновлён" )        
     end
   
   end
@@ -82,10 +80,10 @@ describe Item do
     it "destroys existing item" do
       create_item
       @params_for_destroy = { :id => @item.id }
-      @item = Item.destroy_object( @params_for_destroy, @session, @flash )
+      @item = Item.find_current_object( @params_for_destroy, @session )
+      @item.destroy_object
       @item.name.should == valid_item_attributes[ :name ]
       Item.all.should_not include( @item )
-      @flash.now[ :notice ].should contain( "удалён" )         
     end
   
   end

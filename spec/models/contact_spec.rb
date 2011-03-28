@@ -1,14 +1,13 @@
 require 'spec_helper'
 
 describe Contact do
+
   before(:each) do
     @valid_attributes = valid_contact_attributes
     @contact = Contact.new( @valid_attributes )
     @params = { "contact" => valid_contact_attributes }
     @updated_params = { "contact" => { :name => "Sergey" } }      
     @session = {}
-    @flash = {}
-    @flash.stub( :now ).and_return( @flash )    
   end
 
   it "is valid with valid attributes" do
@@ -34,10 +33,10 @@ describe Contact do
   
     it "updates existing contact" do
       @contact = Contact.new_object( @params, @session )
-      @contact.save_object( @session, @flash )
-      @contact = Contact.update_object( @updated_params.merge( :id => @contact.id ), @session, @flash ).first
+      @contact.save_object( @session )
+      @contact = Contact.find_current_object( { :id => @contact.id }, @session )
+      @contact.update_object( @updated_params )
       @contact.name.should == @updated_params[ "contact" ][ :name ]
-      @flash.now[ :notice ].should contain( "обновлены" )          
     end
   
   end

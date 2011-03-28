@@ -13,10 +13,6 @@ describe SummerCatalogItem do
       SummerCatalogItem.index_scope( @params ).count.should == 2
       SummerCatalogItem.index_scope( @params ).first.type.should == "SummerCatalogItem"   
     end
- 
-    it "show proper page title" do
-      SummerCatalogItem.index_page_title_for( @params ).should == "Каталог товаров: #{SummerCatalogItem.season_name}"
-    end
   
   end
 
@@ -32,12 +28,7 @@ describe SummerCatalogItem do
         catalog_item.category.name.should == @category1.name
       end
     end
- 
-    it "show proper page title" do
-      SummerCatalogItem.index_page_title_for( @params ).should contain( SummerCatalogItem.season_name )      
-      SummerCatalogItem.index_page_title_for( @params ).should contain( @category1.name )
-    end
-  
+
   end
 
 end

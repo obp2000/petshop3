@@ -7,8 +7,6 @@ describe ForumPost do
     @forum_post = ForumPost.new( @valid_attributes )
     @params = { "forum_post" => valid_forum_post_attributes }      
     @session = {}
-    @flash = {}
-    @flash.stub( :now ).and_return( @flash )        
   end
 
   it "is valid with valid attributes" do
@@ -54,8 +52,6 @@ describe ForumPost do
       it "saves new forum post" do
         create_forum_post
         @forum_post.name.should == valid_forum_post_attributes[ :name ]
-        @flash.now[ :notice ].should contain( "тема" )
-        @flash.now[ :notice ].should contain( "создана" )        
       end
     end
   
@@ -64,10 +60,8 @@ describe ForumPost do
         create_forum_post
         @params[ "forum_post" ][ :parent_id ] = @forum_post.to_param
         @reply_forum_post = ForumPost.new_object( @params, @session )
-        @reply_forum_post.save_object( @session, @flash ) 
+        @reply_forum_post.save_object( @session ) 
         @reply_forum_post.parent_id.should == @forum_post.id
-        @flash.now[ :notice ].should contain( "Сообщение" )
-        @flash.now[ :notice ].should contain( "отправлено" )        
       end
     end
   
@@ -79,13 +73,13 @@ describe ForumPost do
       create_forum_post
       @reply_params = { "forum_post" => { :name => "Sergey", :subject => "Reply theme", :body => "Reply body", :parent_id => @forum_post.id } }         
       @reply_forum_post = ForumPost.new_object(  @reply_params, @session ) 
-      @reply_forum_post.save_object( @session, @flash )
+      @reply_forum_post.save_object( @session )
       @params_for_destroy = { :id => @forum_post.id }
-      @forum_posts = ForumPost.destroy_object( @params_for_destroy, @session, @flash )
+      @forum_posts = ForumPost.find_current_object( @params_for_destroy, @session )
+      @forum_posts = @forum_posts.destroy_object
       @forum_posts.size.should == 2
       @forum_posts.should include( @forum_post )
       @forum_posts.should include( @reply_forum_post )
-      @flash.now[ :notice ].should contain( "удалена" )          
     end
   
   end

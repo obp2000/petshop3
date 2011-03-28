@@ -18,6 +18,8 @@ class Contact < ActiveRecord1
   end
 
 # notices
-  def update_notice; self.class.human_attribute_name( :update_notice ) end    
+  def update_notice
+    self.class.human_attribute_name( :update_notice )
+  end    
 
 end

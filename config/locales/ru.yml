@@ -50,10 +50,9 @@ ru:
         create: Создать учётную запись
       
         
-
-  application_title: "Одежда для русских тоев BEST&C"
   admin_title: "Администрирование магазина BEST&C"
-  header_title: "одежда для<br/>русских тоев"  
+  application_title: "Одежда для русских тоев BEST&C"
+  header_title: "одежда для<br/>русских тоев"      
   demo: Демо
   totals: Итого
   required_fields: обязательные поля
@@ -61,7 +60,6 @@ ru:
   year: г.
   remove: Удалить
   change: Изменить
-  count: Всего
   back: Назад
   close_window: Закрыть окно
   created_at: Создан
@@ -80,8 +78,6 @@ ru:
   query_results: Результаты поиска по запросу
   that: Такой
   show: Показать
-  search_catalog_item: Поиск товара
-  save_changes: Сохранить изменения
   back_to_shop: Назад в магазин
   logout: Выйти
   clear_cart: Очистить корзину
@@ -93,6 +89,7 @@ ru:
   enter: Войти
   forgot_password?: Забыли пароль?
   dear: Уважаемый(ая)
+  count: Всего
 
   
   time:
@@ -269,13 +266,16 @@ ru:
         must_have_type: Необходимо выбрать сезон одежды        
         must_have_valid_price: Цена должна быть целым числом
         category: Вид одежды
-        type: Сезон        
+        type: Сезон
+        save_changes: Сохранить изменения        
         
       catalog_item:
         price: Цены
         submit_title: Поиск товара
         not_found_notice: товары не найдены
         any_attr: Любой
+        search: Поиск товара
+        count: Всего
         
       closed_order:
         status_nav: " со статусом \"закрытые\""

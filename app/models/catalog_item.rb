@@ -33,9 +33,8 @@ class CatalogItem < Item
     end
 
 # actions
-    def search_results( params, flash )
+    def search_results( params )
       search( *params.search_args )
-#      search( params[ :q ], { :page => params[ :page ], :per_page => 8, :order => :id, :sort_mode => :desc } )
     end
 
 # notices

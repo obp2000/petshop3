@@ -34,7 +34,7 @@ class ForumPost < ActiveRecord1
   end
 
 # actions
-  def save_object( session, flash )
+  def save_object( session )
     super.tap do |success|
       if success
         if parent_id.zero?
@@ -57,7 +57,9 @@ class ForumPost < ActiveRecord1
     self.class.human_attribute_name( parent_id.zero? ? :create_notice : :send_notice ) 
   end
 
-  def destroy_notice; self.class.human_attribute_name( :destroy_notice ) end
+  def destroy_notice
+    self.class.human_attribute_name( :destroy_notice )
+  end
 
 # renders  
   def render_new_or_edit( page, session, controller_name )
@@ -69,8 +71,8 @@ class ForumPost < ActiveRecord1
 
   attr_accessor_with_default( :style ) { "margin-left: #{depth*20 + 30}px" }
 
-  def render_reply( page )
-    self.class.superclass.instance_method( :render_new_or_edit ).bind( self )[ page ]    
+  def render_reply( page, *args )
+    self.class.superclass.instance_method( :render_new_or_edit ).bind( self )[ page, *args ]    
     page.fade link_to_reply_dom_id    
   end 
   

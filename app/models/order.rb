@@ -19,24 +19,21 @@ class Order < ActiveRecord1
   self.status_nav = ""
   self.status_ = ""
   self.show_tag = "order_details"
-  self.headers = [ "№", I18n.t( :status ), I18n.t( :sum ), I18n.t( :count ),
-          I18n.t( :created_at ), I18n.t( :updated_at ), "" ]
 
   cattr_accessor :partial_path
-#  self.row_partial = name.underscore  
   self.partial_path = name.tableize
-
-  attr_accessor_with_default( :status_tag ) { "order_status_#{id}" }
-  attr_accessor_with_default( :updated_tag ) { "order_updated_#{id}" }
-  attr_accessor_with_default( :close_tag ) { "close_order_#{id}" }
 
   scope :index_scope, order( "created_at desc" )
 
   class << self
-# tags
+
     include ReplaceContent      
 
   end
+
+  attr_accessor_with_default( :status_tag ) { "order_status_#{id}" }
+  attr_accessor_with_default( :updated_tag ) { "order_updated_#{id}" }
+  attr_accessor_with_default( :close_tag ) { "close_order_#{id}" }
 
 # notices
   def destroy_notice

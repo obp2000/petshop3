@@ -5,11 +5,11 @@
      
   self.abstract_class = true   
    
-  class_inheritable_accessor :replace, :paginate_options, :insert_or_replace, :create_render_block,
+  class_inheritable_accessor :replace, :paginate_options, :insert_or_replace,
     :js_for_index, :js_for_show, :js_for_new_or_edit, :js_for_create_or_update,
     :index_tag, :index_partial, :show_tag, :show_partial, :edit_tag, :edit_partial,
     :new_tag, :new_partial, :create_or_update_partial,
-    :partial_path, :dom_id, :headers, :index_layout
+    :partial_path, :dom_id, :headers, :index_layout, :new1
 
   self.paginate_options = {}
   self.js_for_index = [ "attach_yoxview" ] 
@@ -22,33 +22,29 @@
     
   class << self
 
-    def create_render_block
-      ApplicationController::RenderCreateOrUpdate
-    end
-
 # actions
-    def all_objects( params, * )
+    def all_objects( params )
       index_scope( params ).paginate_objects( params )
     end
     
-    def paginate_hash( params ); paginate_options.merge :page => params[ :page ] end
-
-    def paginate_objects( params ); paginate paginate_hash( params ) end 
-
-    def find_current_object( params, session ); find params[ :id ] end
-    alias_method :find_object_for_update, :find_current_object
-
-    def update_object( params, session, flash )
-      find_object_for_update( params, session ).update_object( params )
+    def paginate_hash( params )
+      paginate_options.merge :page => params[ :page ]
     end
 
-    def destroy_object( params, session, flash )
-      find_current_object( params, session ).destroy_object
-    end     
+    def paginate_objects( params )
+      paginate paginate_hash( params )
+    end 
+
+    def find_current_object( params, session )
+      find params[ :id ]
+    end
+#    alias_method :find_object_for_update, :find_current_object
 
     attr_accessor_with_default( :new1 ) { new }      
     
-    def new_object( params, session ); new params[ name.underscore ] end
+    def new_object( params, session )
+      new params[ name.underscore ]
+    end
       
 # renders    
     def render_index( page, objects )
@@ -65,7 +61,6 @@
     attr_accessor_with_default( :new_tag ) { "new_#{name.underscore}" }
     attr_accessor_with_default( :edit_partial ) { name.underscore }    
     attr_accessor_with_default( :new_partial ) { edit_partial }
-#    attr_accessor_with_default( :row_partial ) { name.underscore }    
     attr_accessor_with_default( :partial_path ) { name.tableize }
     attr_accessor_with_default( :dom_id ) { name.tableize }   
     attr_accessor_with_default( :index_partial ) { "#{partial_path}/index" }
@@ -74,7 +69,6 @@
   end
 
   attr_accessor_with_default( :to_underscore ) { self.class.name.underscore }
-
   attr_accessor_with_default( :show_text ) { name }
   attr_accessor_with_default( :tag ) { "#{to_underscore}_#{id}" }
   attr_accessor_with_default( :edit_tag ) { "edit_#{to_underscore}_#{id}" }
@@ -84,14 +78,14 @@
 
 # actions
   def update_object( params )
-    [ self, update_attributes( params[ to_underscore ] ) ]
+    update_attributes( params[ to_underscore ] )
   end
     
   def destroy_object
     destroy
   end     
   
-  def save_object( session, flash )
+  def save_object( session )
     save
   end
     

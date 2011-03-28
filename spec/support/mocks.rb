@@ -98,7 +98,7 @@ def valid_item_attributes
             { :name => "Shirt",
               :blurb => "Jacket for walking",
               :price => "500",
-              :category_id => 1,
+              :category => categories_proxy.first,
               :type => "SummerCatalogItem"
               }
 end
@@ -179,7 +179,8 @@ def valid_order_item_attributes2
              :colour => colours_proxy.first,
              :price => 300,
              :amount => 5,
-             :order_item_sum => 1500 }
+             :order_item_sum => 1500,
+             :item => items_proxy.first }
 end             
 
 def valid_order_attributes
@@ -191,8 +192,7 @@ def valid_order_attributes
               :comments => "Comments1",
               :status => "ProcessedOrder",
               :captcha_validated => true,
-              :partial_path => "orders",
-              :row_partial => "order"
+              :partial_path => "orders"
   }  
 end
 
@@ -209,8 +209,7 @@ def valid_order_attributes1
               :updated_at => Time.now + 1,
               :items => items_proxy,
               :order_items => order_items_proxy,
-              :partial_path => "orders",
-              :row_partial => "order"
+              :partial_path => "orders"
   }
 end              
 
@@ -222,13 +221,13 @@ def valid_processed_order_attributes
 end
 
 def valid_category_attributes
-  { :name => "Shirts", :row_partial => "category",
-    :hidden_field_name => "item[category_id]", :partial_path => "categories" }
+  { :name => "Shirts", :hidden_field_name => "item[category_id]",
+    :partial_path => "categories", :to_underscore => "category" }
 end
 
 def valid_category_attributes2
-  { :name => "Jackets", :row_partial => "category",
-    :hidden_field_name => "item[category_id]", :partial_path => "categories" }
+  { :name => "Jackets", :hidden_field_name => "item[category_id]",
+    :partial_path => "categories", :to_underscore => "category" }
 end
 
 def valid_season_attributes
@@ -240,28 +239,28 @@ def valid_season_attributes2
 end
 
 def valid_size_attributes
-  { :name => "XL", :row_partial => "size",
-  :hidden_field_name => "item[size_ids][]", :partial_path => "sizes", :to_underscore => "size" }
+  { :name => "XL", :hidden_field_name => "item[size_ids][]",
+  :partial_path => "sizes", :to_underscore => "size" }
 end
 
 def valid_size_attributes2
-  { :name => "L", :row_partial => "size",
-  :hidden_field_name => "item[size_ids][]", :partial_path => "sizes", :to_underscore => "size" }
+  { :name => "L", :hidden_field_name => "item[size_ids][]",
+  :partial_path => "sizes", :to_underscore => "size" }
 end
 
 def valid_colour_attributes
-  { :name => "Red", :html_code => "#FF0000", :row_partial => "colour",
-      :hidden_field_name => "item[colour_ids][]", :partial_path => "colours", :to_underscore => "colour"  }
+  { :name => "Red", :html_code => "#FF0000", :hidden_field_name => "item[colour_ids][]",
+  :partial_path => "colours", :to_underscore => "colour"  }
 end
 
 def valid_colour_attributes2
-  { :name => "Green", :html_code => "#AAFF00", :row_partial => "colour",
-      :hidden_field_name => "item[colour_ids][]", :partial_path => "colours", :to_underscore => "colour" }
+  { :name => "Green", :html_code => "#AAFF00", :hidden_field_name => "item[colour_ids][]",
+  :partial_path => "colours", :to_underscore => "colour" }
 end
 
 def valid_photo_attributes
   { :photo_url => "photo_of_jacket.jpg", :comment => "Photo of jacket",
-  :partial_path => "photos", :to_underscore => "photo" }
+  :partial_path => "photos", :to_underscore => "photo", :hidden_field_name => "item[photo_ids][]" }
 end
 
 def valid_carts_attributes
@@ -313,11 +312,11 @@ def valid_contact_attributes
             :icq => "123-456-789",
             :address => "Moscow",
             :photo => "photo1",
-            :name_image => "loginmanager.png",
-            :email_image => "mail_generic.png",
-            :phone_image => "kcall.png",  
-            :address_image => "kfm_home.png",
-            :icq_image => "icq_protocol.png",
+#            :name_image => "loginmanager.png",
+#            :email_image => "mail_generic.png",
+#            :phone_image => "kcall.png",  
+#            :address_image => "kfm_home.png",
+#            :icq_image => "icq_protocol.png",
             :partial_path => "contacts" }  
 end
 
@@ -327,5 +326,15 @@ def valid_user_attributes
             :first_name => "Oleg",
             :last_name => "Petrov",
             :password => "1111111",
-            :pw_reset_code => "abcdefg" }
+            :pw_reset_code => "abcdefg",
+            :activation_code => "12321",
+            :forgot_password_url => { :host => "localhost:3001",
+                :controller => "sessions", :action => "reset_password",
+                :id => "abcdefg" },
+            :activation_url => { :host => "localhost:3001",
+                :controller => "sessions", :action => "create",
+                :user => "obp2000", :password => "1111111" },
+            :signup_notification_url => { :host => "localhost:3001",
+                :controller => "users", :action => "activate", :id => "12321" }                   
+                }
 end            
