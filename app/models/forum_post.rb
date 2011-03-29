@@ -5,7 +5,7 @@ class ForumPost < ActiveRecord1
 
   self.paginate_options = { :per_page => 15 }
   self.new_tag = "post_new"
-  self.show_tag = "post"
+#  self.show_tag = "post"
   self.edit_partial = "form"
 
   class_inheritable_accessor :link_to_reply_dom_id, :parent_tag
@@ -47,9 +47,8 @@ class ForumPost < ActiveRecord1
   end
 
   def destroy_object
-    full_set.tap do |full_set|
-      full_set.each { |forum_post| forum_post.delete }
-    end
+    @full_set_clone = full_set.clone
+    full_set.each( &:delete )      
   end
 
 # notices
@@ -67,7 +66,12 @@ class ForumPost < ActiveRecord1
     page.fade show_tag
   end 
 
-  attr_accessor_with_default( :parent_tag ) { "#{to_underscore}_#{parent_id}" }
+  def render_destroy( page, session, controller_name )
+    @full_set_clone.each { |forum_post| forum_post.class.superclass.instance_method(
+        :render_destroy ).bind( forum_post )[ page, session, controller_name ] }
+  end
+
+  attr_accessor_with_default( :parent_tag ) { "#{underscore}_#{parent_id}" }
 
   attr_accessor_with_default( :style ) { "margin-left: #{depth*20 + 30}px" }
 
@@ -78,7 +82,7 @@ class ForumPost < ActiveRecord1
   
   def render_create_or_update( page, session, controller_name )
     page.create_forum_post [ ( parent_id.zero? ? "top"  : "after" ),
-      ( parent_id.zero? ? dom_id : parent_tag ), { :partial => to_underscore, :object => self } ],
+      ( parent_id.zero? ? tableize : parent_tag ), { :partial => underscore, :object => self } ],
       [ show_tag, new_tag ]    
   end
 

@@ -12,11 +12,11 @@ describe CartsController do
     it "clears the requested cart and renders destroy template" do
       @cart.class.should_receive( :find_current_object ).with(
         { "controller" => "carts", "action" => "destroy" }, session ).and_return( @cart )      
-      @cart.should_receive( :destroy_object ).and_return( @destroyed_objects = @cart.cart_items )
+      @cart.should_receive( :destroy_object )
       @cart.stub( :destroy_notice ).and_return( "Test" )      
-      @destroyed_objects.should_receive( :render_destroy )            
+      @cart.should_receive( :render_destroy )            
       xhr :delete, :destroy
-      assigns[ :destroyed_objects ].should == @destroyed_objects
+      assigns[ :object ].should == @cart
       flash.now[ :notice ].should == @cart.destroy_notice       
     end
   end

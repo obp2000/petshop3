@@ -222,12 +222,12 @@ end
 
 def valid_category_attributes
   { :name => "Shirts", :hidden_field_name => "item[category_id]",
-    :partial_path => "categories", :to_underscore => "category" }
+    :partial_path => "categories" }
 end
 
 def valid_category_attributes2
   { :name => "Jackets", :hidden_field_name => "item[category_id]",
-    :partial_path => "categories", :to_underscore => "category" }
+    :partial_path => "categories" }
 end
 
 def valid_season_attributes
@@ -240,27 +240,27 @@ end
 
 def valid_size_attributes
   { :name => "XL", :hidden_field_name => "item[size_ids][]",
-  :partial_path => "sizes", :to_underscore => "size" }
+  :partial_path => "sizes" }
 end
 
 def valid_size_attributes2
   { :name => "L", :hidden_field_name => "item[size_ids][]",
-  :partial_path => "sizes", :to_underscore => "size" }
+  :partial_path => "sizes" }
 end
 
 def valid_colour_attributes
   { :name => "Red", :html_code => "#FF0000", :hidden_field_name => "item[colour_ids][]",
-  :partial_path => "colours", :to_underscore => "colour"  }
+  :partial_path => "colours" }
 end
 
 def valid_colour_attributes2
   { :name => "Green", :html_code => "#AAFF00", :hidden_field_name => "item[colour_ids][]",
-  :partial_path => "colours", :to_underscore => "colour" }
+  :partial_path => "colours" }
 end
 
 def valid_photo_attributes
   { :photo_url => "photo_of_jacket.jpg", :comment => "Photo of jacket",
-  :partial_path => "photos", :to_underscore => "photo", :hidden_field_name => "item[photo_ids][]" }
+  :partial_path => "photos", :hidden_field_name => "item[photo_ids][]" }
 end
 
 def valid_carts_attributes

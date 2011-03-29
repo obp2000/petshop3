@@ -6,6 +6,11 @@ describe "catalog_items/_index" do
     assign( :objects, @objects = catalog_items_proxy )
     @object = @objects.first
     @photo = @object.photos.first
+    @photo.stub( :underscore ).and_return( "photo" )
+    @object.sizes.first.stub( :underscore ).and_return( "size" )
+    @object.sizes.second.stub( :underscore ).and_return( "size" )
+    @object.colours.first.stub( :underscore ).and_return( "colour" )
+    @object.colours.second.stub( :underscore ).and_return( "colour" )
     view.stub( :index_page_title_for ).and_return( "Index page title" )         
     view.stub( :will_paginate )
     @objects.stub( :show_tag ).and_return( "details" )     

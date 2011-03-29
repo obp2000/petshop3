@@ -48,6 +48,8 @@ shared_examples_for "sizes and colours of catalog item" do
     it "do not renders 'any' size and color option" do
       @object.stub( :sizes ).and_return( [ sizes_proxy.first ] )
       @object.stub( :colours ).and_return( [ colours_proxy.first ] )
+      @object.sizes.first.stub( :underscore ).and_return( "size" )
+      @object.colours.first.stub( :underscore ).and_return( "colour" )      
       @object.stub_chain( :sizes, :class_name_rus_cap ).and_return( "Размер" )
       @object.stub_chain( :colours, :class_name_rus_cap ).and_return( "Цвет" )      
       render      
@@ -217,7 +219,7 @@ def create_cart_item
             :blurb => @item.blurb,
             :category_id => @item.category_id,
             :type => @item.type }
-  @cart_item = CartItem.find_current_object( @params, @session )
+  @cart_item = CartItem.find_object_for_update( @params, @session )
   @cart_item.update_object( @params )
 end
 
@@ -342,6 +344,7 @@ shared_examples_for "object" do
 
     context "with valid params" do
       it "assigns a newly created object as @object and renders create/update template" do
+        controller.stub( :render_create ).and_return( ApplicationController.render_create )
         @object.class.should_receive( :new ).and_return( @object )
         @object.stub( :save_object ).and_return( true )
         @object.stub( :create_notice ).and_return( "Test" )
@@ -403,7 +406,7 @@ shared_examples_for "object" do
   describe "DELETE destroy" do
     it "destroys the requested object and renders destroy template" do
       @object.class.should_receive( :find ).with( @object.to_param ).and_return( @object )      
-      @object.should_receive( :destroy_object ).and_return( @object )
+      @object.should_receive( :destroy_object )
       @object.stub( :destroy_notice ).and_return( "Test" )      
       @object.should_receive( :render_destroy )            
       xhr :delete, :destroy, :id => @object.to_param

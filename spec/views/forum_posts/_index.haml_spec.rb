@@ -4,8 +4,8 @@ describe "forum_posts/_index" do
 
   before do
     @forum_posts = forum_posts_proxy
-    @forum_posts.stub( :new_tag ).and_return( "post_new" )
-    @forum_posts.stub( :show_tag ).and_return( "post" )     
+    @forum_posts.class.stub( :new_tag ).and_return( "post_new" )
+    @forum_posts.class.stub( :show_tag ).and_return( "forum_post" )     
     @forum_post = @forum_posts.first
     view.stub( :current_user ).and_return( true )
     assign( :objects,  @forum_posts )    
@@ -23,8 +23,8 @@ describe "forum_posts/_index" do
     rendered.should contain( l( @forum_post.created_at, :format => :long ) )
     rendered.should have_selector( "a", :href => send( "#{@forum_post.class.name.underscore}_path",
           @forum_post ), "data-method" => "delete" )    
-    rendered.should have_selector( :div, :id => @forum_posts.new_tag )
-    rendered.should have_selector( :div, :id => @forum_posts.show_tag )    
+    rendered.should have_selector( :div, :id => ForumPost.new_tag )
+    rendered.should have_selector( :div, :id => ForumPost.show_tag )    
   end
 
 end

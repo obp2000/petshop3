@@ -5,13 +5,13 @@ class CatalogItem < Item
   self.season_icon = AllSeasonsImage
   self.season_name = I18n.t( :all_seasons )
 
-  self.show_tag = "details"
+#  self.show_tag = "details"
   self.paginate_options = { :per_page => 8 }
   self.js_for_show = []
   self.index_layout = "application"
   
   cattr_accessor :partial_path
-  self.partial_path = name.tableize
+  self.partial_path = tableize
 
   scope :ordered_by_id, order( :id )
   scope :with_category, lambda { |params| where( :category_id => params[ :category_id ] ) if
@@ -24,12 +24,12 @@ class CatalogItem < Item
     attr_accessor_with_default( :js_for_index ) { superclass.js_for_index << "attach_shadowOn" }
     
     def back( page )
-      page.fade_appear( show_tag, dom_id )
+      page.fade_appear( show_tag, tableize )
     end
 
     def render_show( page )
       super
-      page.fade_appear( dom_id, show_tag )
+      page.fade_appear( tableize, show_tag )
     end
 
 # actions

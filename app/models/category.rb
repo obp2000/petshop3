@@ -12,14 +12,14 @@ class Category < ItemAttribute
 
   self.change_image = ChangeCategoryImage
   self.attr_partial = "category"
-  self.attr_choose_partial = name.tableize
+#  self.attr_choose_partial = tableize
   self.hidden_field_name = "item[category_id]"
 
   scope :index_scope, order( :name )
 
 # JS
   def add_to_item( page )
-    page.replace_html "form_#{dom_id}", :partial => "items/#{attr_partial}", :object => self
+    page.replace_html "form_#{tableize}", :partial => "items/#{attr_partial}", :object => self
 #    page.replace_html "form_categories", :partial => "items/category", :object => self
   end
    

@@ -11,4 +11,4 @@
       %th{:scope => "col"}= t( :created_at )
       %th{:scope => "col"}= t( :updated_at )                  
     = render :partial => "orders/order", :collection => @objects
-  %div{ :id => @objects.show_tag }
+  %div{ :id => Order.show_tag }

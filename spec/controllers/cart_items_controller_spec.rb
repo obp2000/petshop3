@@ -10,7 +10,7 @@ describe CartItemsController do
 
   describe "PUT update" do
     it "adds the requested cart item to cart and renders create_or_update template" do
-      @cart_item.class.should_receive( :find_current_object ).with(
+      @cart_item.class.should_receive( :find_object_for_update ).with(
         { "controller" => "cart_items", "action" => "update",
         "id" => @cart_item.id }, session ).and_return( @cart_item )      
       @cart_item.should_receive( :update_object ).and_return( true )
@@ -27,7 +27,7 @@ describe CartItemsController do
       @cart_item.class.should_receive( :find_current_object ).with(
         { "controller" => "cart_items", "action" => "destroy",
         "id" => @cart_item.id }, session ).and_return( @cart_item )
-      @cart_item.should_receive( :destroy_object ).and_return( @cart_item )
+      @cart_item.should_receive( :destroy_object )
       @cart_item.stub( :destroy_notice ).and_return( "Test" )      
       @cart_item.should_receive( :render_destroy )         
       xhr :delete, :destroy, :id => @cart_item.id

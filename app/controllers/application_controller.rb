@@ -29,8 +29,8 @@ class ApplicationController < ActionController::Base
   
   def index
     @object = controller_name.classify.constantize.new_object( params, session )    
-    @objects = controller_name.classify.constantize.all_objects( params )
-    @objects = [ @object ] if @objects.empty?
+    @objects = controller_name.classify.constantize.all_objects( params ) rescue [ @object ]
+#    @objects = [ @object ] if @objects.empty?
     if request.xhr?
       render_index.bind( self )[]
     else
@@ -64,7 +64,7 @@ class ApplicationController < ActionController::Base
   end
 
   def update
-    @object = controller_name.classify.constantize.find_current_object( params, session )    
+    @object = controller_name.classify.constantize.find_object_for_update( params, session )    
     if @object.update_object( params )
       flash.now[ :notice ] = @object.update_notice
       render_update.bind( self )[]
@@ -75,9 +75,9 @@ class ApplicationController < ActionController::Base
 
   def destroy
     @object = controller_name.classify.constantize.find_current_object( params, session )
-    @destroyed_objects = @object.destroy_object
+    @object.destroy_object
     flash.now[ :notice ] = @object.destroy_notice
-    render( :update ) { |page| @destroyed_objects.render_destroy( page, session, controller_name ) }    
+    render( :update ) { |page| @object.render_destroy( page, session, controller_name ) }      
   end
 
   def close

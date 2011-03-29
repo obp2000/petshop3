@@ -10,7 +10,7 @@
   %div
     = f.label :category
     = render "shared/red_star" 
-    %span{ :id => "form_#{Category.dom_id}" }
+    %span{ :id => "form_#{Category.tableize}" }
       = render "items/category", :category => @object.category unless @object.category.blank? 
     = link_to_change Category
     = f.label :season

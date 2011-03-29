@@ -1,6 +1,6 @@
 %div
   %h2= Item.model_name.human.pluralize
-  %table{ :id => @objects.dom_id }
+  %table{ :id => @objects.tableize }
     %caption= will_paginate @objects
     %tr
       - with_options :remote => true do |remote|
@@ -17,4 +17,4 @@
         %th{:scope => "col"}
           = remote.link_to image_tag( NewItemImage, :title => Item.human_attribute_name( :new_title ) ), new_item_path
     = render @objects
-  %div{ :id => @object.new_tag }= render @object.new_partial
+  %div{ :id => Item.new_tag }= render @object.new_partial

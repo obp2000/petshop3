@@ -1,4 +1,4 @@
 %div{ :id => cart.link_to_new_order_form }= render "carts/link_to_new_order_form"
 %div{ :id => cart.cart_totals_dom_id }= render "carts/totals", :cart => cart
-%div{ :id => cart.cart_items.dom_id }= render cart.cart_items
+%div{ :id => CartItem.tableize }= render cart.cart_items
 %div{ :id => cart.link_to_clear_cart }= render "carts/link_to_clear_cart"

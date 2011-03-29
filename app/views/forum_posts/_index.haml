@@ -1,11 +1,11 @@
 %h2= ForumPost.model_name.human
 %fieldset.ui-widget-content
   = link_to image_tag( NewForumPostImage ) + ForumPost.human_attribute_name( :new_subject ), new_forum_post_path, :remote => true
-  - if @objects.empty?
+  - if @objects.first.new_record?
     = ForumPost.human_attribute_name( :empty_forum_message )
   - else
-    %div{ :id => @objects.dom_id }= render @objects
+    %div{ :id => @objects.tableize }= render @objects
     = will_paginate @objects
-%div{ :id => @objects.show_tag }
-%div{ :id => @objects.new_tag }
+%div{ :id => ForumPost.show_tag }
+%div{ :id => ForumPost.new_tag }
  

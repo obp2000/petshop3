@@ -14,14 +14,14 @@ class Order < ActiveRecord1
 
   self.paginate_options = { :per_page => 14 }
 
-  class_inheritable_accessor :status_nav, :status_, :blank, :headers
+  class_inheritable_accessor :status_nav, :status_, :blank, :show_tag
     
   self.status_nav = ""
   self.status_ = ""
-  self.show_tag = "order_details"
+  self.show_tag = Order.underscore
 
   cattr_accessor :partial_path
-  self.partial_path = name.tableize
+  self.partial_path = tableize
 
   scope :index_scope, order( "created_at desc" )
 

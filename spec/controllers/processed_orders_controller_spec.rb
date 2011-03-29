@@ -12,7 +12,7 @@ describe ProcessedOrdersController do
   describe "GET close" do
     it "closes the requested order and renders close template" do
       @object.class.should_receive( :find ).with( @object.to_param ).and_return( @object )      
-      @object.should_receive( :close_object ).and_return( @object )      
+      @object.should_receive( :close_object )      
       @object.stub( :close_notice ).and_return( "Test" )
       @object.should_receive( :render_close )       
       xhr :get, :close, :id => @object.to_param

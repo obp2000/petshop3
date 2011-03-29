@@ -7,9 +7,14 @@ describe "catalog_items/_show" do
   before do
     @object = catalog_items_proxy.first     
     @photo = @object.photos.first
+    @photo.stub( :underscore ).and_return( "photo" )    
     @object.stub_chain( :sizes, :class_name_rus_cap ).and_return( "Размер" )
     @object.stub_chain( :colours, :class_name_rus_cap ).and_return( "Цвет" )
     @object.stub_chain( :season, :name ).and_return( "Весна/Лето" )
+    @object.sizes.first.stub( :underscore ).and_return( "size" )
+    @object.sizes.second.stub( :underscore ).and_return( "size" )
+    @object.colours.first.stub( :underscore ).and_return( "colour" )
+    @object.colours.second.stub( :underscore ).and_return( "colour" )    
     assign( :object, @object )
     view.stub( :link_to_back ).with( @object )     
   end

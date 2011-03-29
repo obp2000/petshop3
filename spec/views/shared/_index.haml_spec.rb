@@ -8,6 +8,8 @@ describe "shared/_index" do
       @objects.stub( :new_partial ).and_return( "shared/attr" )
       @objects.stub( :edit_partial ).and_return( "shared/attr" )    
       @objects.stub( :new1 ).and_return( sizes_proxy.first.class.new )
+      @objects.first.stub( :underscore ).and_return( "size" )
+      @objects.second.stub( :underscore ).and_return( "size" )
     end
 
     it "renders two existing objects and one new object" do
@@ -41,6 +43,8 @@ describe "shared/_index" do
       @objects.stub( :new_partial ).and_return( "shared/attr" )
       @objects.stub( :edit_partial ).and_return( "shared/attr" )    
       @objects.stub( :new1 ).and_return( colours_proxy.first.class.new )
+      @objects.first.stub( :underscore ).and_return( "colour" )
+      @objects.second.stub( :underscore ).and_return( "colour" )
       view.stub( :link_to_add_html_code_to )      
     end
 
@@ -82,6 +86,8 @@ describe "shared/_index" do
       @objects.stub( :new_partial ).and_return( "shared/attr" )
       @objects.stub( :edit_partial ).and_return( "shared/attr" )    
       @objects.stub( :new1 ).and_return( categories_proxy.first.class.new )
+      @objects.first.stub( :underscore ).and_return( "category" )
+      @objects.second.stub( :underscore ).and_return( "category" )      
     end
 
     it "renders two existing objects and one new object" do
@@ -115,6 +121,7 @@ describe "shared/_index" do
       @objects.stub( :new_partial ).and_return( "photos/upload_photo" )
       @objects.stub( :edit_partial ).and_return( "shared/attr" )    
       @objects.stub( :new1 ).and_return( photos_proxy.first.class.new )
+      @objects.first.stub( :underscore ).and_return( "photo" )
     end
 
     it "renders one existing photo and one new photo" do

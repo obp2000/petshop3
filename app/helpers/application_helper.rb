@@ -85,7 +85,7 @@ module ApplicationHelper
   def link_to_close_window( objects )
     link_to_function(
       image_tag CloseWindowImage, :title => t( :close_window ) ) {
-        |page| page.action :remove, objects.dom_id }
+        |page| page.action :remove, objects.tableize }
   end
 
   def link_to_back( object )
@@ -113,8 +113,8 @@ module ApplicationHelper
     action :replace_html, index_tag, :partial => index_partial, :locals => { :objects => objects }
   end
   
-  def render_destroy( edit_tag, tag )
-    [ edit_tag, tag ].each { |tag1| action :remove, tag1 rescue nil }
+  def render_destroy( *tags )
+    tags.each { |tag| action :remove, tag rescue nil }
     show_notice
   end
   
@@ -154,23 +154,16 @@ class Array
   def paginate_objects( params )
     paginate first.class.paginate_hash( params )
   end 
-
-  def render_destroy( page, session, controller_name )
-    each { |object| object.render_destroy( page, session, controller_name ) }
-    page.show_notice
-  end   
   
   def render_index( page )
     first.class.render_index( page, self ) rescue nil
     page.show_notice
   end
 
-  delegate :dom_id, :show_tag, :new_tag, :new_partial, :edit_partial, :headers,
+  delegate :show_tag, :new_tag, :new_partial, :edit_partial,
       :partial_path, :new1, :destroy_notice, :to => :first 
 
-#  def destroy_notice
-#    first.destroy_notice
-#  end
+  delegate :tableize, :to => "first.class"
 
 end
 
@@ -182,7 +175,7 @@ class Object
   
   attr_accessor_with_default( :sum_amount ) { sum( :amount ) }
     
-  attr_accessor_with_default( :dom_id ) { self.class.name.tableize }
+#  attr_accessor_with_default( :dom_id ) { self.class.name.tableize }
 
 end
 

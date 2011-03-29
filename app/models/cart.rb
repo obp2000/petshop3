@@ -1,10 +1,8 @@
 # encoding: utf-8
 class Cart < ActiveRecord1
   
-  has_many :cart_items, :dependent => :delete_all do
-    def clear_cart; dup.tap { clear } end
-    def dom_id; name.tableize end
-  end
+  has_many :cart_items, :dependent => :delete_all
+
   has_many :items, :through => :cart_items
 
   delegate :sum_amount, :to => :cart_items, :prefix => true
@@ -37,7 +35,8 @@ class Cart < ActiveRecord1
 
 # actions
   def clear_cart
-    cart_items.clear_cart
+    @cart_items_clone = cart_items.clone
+    cart_items.clear
   end
   alias_method :destroy_object, :clear_cart    
 
@@ -45,6 +44,11 @@ class Cart < ActiveRecord1
     cart_items.each do |cart_item|
       order.populate_order_item( cart_item )
     end
+  end
+
+#renders
+  def render_destroy( page, session, controller_name )
+    @cart_items_clone.each { |cart_item| cart_item.render_destroy( page, session, controller_name ) }
   end
 
 # notices

@@ -5,7 +5,7 @@ class ItemAttribute < ActiveRecord1
   
   class_inheritable_accessor :insert_attr,
     :change_image, :attr_partial, :options_for_replace_new_tag, :js_for_add_to_item,
-    :partial_for_attr_with_link_to_remove, :attr_choose_partial, :hidden_field_index, :hidden_field_name,
+    :partial_for_attr_with_link_to_remove, :hidden_field_index, :hidden_field_name,
     :index_partial, :edit_partial, :delete_from_item_js
   
   self.delete_from_item_js = "$(this).prev().remove();
@@ -18,7 +18,7 @@ class ItemAttribute < ActiveRecord1
   self.attr_partial = "attr"
   self.js_for_add_to_item = []
   self.partial_for_attr_with_link_to_remove = "attr"
-  self.attr_choose_partial = "attrs"
+#  self.attr_choose_partial = "attrs"
   self.index_partial = "shared/index"
   self.edit_partial = "shared/attr"    
   
@@ -29,16 +29,16 @@ class ItemAttribute < ActiveRecord1
 
 # actions
     def update_attr( item, ids )
-      item.send( name.tableize ).clear
-      ids.each { |id1| item.send( name.tableize ) << find( id1 ) rescue nil }
+      item.send( tableize ).clear
+      ids.each { |id1| item.send( tableize ) << find( id1 ) rescue nil }
     end
     
     include InsertContent
     
     attr_accessor_with_default( :options_for_replace_new_tag ) {
         [ new_tag, { :partial => new_partial, :object => new1 } ] }
-    attr_accessor_with_default( :hidden_field_index ) { name.underscore + "_ids" } 
-    attr_accessor_with_default( :hidden_field_name ) { "item[#{name.underscore}_ids][]" } 
+    attr_accessor_with_default( :hidden_field_index ) { underscore + "_ids" } 
+    attr_accessor_with_default( :hidden_field_name ) { "item[#{underscore}_ids][]" } 
      
   end
   
@@ -51,7 +51,7 @@ class ItemAttribute < ActiveRecord1
   end   
   
   def add_to_item( page )
-    page.remove_and_insert [ :remove, tag ], [ :bottom, "form_#{dom_id}",
+    page.remove_and_insert [ :remove, tag ], [ :bottom, "form_#{tableize}",
             { :partial => "items/#{insert_attr}", :object => self } ]
     page.attach_chain( js_for_add_to_item )          
   end    

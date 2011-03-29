@@ -13,26 +13,24 @@ class CartItem < ActiveRecord1
   self.link_to_delete_dom_class = "link_to_delete_cart_item"
   
   
-  attr_accessor_with_default( :create_or_update_tag ) { tag }
+  attr_accessor_with_default( :row_tag ) { tag }
     
   class << self
 
 # actions
-    def find_current_object( params, session )
+    def find_object_for_update( params, session )
       where( params.conditions_hash( session ) ).first ||
               create( params.conditions_hash( session ).merge :amount => 0 )
     end
 
-    attr_accessor_with_default( :edit_partial ) { "#{partial_path}/#{name.underscore}" }  
+    attr_accessor_with_default( :edit_partial ) { "#{partial_path}/#{underscore}" }  
 
   end
 
 # actions
   def destroy_object
-    tap do
-      update_amount( -1 )
-      destroy if amount.zero?
-    end
+    update_amount( -1 )
+    super if amount.zero?
   end
     
   def update_object( params )

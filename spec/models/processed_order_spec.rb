@@ -14,7 +14,7 @@ describe ProcessedOrder do
     @params[ :id ] = "catalog_item_" + @item.id.to_s
     OrderNotice.stub( :deliver_order_notice ).and_return( true )
     @session[ :captcha_validated ] = true      
-    @cart_item = CartItem.find_current_object( @params, @session )
+    @cart_item = CartItem.find_object_for_update( @params, @session )
     @cart_item.update_object( @params )
   end
 

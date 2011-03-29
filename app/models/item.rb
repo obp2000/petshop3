@@ -24,14 +24,12 @@ class Item < ActiveRecord1
 
   self.paginate_options = { :per_page => 14 }
   self.js_for_new_or_edit = self.js_for_show = [ "attach_yoxview" ]
-  self.new_tag = "item_content"
   self.edit_partial = "form"
-  self.show_tag = new_tag
   self.index_layout = "items"
 
   class_inheritable_accessor :style, :edit_tag
   self.style = "margin-left: 10px;"
-  self.edit_tag = new_tag
+  self.edit_tag = self.new_tag = "edit_item"
 
   validates_length_of :name, :minimum => 2
   validates_presence_of :category, :type
@@ -71,8 +69,8 @@ class Item < ActiveRecord1
     end
   end
 
-  attr_accessor_with_default( :create_or_update_tag ) { tag }
-  attr_accessor_with_default( :create_or_update_partial ) { to_underscore } 
+  attr_accessor_with_default( :row_tag ) { tag }
+  attr_accessor_with_default( :row_partial ) { underscore } 
 
   [ "Size", "Colour" ].each do |class_name|
     define_method( "#{class_name.underscore}_ids=" ) { |ids| class_name.constantize.update_attr( self, ids ) }    

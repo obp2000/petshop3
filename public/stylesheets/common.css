@@ -192,7 +192,7 @@ img {
 .textile_toolbar, .textile_area {
   display: inline; }
 
-table, #item_content, #order_details {
+table, #edit_item, #order {
   float: left;
   margin-right: 10px; }
 
@@ -242,3 +242,8 @@ table, #item_content, #order_details {
   width: 30em; }
   #errorExplanation h2, #errorExplanation p {
     display: none; }
+
+form {
+  display: table; }
+  form > div {
+    display: table-row; }

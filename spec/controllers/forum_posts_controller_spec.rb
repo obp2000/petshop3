@@ -25,11 +25,11 @@ describe ForumPostsController do
     it "destroys the requested forum posts chain and renders destroy template" do
       controller.stub( :current_user ).and_return( users_proxy.first )  
       @object.class.should_receive( :find ).with( @object.to_param ).and_return( @object )      
-      @object.should_receive( :destroy_object ).and_return( @destroyed_objects = [ @object, @reply_post ] )
+      @object.should_receive( :destroy_object )
       @object.stub( :destroy_notice ).and_return( "Test" )
-      @destroyed_objects.should_receive( :render_destroy )            
+      @object.should_receive( :render_destroy )            
       xhr :delete, :destroy, :id => @object.to_param
-      assigns[ :destroyed_objects ].should == @destroyed_objects
+      assigns[ :object ].should == @object
       flash.now[ :notice ].should == @object.destroy_notice       
     end
   end

@@ -9,7 +9,7 @@ describe Cart do
   describe "#destroy_object" do
 
     before do
-      @cart_item = CartItem.find_current_object( @params, @session )
+      @cart_item = CartItem.find_object_for_update( @params, @session )
       @cart_item.update_object( @params )       
     end
     

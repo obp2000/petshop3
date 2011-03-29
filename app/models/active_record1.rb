@@ -7,9 +7,8 @@
    
   class_inheritable_accessor :replace, :paginate_options, :insert_or_replace,
     :js_for_index, :js_for_show, :js_for_new_or_edit, :js_for_create_or_update,
-    :index_tag, :index_partial, :show_tag, :show_partial, :edit_tag, :edit_partial,
-    :new_tag, :new_partial, :create_or_update_partial,
-    :partial_path, :dom_id, :headers, :index_layout, :new1
+    :index_tag, :index_partial, :show_tag, :edit_tag, :edit_partial,
+    :new_tag, :new_partial, :row_partial, :partial_path, :index_layout, :new1
 
   self.paginate_options = {}
   self.js_for_index = [ "attach_yoxview" ] 
@@ -38,12 +37,12 @@
     def find_current_object( params, session )
       find params[ :id ]
     end
-#    alias_method :find_object_for_update, :find_current_object
+    alias_method :find_object_for_update, :find_current_object
 
     attr_accessor_with_default( :new1 ) { new }      
     
     def new_object( params, session )
-      new params[ name.underscore ]
+      new params[ underscore ]
     end
       
 # renders    
@@ -53,32 +52,32 @@
     end      
 
     def render_show( page )
-      page.action :replace_html, show_tag, :partial => show_partial      
+      page.action :replace_html, show_tag, :partial => "#{partial_path}/show"      
       page.attach_chain( js_for_show )      
     end       
 
+    delegate :tableize, :underscore, :to => :name
+
 # tags and partials
-    attr_accessor_with_default( :new_tag ) { "new_#{name.underscore}" }
-    attr_accessor_with_default( :edit_partial ) { name.underscore }    
+    attr_accessor_with_default( :new_tag ) { "new_#{underscore}" }
+    attr_accessor_with_default( :edit_partial ) { underscore }    
     attr_accessor_with_default( :new_partial ) { edit_partial }
-    attr_accessor_with_default( :partial_path ) { name.tableize }
-    attr_accessor_with_default( :dom_id ) { name.tableize }   
+    attr_accessor_with_default( :partial_path ) { tableize }
     attr_accessor_with_default( :index_partial ) { "#{partial_path}/index" }
-    attr_accessor_with_default( :show_partial ) { "#{partial_path}/show" }     
+    attr_accessor_with_default( :show_tag ) { underscore }    
 
   end
 
-  attr_accessor_with_default( :to_underscore ) { self.class.name.underscore }
-  attr_accessor_with_default( :show_text ) { name }
-  attr_accessor_with_default( :tag ) { "#{to_underscore}_#{id}" }
-  attr_accessor_with_default( :edit_tag ) { "edit_#{to_underscore}_#{id}" }
-  attr_accessor_with_default( :create_or_update_tag ) { edit_tag }
-  attr_accessor_with_default( :create_or_update_partial ) { edit_partial }
-  attr_accessor_with_default( :single_path ) { [ "#{to_underscore}_path", self ] } 
+  delegate :tableize, :underscore, :to => "self.class"
+
+  attr_accessor_with_default( :tag ) { ActionController::RecordIdentifier.dom_id( self ) }
+  attr_accessor_with_default( :edit_tag ) { ActionController::RecordIdentifier.dom_id( self, :edit ) }
+  attr_accessor_with_default( :row_tag ) { edit_tag }
+  attr_accessor_with_default( :row_partial ) { edit_partial }
 
 # actions
   def update_object( params )
-    update_attributes( params[ to_underscore ] )
+    update_attributes( params[ underscore ] )
   end
     
   def destroy_object
@@ -110,8 +109,8 @@
   end 
 
   def render_create_or_update( page, session, controller_name )
-    page.render_create_or_update [ :remove, create_or_update_tag ],
-            [ :bottom, dom_id, { :partial => create_or_update_partial, :object => self } ]
+    page.render_create_or_update [ :remove, row_tag ],
+            [ :bottom, tableize, { :partial => row_partial, :object => self } ]
     page.attach_chain( js_for_create_or_update )             
   end  
   
