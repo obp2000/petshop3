@@ -39,7 +39,8 @@ class CartItem < ActiveRecord1
 
   def populate_order_item_hash
     {}.tap do |order_item_hash|
-      [ :item_id, :price, :amount, :size_id, :colour_id ].each { |arg| order_item_hash[ arg ] = send( arg ) }
+      [ :item_id, :price, :amount, :size_id, :colour_id ].each {
+          |arg| order_item_hash[ arg ] = send( arg ) }
     end
   end
 
@@ -53,10 +54,10 @@ class CartItem < ActiveRecord1
   end  
   
 # renders    
-  def render_create_or_update( page, session, controller_name )
+  def render_create_or_update( page, session )
     super
-    page.after_create_or_update_cart_item( tag, ( amount.zero? or session.cart.cart_items.empty? ),
-          session, controller_name )
+    page.after_create_or_update_cart_item( row_tag, ( amount.zero? or session.cart.cart_items.empty? ),
+          session )
   end
   alias_method :render_destroy, :render_create_or_update
   

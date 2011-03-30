@@ -32,11 +32,11 @@ module ApplicationHelper
   end
 
   def attach_js( js )
-    delay( DURATION + 0.2 ) { call( js ) }
+    delay( Duration + 0.2 ) { call( js ) }
   end
 
   def attach_chain( jses )
-    delay( DURATION + 0.2 ) { jses.each { |js| call js if js } }
+    delay( Duration + 0.2 ) { jses.each { |js| call js if js } }
   end
 
   def fade_appear( fade, appear )
@@ -45,7 +45,7 @@ module ApplicationHelper
 
   def action( action1, *opts )
     fade_with_duration opts.first
-    delay( DURATION ) { send( action1, *opts ); appear_with_duration opts.first unless action1 == :remove }       
+    delay( Duration ) { send( action1, *opts ); appear_with_duration opts.first unless action1 == :remove }       
   end
     
   def show_notice( opts = {} )
@@ -59,18 +59,15 @@ module ApplicationHelper
     end
   end
 
-  def check_cart_links( session, controller_name )
+  def check_cart_links( session, force_hide )
     select(
       ".#{CartItem.link_to_delete_dom_class}, ##{Cart.link_to_new_order_form}, ##{Cart.link_to_clear_cart}" ).send(
-       do_not_show( session.cart, controller_name ) ? "fadeOut()" : "fadeIn()" )
+       ( force_hide or session.cart.cart_items.empty? ) ?
+       "fadeOut().attr('style','visibility: hidden')" : "attr('style','visibility: visible').fadeIn()" )
   end
 
   def check_cart_totals( session )
     session.cart.cart_totals.each { |args| replace_html *args }
-  end
-
-  def do_not_show( cart, controller_name )
-    controller_name == 'processed_orders' or cart.cart_items.empty?
   end
     
   def do_not_show_nav
@@ -113,30 +110,30 @@ module ApplicationHelper
     action :replace_html, index_tag, :partial => index_partial, :locals => { :objects => objects }
   end
   
-  def render_destroy( *tags )
-    tags.each { |tag| action :remove, tag rescue nil }
+  def render_destroy( row_tag )
+    action :remove, row_tag
     show_notice
   end
   
-  def fade_with_duration( tag, duration = DURATION )
+  def fade_with_duration( tag, duration = Duration )
     self[ tag ].fadeOut duration * 1000
   end
   alias_method :fade, :fade_with_duration
 
-  def appear_with_duration( tag, duration = DURATION )
+  def appear_with_duration( tag, duration = Duration )
     self[ tag ].fadeIn duration * 1000
   end  
 
   def render_create_or_update( remove_args, insert_args )
     remove_and_insert remove_args, insert_args    
     show_notice
-    delay( DURATION ) { self[ remove_args[ 1 ] ].effect( "highlight", {}, HIGHLIGHT_DURATION * 1000 ) }
+    delay( Duration ) { self[ remove_args[ 1 ] ].effect( "highlight", {}, HighlightDuration * 1000 ) }
     fade_with_duration :errorExplanation        
   end
 
   def remove_and_insert( remove_args, insert_args )
     action *remove_args
-    delay( DURATION ) { insert_html *insert_args }
+    delay( Duration ) { insert_html *insert_args }
   end
 
   def colour_style( colour, index )
@@ -155,8 +152,8 @@ class Array
     paginate first.class.paginate_hash( params )
   end 
   
-  def render_index( page )
-    first.class.render_index( page, self ) rescue nil
+  def render_index( page, session )
+    first.class.render_index( page, self, session ) rescue nil
     page.show_notice
   end
 

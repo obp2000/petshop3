@@ -1,8 +1,8 @@
 3.0.25 (Classy Cassidy)
-2a3a459db8d9996ceb983c862bd6a08805ed5f8c
+d212ea059f16a67a3d4245bb0472861bde7e9336
 o:Sass::Tree::RootNode	:@options{:
 style:nested:line_comments0:load_paths[".:cache_location"./.sass-cache:property_syntax0:syntax:	sass:filename"common.sass:
-cacheT:@has_childrenT:@template"ô$body-color: #c74809
+cacheT:@has_childrenT:@template"»$body-color: #c74809
 $body-background-color: #FFF9E5
 
 $tr-hover-background-color: #fedd70
@@ -359,14 +359,7 @@ table, #edit_item, #order
   width: $errorExplanation-width
   h2, p
     display: none
-
-form
-  display: table
-  > div
-    display: table-row
-
-
- :@children[~o:Sass::Tree::VariableNode;@:
+:@children[}o:Sass::Tree::VariableNode;@:
 @expro:Sass::Script::Color
 ;@:
 @linei:@attrs{	:
@@ -854,12 +847,4 @@ width;o;0	;@;ic; "errorExplanation-width;;;2i ;6;7;"@
 h2, p;"@
 ;[o;4;@;ie; ["display;o;#
 ;@;ie;;;"	none;$;%;2i ;6;7;"@
-;[ o;1;@;T;ig;2i ;3["	form;"@
-;[o;4;@;ih; ["display;o;#
-;@;ih;;;"
-table;$;%;2i ;6;7;"@
-;[ o;1;@;T;ii;2i ;3["
-> div;"@
-;[o;4;@;ij; ["display;o;#
-;@;ij;;;"table-row;$;%;2i ;6;7;"@
 ;[ 

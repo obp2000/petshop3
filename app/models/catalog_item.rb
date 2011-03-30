@@ -46,6 +46,11 @@ class CatalogItem < Item
       model_name.human + ': ' + season_name
     end
 
+    def render_index( page, objects, session )
+      page.render_catalog_items( session )
+      super
+    end 
+
   end
 
 #ts

@@ -5,7 +5,7 @@ class ItemAttribute < ActiveRecord1
   
   class_inheritable_accessor :insert_attr,
     :change_image, :attr_partial, :options_for_replace_new_tag, :js_for_add_to_item,
-    :partial_for_attr_with_link_to_remove, :hidden_field_index, :hidden_field_name,
+    :partial_for_attr_with_link_to_remove, :hidden_field_name,
     :index_partial, :edit_partial, :delete_from_item_js
   
   self.delete_from_item_js = "$(this).prev().remove();
@@ -18,7 +18,6 @@ class ItemAttribute < ActiveRecord1
   self.attr_partial = "attr"
   self.js_for_add_to_item = []
   self.partial_for_attr_with_link_to_remove = "attr"
-#  self.attr_choose_partial = "attrs"
   self.index_partial = "shared/index"
   self.edit_partial = "shared/attr"    
   
@@ -37,13 +36,12 @@ class ItemAttribute < ActiveRecord1
     
     attr_accessor_with_default( :options_for_replace_new_tag ) {
         [ new_tag, { :partial => new_partial, :object => new1 } ] }
-    attr_accessor_with_default( :hidden_field_index ) { underscore + "_ids" } 
     attr_accessor_with_default( :hidden_field_name ) { "item[#{underscore}_ids][]" } 
      
   end
   
 # renders  
-  def render_create_or_update( page, session, controller_name )
+  def render_create_or_update( page, session )
     super
     [ options_for_replace_new_tag, options_for_replace_item_attributes ].each do |replace_args|
       page.replace *replace_args rescue nil

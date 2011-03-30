@@ -25,24 +25,25 @@ describe "carts/_index" do
     rendered.should have_link_to_remote_delete( cart_path )    
   end
 
-#  context "when user can make order, delete cart item and clear cart" do
-#    it "renders link to new order form" do
-#      view.stub( :do_not_show ).and_return( false )      
-#      render "carts/index", :cart => @cart      
-#      rendered.should have_link_to_remote_get( new_processed_order_path )
-#      rendered.should have_link_to_remote_delete( cart_path )
-#      rendered.should have_selector( "a", :href => cart_item_path( @cart_item ), "data-method" => "delete" )      
-#    end    
-#  end
-#
-#  context "when user can not make order, delete cart item and clear cart" do
-#    it "does not render link to new order form" do
-#      view.stub( :do_not_show ).and_return( true )      
-#      render "carts/index", :cart => @cart
-#      rendered.should_not have_link_to_remote_get( new_processed_order_path )
-#      rendered.should_not have_link_to_remote_delete( cart_path )
-#      rendered.should_not have_selector( "a", :href => cart_item_path( @cart_item ), "data-method" => "delete" )       
-#    end    
-#  end
+  context "when user can make order, delete cart item and clear cart" do
+    it "renders link to new order form" do
+      render "carts/index", :cart => @cart      
+      rendered.should have_selector( :div, :id => @cart.link_to_new_order_form,
+        :style => "visibility: visible" )
+      rendered.should have_selector( :div, :id => @cart.link_to_clear_cart,
+        :style => "visibility: visible" )        
+    end    
+  end
+
+  context "when user can not make order, delete cart item and clear cart" do
+    it "does not render link to new order form" do
+      @cart.stub( :cart_items ).and_return( [] )
+      render "carts/index", :cart => @cart
+      rendered.should have_selector( :div, :id => @cart.link_to_new_order_form,
+        :style => "visibility: hidden" )
+      rendered.should have_selector( :div, :id => @cart.link_to_clear_cart,
+        :style => "visibility: hidden" )        
+    end    
+  end
 
 end

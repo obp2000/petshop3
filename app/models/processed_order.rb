@@ -69,13 +69,13 @@ class ProcessedOrder < Order
     page.render_close( change_to_closed, change_close_tag_to_updated_tag, update_amount )
   end
 
-  def render_new_or_edit( page, session, controller_name )
+  def render_new_or_edit( page, session )
     super
-    page.new_processed_order( session, controller_name )
+    page.new_processed_order( session )
   end
 
-  def render_create_or_update( page, session, controller_name )
-    page.create_processed_order( fade_duration )
+  def render_create_or_update( page, session )
+    page.render_create_processed_order( fade_duration )
   end 
 
   def change_to_closed

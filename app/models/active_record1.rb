@@ -11,7 +11,7 @@
     :new_tag, :new_partial, :row_partial, :partial_path, :index_layout, :new1
 
   self.paginate_options = {}
-  self.js_for_index = [ "attach_yoxview" ] 
+  self.js_for_index = [ "attach_yoxview" ]
   self.js_for_show = []
   self.js_for_new_or_edit = []
   self.js_for_create_or_update = []
@@ -46,7 +46,7 @@
     end
       
 # renders    
-    def render_index( page, objects )
+    def render_index( page, objects, session )
       page.send insert_or_replace, index_tag, index_partial, objects
       page.attach_chain( js_for_index )
     end      
@@ -102,20 +102,20 @@
   end     
 
 # renders
-  def render_new_or_edit( page, session, controller_name )
+  def render_new_or_edit( page, session )
     page.action replace, ( new_record? ? new_tag : edit_tag ),
           :partial => ( new_record? ? new_partial : edit_partial ), :object => self
     page.attach_chain( js_for_new_or_edit )     
   end 
 
-  def render_create_or_update( page, session, controller_name )
+  def render_create_or_update( page, session )
     page.render_create_or_update [ :remove, row_tag ],
             [ :bottom, tableize, { :partial => row_partial, :object => self } ]
     page.attach_chain( js_for_create_or_update )             
   end  
   
-  def render_destroy( page, session, controller_name )
-    page.render_destroy( edit_tag, tag )
+  def render_destroy( page, session )
+    page.render_destroy( row_tag )
   end 
 
 # links

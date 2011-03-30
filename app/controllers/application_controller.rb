@@ -20,17 +20,16 @@ class ApplicationController < ActionController::Base
   include AuthenticatedSystem
 
   class_inheritable_accessor :render_index, :render_show, :render_new_or_edit, :render_create, :render_update
-  self.render_index = lambda { render( :update ) { |page| @objects.render_index( page ) } }
+  self.render_index = lambda { render( :update ) { |page| @objects.render_index( page, session ) } }
   self.render_show = lambda { render( :update ) { |page| @object.class.render_show( page ) } }
   self.render_new_or_edit =
-    lambda { render( :update ) { |page| @object.render_new_or_edit( page, session, controller_name ) } }
+    lambda { render( :update ) { |page| @object.render_new_or_edit( page, session ) } }
   self.render_create = self.render_update =
-    lambda { render( :update ) { |page| @object.render_create_or_update( page, session, controller_name ) } }  
+    lambda { render( :update ) { |page| @object.render_create_or_update( page, session ) } }  
   
   def index
     @object = controller_name.classify.constantize.new_object( params, session )    
     @objects = controller_name.classify.constantize.all_objects( params ) rescue [ @object ]
-#    @objects = [ @object ] if @objects.empty?
     if request.xhr?
       render_index.bind( self )[]
     else
@@ -77,7 +76,7 @@ class ApplicationController < ActionController::Base
     @object = controller_name.classify.constantize.find_current_object( params, session )
     @object.destroy_object
     flash.now[ :notice ] = @object.destroy_notice
-    render( :update ) { |page| @object.render_destroy( page, session, controller_name ) }      
+    render( :update ) { |page| @object.render_destroy( page, session ) }      
   end
 
   def close

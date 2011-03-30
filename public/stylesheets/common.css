@@ -242,8 +242,3 @@ table, #edit_item, #order {
   width: 30em; }
   #errorExplanation h2, #errorExplanation p {
     display: none; }
-
-form {
-  display: table; }
-  form > div {
-    display: table-row; }

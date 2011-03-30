@@ -10,11 +10,11 @@ module CatalogItemsHelper
     drop_receiving_element element, :with => with, :accept => ".catalog_item",
         :url => { :controller => "cart_items", :action => "update" }, :tolerance => "touch", :hoverClass => "cart_hover "
   end
-
+    
   def submit_to_cart
     image_submit_tag AddToCartImage, :title => Cart.human_attribute_name( :add_this_catalog_item_to_cart ),
-     :onmouseover => "$(this).attr('src', 'images/" + AddToCartOverImage + "')",
-     :onmouseout => "$(this).attr('src', 'images/" + AddToCartImage + "')",
+     :onmouseover => on_mouse( AddToCartOverImage ),
+     :onmouseout => on_mouse( AddToCartImage ),
      :onclick => "$(this).fadeOut().fadeIn()"
   end
 
@@ -27,5 +27,14 @@ module CatalogItemsHelper
             Category.find( params[ :category_id ] ).name rescue ''}"
     end
   end
+
+  def render_catalog_items( session )
+    delay( Duration ) { check_cart_links( session, false ) }
+  end
+
+  private
+    def on_mouse( image )
+      "$(this).attr('src', 'images/" + image + "')"
+    end
 
 end

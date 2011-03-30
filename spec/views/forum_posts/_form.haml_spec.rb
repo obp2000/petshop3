@@ -7,7 +7,6 @@ describe "forum_posts/_form" do
   end
   
   it "renders new forum post form" do
-#    view.should_receive( :submit_to ).with( @forum_post ).and_return( submit_tag )      
     render
     rendered.should have_selector("form#new_forum_post", :method => "post", :action => forum_posts_path ) do |form|
       form.should have_selector( "input#forum_post_parent_id", :type => "hidden",

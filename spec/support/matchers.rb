@@ -2,7 +2,6 @@ RSpec::Matchers.define :have_link_to_remote_get do |href|
   match do |response|
     extend Webrat::Matchers
     response.should have_selector( "a", :href => href )
-#    response.should_not have_selector( "a", "data-method" => "delete", :href => href )       
   end
 end
 
@@ -17,7 +16,6 @@ RSpec::Matchers.define :have_link_to_remote_close do |href|
   match do |response|
     extend Webrat::Matchers
     response.should have_selector( "a", :href => href )     
-#    response.should have_text( /#{href}\/close/ )
   end
 end
 

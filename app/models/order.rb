@@ -37,13 +37,17 @@ class Order < ActiveRecord1
 
 # notices
   def destroy_notice
-    "#{self.class.model_name.human} № #{id} #{Order.human_attribute_name( :destroy_notice )}."
+    "#{Order.model_name.human} № #{id} #{Order.human_attribute_name( :destroy_notice )}."
   end
 
 # renders
-  def render_destroy( page, session, controller_name )
+  def render_destroy( page, session )
     super
     page.update_processed_orders_amount ProcessedOrder.update_amount
   end 
+
+  def delete_title 
+    "#{I18n.t(:remove)} #{Order.model_name.human} № #{id}"
+  end       
        
 end

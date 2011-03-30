@@ -48,19 +48,13 @@ PhoneImage = "kcall.png"
 AddressImage = "kfm_home.png"
 ICQImage = "icq_protocol.png"
 
-
-
-
-
-
-
 SaveImageLarge = "document-save.png"
 SaveImageSmall = "document-save-16.png"
 
 SearchImage = "search_32.png"
 
-DURATION = 0.5
-HIGHLIGHT_DURATION = 2
+Duration = 0.5
+HighlightDuration = 2
 
 # Initialize the rails application
 Petshop3::Application.initialize!

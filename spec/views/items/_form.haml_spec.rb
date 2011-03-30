@@ -17,9 +17,6 @@ describe "items/_form" do
     @item.colours.second.stub( :underscore ).and_return( "colour" )
     @photo = @item.photos.first
     @photo.stub( :underscore ).and_return( "photo" )      
-    @photo.stub( :link_to_show ).and_return( link_to image_tag( @photo.photo.thumb.url ), @photo.photo_url )
-    view.stub( :submit_to ).and_return( image_submit_tag "test.png" )
-    view.stub( :link_to_remove_from_item )      
   end    
 
   describe "when the item is an existing record" do

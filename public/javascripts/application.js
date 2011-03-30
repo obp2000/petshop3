@@ -17,7 +17,6 @@ $(function() {
 //		$("button").button({ icons: {primary:'ui-icon-gear',secondary:'ui-icon-triangle-1-s'} });
 		hide_error_titles();
 		attach_js();
-		
 	});
 
 

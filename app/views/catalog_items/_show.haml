@@ -14,6 +14,6 @@
     = render "catalog_items/attrs", :attrs => @object.sizes
     = label :item, :colours       
     = render "catalog_items/attrs", :attrs => @object.colours      
-    = @object.blurb
+    %div= @object.blurb
     = render :partial => "catalog_items/photo", :collection => @object.photos unless @object.photos.empty?        
 .clear

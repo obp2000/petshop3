@@ -7,8 +7,6 @@ describe "items/_item" do
   end
   
   it "renders item" do
-    view.should_receive( :link_to_delete ).with( @items.first ).and_return(
-          link_to "Test", @items.first, :remote => true, :method => :delete )     
     render "items/item", :item => @items.first
     rendered.should have_selector( "tr", :onclick => "$.get('#{edit_item_path( @items.first )}')" )
     rendered.should contain(@items.first.name)

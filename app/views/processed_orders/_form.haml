@@ -24,8 +24,8 @@
       = f.label :comments
       = f.text_area :comments, :rows => 4        
     %div
-      = f.label :captcha
-      = render "shared/red_star"
+      = ProcessedOrder.human_attribute_name( :captcha )
+      = render "shared/red_star"       
       = captcha_block
   %div
     = render "shared/red_star"

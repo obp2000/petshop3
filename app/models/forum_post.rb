@@ -61,18 +61,18 @@ class ForumPost < ActiveRecord1
   end
 
 # renders  
-  def render_new_or_edit( page, session, controller_name )
+  def render_new_or_edit( page, session )
     super
     page.fade show_tag
   end 
 
-  def render_destroy( page, session, controller_name )
+  def render_destroy( page, session )
     @full_set_clone.each { |forum_post| forum_post.class.superclass.instance_method(
-        :render_destroy ).bind( forum_post )[ page, session, controller_name ] }
+        :render_destroy ).bind( forum_post )[ page, session ] }
   end
 
   attr_accessor_with_default( :parent_tag ) { "#{underscore}_#{parent_id}" }
-
+  attr_accessor_with_default( :row_tag ) { tag }
   attr_accessor_with_default( :style ) { "margin-left: #{depth*20 + 30}px" }
 
   def render_reply( page, *args )
@@ -80,8 +80,8 @@ class ForumPost < ActiveRecord1
     page.fade link_to_reply_dom_id    
   end 
   
-  def render_create_or_update( page, session, controller_name )
-    page.create_forum_post [ ( parent_id.zero? ? "top"  : "after" ),
+  def render_create_or_update( page, session )
+    page.render_create_forum_post [ ( parent_id.zero? ? "top"  : "after" ),
       ( parent_id.zero? ? tableize : parent_tag ), { :partial => underscore, :object => self } ],
       [ show_tag, new_tag ]    
   end

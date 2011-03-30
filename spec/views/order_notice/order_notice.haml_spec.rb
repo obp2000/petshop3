@@ -5,9 +5,6 @@ describe "order_notice/order_notice" do
   before do
     @order = orders_proxy.first
     @order_item = @order.order_items.first
-    @order_item.stub( :notice ).and_return(
-      "#{@order_item.name} #{@order_item.size.name} #{@order_item.colour.name}
-       (#{@order_item.price}) #{@order_item.amount}" )
     assign( :order, @order )
   end
   
