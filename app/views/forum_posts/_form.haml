@@ -1,5 +1,5 @@
 = form_for @object, :remote => true, :html => { :class => "ui-widget-content" } do |f|
-  = f.error_messages
+  = render "#{SharedPath}/error_messages", :object => f.object
   = f.hidden_field :parent_id
   %div
     = f.label :name

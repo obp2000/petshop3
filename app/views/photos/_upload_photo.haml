@@ -1,5 +1,5 @@
 = form_for upload_photo, :html => { :multipart => true, :target => upload_photo.upload_frame } do |f|
-  = f.error_messages
+  = render "#{SharedPath}/error_messages", :object => f.object
   = f.file_field :photo
   = f.hidden_field :photo_cache  
   = small_submit_button

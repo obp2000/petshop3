@@ -16,12 +16,6 @@ class Item < ActiveRecord1
   
   set_inheritance_column nil  
 
-  DeleteFromItemJS = "$(this).prev().remove();
-                      $(this).next(':hidden').remove();
-                      $(this).next(':checked').remove();
-                      $(this).next('textarea').remove();
-                      $(this).remove()"
-
   self.paginate_options = { :per_page => 14 }
   self.js_for_new_or_edit = self.js_for_show = [ "attach_yoxview" ]
   self.edit_partial = "form"
@@ -39,14 +33,14 @@ class Item < ActiveRecord1
     Season.new( self )
   end
 
+  extend ReplaceContent 
+  
   class << self
 
 # actions
     def index_scope( params )
       all.sort_by { |item| eval( "item." + params[ :sort_by ] ) rescue "" }
     end
-    
-    include ReplaceContent      
   
   end
 
@@ -54,7 +48,7 @@ class Item < ActiveRecord1
   after_update :save_photos
   
   def save_photos
-    photos.each { |photo| photo.save }
+    photos.each( &:save )
   end
   
   def update_object( params )
@@ -64,8 +58,8 @@ class Item < ActiveRecord1
   
   def existing_photo_attributes=(photo_attributes)
     photos.reject( &:new_record? ).each do |photo|
-      attributes = photo_attributes[ photo.id.to_s ]
-      attributes ? photo.attributes = attributes : photos.delete( photo )
+      photo_attributes[ photo.id.to_s ] ?
+          photo.attributes = photo_attributes[ photo.id.to_s ] : photos.delete( photo )
     end
   end
 

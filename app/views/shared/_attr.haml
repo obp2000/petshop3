@@ -1,7 +1,7 @@
 = form_for attr, :remote => true do |f|
-  = f.error_messages
-  = render "#{attr.partial_path}/#{attr.underscore}", :f => f, :attr => attr
+  = render "#{SharedPath}/error_messages", :object => f.object
+  = render "#{f.object.partial_path}/#{f.object.underscore}", :f => f
   = small_submit_button 
-  - unless attr.new_record?
+  - unless f.object.new_record?
     = link_to_delete attr
     = link_to_add_to_item attr

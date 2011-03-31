@@ -1,5 +1,5 @@
 = form_for @object, :remote => true, :html => { :class => "ui-widget-content" } do |f|
-  = f.error_messages
+  = render "#{SharedPath}/error_messages", :object => f.object
   %div
     = f.label :name
     = render "shared/red_star"
@@ -10,22 +10,34 @@
   %div
     = f.label :category
     = render "shared/red_star" 
-    %span{ :id => "form_#{Category.tableize}" }
-      = render "items/category", :category => @object.category unless @object.category.blank? 
+    %span{ :id => Category.attrs_tag }
+      = render :partial => "items/category", :object => f.object.category unless f.object.category.blank? 
     = link_to_change Category
     = f.label :season
     = render "shared/red_star"
     - [ SummerCatalogItem, WinterCatalogItem ].each do |season|
       = f.radio_button :type, season
       = image_tag season.season_icon, :size => "24x24"
-  - [ "sizes", "colours", "photos" ].each do |attrs|
-    %div= render "items/attrs", :attrs => attrs, :f => f
-  %div{ :id => "form_blurb" }
+  %div
+    = f.label :sizes
+    %span{ :id => Size.attrs_tag }
+      = render :partial => "items/attr", :collection => f.object.sizes unless f.object.sizes.empty? 
+    = link_to_change Size
+  %div
+    = f.label :colours
+    %span{ :id => Colour.attrs_tag }
+      = render :partial => "items/attr", :collection => f.object.colours unless f.object.colours.empty? 
+    = link_to_change Colour     
+  %div
+    %span{ :id => Photo.attrs_tag }
+      = render :partial => "items/photo", :collection => f.object.photos unless f.object.photos.empty?  
+    = link_to_change Photo    
+  #form_blurb
     = f.label :blurb
     %div= f.text_area :blurb, :rows => 3  
   = f.label :created_at
-  = l( @object.created_at, :format => :long ) unless @object.created_at.blank?    
+  = l( f.object.created_at, :format => :long ) unless f.object.created_at.blank?    
   = f.label :updated_at
-  = l( @object.updated_at, :format => :long ) unless @object.updated_at.blank?    
-  = image_submit_tag SaveImageLarge, :title => @object.class.human_attribute_name( :save_changes ) 
+  = l( f.object.updated_at, :format => :long ) unless f.object.updated_at.blank?    
+  = image_submit_tag SaveImageLarge, :title => f.object.class.human_attribute_name( :save_changes ) 
     

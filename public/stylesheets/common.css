@@ -234,8 +234,10 @@ table, #edit_item, #order {
   left: 40%;
   z-index: 10; }
 
-.fieldWithErrors {
-  border: 1px solid red; }
+.field_with_errors {
+  display: inline; }
+  .field_with_errors label {
+    color: red; }
 
 #errorExplanation {
   color: red;

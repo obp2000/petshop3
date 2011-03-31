@@ -4,10 +4,6 @@ class Photo < ItemAttribute
 
   mount_uploader :photo, PhotoUploader
 
-  DeleteFromItemJS = "$(this).siblings(':checkbox').removeAttr('checked');
-                      $(this).siblings(':not(:checkbox)').remove();
-                      $(this).remove();"
-
   self.change_image = ChangePhotoImage
   self.delete_from_item_js = "$(this).siblings(':checkbox').removeAttr('checked');
                               $(this).siblings(':not(:checkbox)').remove();
@@ -15,7 +11,6 @@ class Photo < ItemAttribute
   self.insert_attr = "photo"
   self.paginate_options = { :per_page => 5  }
   self.js_for_add_to_item = self.js_for_create_or_update = [ "attach_mColorPicker" ]
-  self.partial_for_attr_with_link_to_remove = "photo"  
   self.new_partial = "photos/upload_photo"
   
   class_inheritable_accessor :upload_frame

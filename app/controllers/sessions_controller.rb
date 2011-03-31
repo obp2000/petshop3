@@ -44,7 +44,6 @@ class SessionsController < ApplicationController
   end
   
   def reset_password 
-    @page_title = @user.reset_password_page_title
     @user = User.find_by_pw_reset_code(params[:id]) rescue nil 
     unless @user 
       render(:text => "Not found", :status => 404) 

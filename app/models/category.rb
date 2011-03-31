@@ -18,7 +18,7 @@ class Category < ItemAttribute
 
 # JS
   def add_to_item( page )
-    page.replace_html "form_#{tableize}", :partial => "items/#{attr_partial}", :object => self
+    page.replace_html attrs_tag, :partial => "items/#{attr_partial}", :object => self
   end
    
 end

@@ -1,14 +1,14 @@
 .ui-widget-content{ :id => dom_id( catalog_item ), :class => dom_class( CatalogItem ) }
   .thumbs.yoxview
     = render :partial => "#{SharedPath}/photo", :collection => catalog_item.photos unless catalog_item.photos.empty?      
-  = form_for catalog_item, :url => cart_item_path( catalog_item ), :remote => true do   
+  = form_for catalog_item, :url => cart_item_path( catalog_item ), :remote => true do |f|  
     %h4
-      = link_to catalog_item.name, catalog_item, :remote => true
+      = link_to f.object.name, f.object, :remote => true
       %div
-        = number_to_currency( catalog_item.price )
+        = number_to_currency f.object.price
         = submit_to_cart
-    %div= render "catalog_items/attrs", :attrs => catalog_item.sizes    
-    %div= render "catalog_items/attrs", :attrs => catalog_item.colours                           
+    - [ f.object.sizes, f.object.colours ].each do |attrs|
+      %div= render "catalog_items/attrs", :attrs => attrs                                 
   .blurb= catalog_item.blurb
 = draggable_element dom_id( catalog_item ), :revert => true
       

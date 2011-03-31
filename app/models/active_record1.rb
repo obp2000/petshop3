@@ -64,11 +64,12 @@
     attr_accessor_with_default( :new_partial ) { edit_partial }
     attr_accessor_with_default( :partial_path ) { tableize }
     attr_accessor_with_default( :index_partial ) { "#{partial_path}/index" }
-    attr_accessor_with_default( :show_tag ) { underscore }    
+    attr_accessor_with_default( :show_tag ) { underscore }
+    attr_accessor_with_default( :attrs_tag ) { "form_#{tableize}" }  
 
   end
 
-  delegate :tableize, :underscore, :to => "self.class"
+  delegate :tableize, :underscore, :attrs_tag, :to => "self.class"
 
   attr_accessor_with_default( :tag ) { ActionController::RecordIdentifier.dom_id( self ) }
   attr_accessor_with_default( :edit_tag ) { ActionController::RecordIdentifier.dom_id( self, :edit ) }

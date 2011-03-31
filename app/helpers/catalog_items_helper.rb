@@ -8,7 +8,8 @@ module CatalogItemsHelper
       '&colour_id=' + ($(ui.draggable).find('[name=colour_id]:checked').val())      
       EOF
     drop_receiving_element element, :with => with, :accept => ".catalog_item",
-        :url => { :controller => "cart_items", :action => "update" }, :tolerance => "touch", :hoverClass => "cart_hover "
+        :url => { :controller => "cart_items", :action => "update" },
+        :tolerance => "touch", :hoverClass => "cart_hover "
   end
     
   def submit_to_cart

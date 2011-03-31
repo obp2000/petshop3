@@ -1,5 +1,5 @@
 = form_for contact, :remote => true do |f|
-  = f.error_messages
+  = render "#{SharedPath}/error_messages", :object => f.object
   %div
     = f.label :name
     = f.text_field :name 

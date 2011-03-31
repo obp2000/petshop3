@@ -3,43 +3,6 @@
 
 ru:
   helpers:
-    label:
-      item:
-        name: "Название"
-        price: "Цена"
-        category: "Вид"
-        season: "Сезон"
-        sizes: "Размеры"
-        colours: "Цвета"
-        photos: "Фото"
-        blurb: "Описание"
-        created_at: "Создан"
-        updated_at: "Изменён"
-      processed_order:
-        email: "Адрес электронной почты"
-        phone_number: "Телефон"
-        ship_to_first_name: "Имя"
-        ship_to_city: "Город"
-        ship_to_address: "Адрес"
-        comments: "Комментарии к заказу"
-      contact:
-        name: "Имя"
-        email: "e-mail"
-        phone: "Телефон"
-        icq: "ICQ"
-        address: "Адрес"
-      forum_post:
-        name: "Автор"
-        subject: "Тема"
-        body: "Сообщение"
-      user:
-        login: Учетная запись
-        password: Пароль
-        email: E-mail
-        password_confirmation: Введите пароль ещё раз
-        first_name: Имя пользователя
-        last_name: Фамилия пользователя
-        
     submit:
       forum_post:
         create: Отправить
@@ -47,7 +10,6 @@ ru:
         create: Разместить заказ
       user:
         create: Создать учётную запись
-      
         
   admin_title: "Администрирование магазина BEST&C"
   application_title: "Одежда для русских тоев BEST&C"
@@ -142,10 +104,7 @@ ru:
       
     errors:
       models:
-        category:
-          attributes:
-            name:
-              too_short: слишком короткая (минимум 2 буквы)              
+             
         contact:
           attributes:
             email:
@@ -167,6 +126,7 @@ ru:
             name:
               blank: не может быть пустым!
               taken: должно быть уникальным!
+              too_short: "слишком короткое (минимум 2 буквы)"              
         colour:
           attributes:
             name:
@@ -201,11 +161,10 @@ ru:
         photo:                                
           attributes:
             photo_url:
-              blank: не выбрана!             
-
+              blank: не выбрана!
+                          
 
     attributes:
-   
       active_record1:
         must_have_long_name: В имени должно быть не менее двух символов
         must_have_valid_email: Неверный формат адреса электронной почты
@@ -234,21 +193,22 @@ ru:
         email_subject: Сообщение от пользователя интернет-магазина BEST&C
         name: Имя
         email: E-mail
-        phone: Номер телефона
+        phone: Телефон
+        icq: ICQ
+        address: Адрес        
 
       forum_post:
-        submit_text: Отправить
         must_have_long_subject: Тема слишком короткая (минимум 5 букв)
         must_have_long_body: Сообщение слишком короткое (минимум 5 букв)
         create_notice: Новая тема создана
         send_notice: Сообщение отправлено
         destroy_notice: Ветвь сообщений удалена
-        name: Имя
+        name: Автор
         subject: Тема
         body: Сообщение
         empty_forum_message: В форуме пока ещё нет сообщений. Будьте первым!
         new_subject: Новая тема
-        reply: Ответить                         
+        reply: Ответить
         
       item_attribute:
         must_have_unique_name: уже есть
@@ -265,16 +225,32 @@ ru:
         must_have_type: Необходимо выбрать сезон одежды        
         must_have_valid_price: Цена должна быть целым числом
         category: Вид одежды
+        season: Сезон        
+        sizes: Размеры
+        colours: Цвета
+        photos: Фото
+        blurb: Описание
+        created_at: Создан
+        updated_at: Изменён        
         type: Сезон
         save_changes: Сохранить изменения        
         
       catalog_item:
-        price: Цены
         submit_title: Поиск товара
         not_found_notice: товары не найдены
         any_attr: Любой
         search: Поиск товара
         count: Всего
+        name: Название
+        price: Цена
+        category: Вид
+        season: Сезон
+        sizes: Размеры
+        colours: Цвета
+        photos: Фото
+        blurb: Описание
+        created_at: Создан
+        updated_at: Изменён        
         
       closed_order:
         status_nav: " со статусом \"закрытые\""
@@ -310,8 +286,6 @@ ru:
         new_page_title: Оформление заказа
         new_text: Оформить заказ
         close_title: Закрыть заказ
-        submit_text: Разместить заказ
-        captcha_text: "Введите, пожалуйста, проверочный код:"
         status_nav: " со статусом \"для исполнения\""
         status_: "для исп."
         must_have_ship_to_first_name: Имя слишком короткое (минимум 2 буквы)
@@ -323,8 +297,13 @@ ru:
                         <div>В ближайшее время наши менеджеры свяжутся с Вами.</div>
                         <div>На адрес Вашей электронной почты отправлено информационное сообщение.</div>
                         В случае необходимости используйте номер заказа "        
-        email: E-mail
         captcha: Введите, пожалуйста, проверочный код
+        email: Адрес электронной почты
+        phone_number: Телефон
+        ship_to_first_name: Имя
+        ship_to_city: Город
+        ship_to_address: Адрес
+        comments: Комментарии к заказу        
         
       size:
         name: Наименование размера
@@ -332,6 +311,10 @@ ru:
       user:
         login: Логин
         password: Пароль
+        email: E-mail
+        password_confirmation: Введите пароль ещё раз
+        first_name: Имя пользователя
+        last_name: Фамилия пользователя
         new_page_title: Новый администратор
         forgot_password_notice: "Письмо с инструкциями по<br />
                                  изменению пароля отправлены на<br />
@@ -355,5 +338,3 @@ ru:
                                       Активируйте, пожалуйста, Вашу новую учетную запись"                                         
         activation_subject: "Магазин одежды для той-терьеров: Ваша учетная запись активирована!"
         forgot_password_subject: "Магазин одежды для той-терьеров: Переустановка пароля"
-        
-        

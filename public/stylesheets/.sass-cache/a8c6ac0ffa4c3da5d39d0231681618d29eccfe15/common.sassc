@@ -1,8 +1,8 @@
 3.0.25 (Classy Cassidy)
-d212ea059f16a67a3d4245bb0472861bde7e9336
+a516c4af030c1b26b3dbd615b44ed3dee5c32876
 o:Sass::Tree::RootNode	:@options{:
 style:nested:line_comments0:load_paths[".:cache_location"./.sass-cache:property_syntax0:syntax:	sass:filename"common.sass:
-cacheT:@has_childrenT:@template"»$body-color: #c74809
+cacheT:@has_childrenT:@template"Ð$body-color: #c74809
 $body-background-color: #FFF9E5
 
 $tr-hover-background-color: #fedd70
@@ -350,9 +350,11 @@ table, #edit_item, #order
   top: $notice-top-left
   left: $notice-top-left
   z-index: 10
-
-.fieldWithErrors
-  border: 1px solid red
+  
+.field_with_errors
+  display: inline
+  label
+    color: red
 
 #errorExplanation
   color: $errorExplanation-color
@@ -833,18 +835,21 @@ fixed;$;%;2i ;6;7;"@
 ;[ o;4;@;iZ; ["top;o;0	;@;iZ; "notice-top-left;;;2i ;6;7;"@
 ;[ o;4;@;i[; ["	left;o;0	;@;i[; "notice-top-left;;;2i ;6;7;"@
 ;[ o;4;@;i\; ["z-index;o;,;@;-[ ;i\;."10;;;i;/[ ;2i ;6;7;"@
-;[ o;1;@;T;i^;2i ;3[".fieldWithErrors;"@
-;[o;4;@;i_; ["border;o;';@;i_;;;(;5;*o;
-;@;i_;{	;i;iÿ;i ;i ;;;0;+o;';@;i_;;;(;5;*o;#
-;@;i_;;;"
-solid;$;%;+o;,;@;-["px;i_;."1px;;;i;/[ ;2i ;6;7;"@
-;[ o;1;@;T;ia;2i ;3["#errorExplanation;"@
-;[o;4;@;ib; ["
-color;o;0	;@;ib; "errorExplanation-color;;;2i ;6;7;"@
-;[ o;4;@;ic; ["
-width;o;0	;@;ic; "errorExplanation-width;;;2i ;6;7;"@
-;[ o;1;@;T;id;2i ;3["
+;[ o;1;@;T;i^;2i ;3[".field_with_errors;"@
+;[o;4;@;i_; ["display;o;#
+;@;i_;;;"inline;$;%;2i ;6;7;"@
+;[ o;1;@;T;i`;2i ;3["
+label;"@
+;[o;4;@;ia; ["
+color;o;
+;@;ia;{	;i;iÿ;i ;i ;;;0;2i ;6;7;"@
+;[ o;1;@;T;ic;2i ;3["#errorExplanation;"@
+;[o;4;@;id; ["
+color;o;0	;@;id; "errorExplanation-color;;;2i ;6;7;"@
+;[ o;4;@;ie; ["
+width;o;0	;@;ie; "errorExplanation-width;;;2i ;6;7;"@
+;[ o;1;@;T;if;2i ;3["
 h2, p;"@
-;[o;4;@;ie; ["display;o;#
-;@;ie;;;"	none;$;%;2i ;6;7;"@
+;[o;4;@;ig; ["display;o;#
+;@;ig;;;"	none;$;%;2i ;6;7;"@
 ;[ 

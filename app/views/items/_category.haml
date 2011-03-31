@@ -1,3 +1,3 @@
 %span{ :id => dom_id( category ) }
-  = render :partial => "#{SharedPath}/#{category.underscore}", :object => category unless category.blank?  
+  = render "#{SharedPath}/#{category.underscore}", :category => category  
   = hidden_field_tag category.hidden_field_name, category.id 

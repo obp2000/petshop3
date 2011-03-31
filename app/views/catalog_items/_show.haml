@@ -1,19 +1,19 @@
 %h2
   = link_to_back @object
   = @object.name
-= form_for @object, :url => cart_item_path( @object ), :remote => true, :html => { :class => "ui-widget-content" } do 
-  = label :item, :price
-  = number_to_currency( @object.price )   
-  = label :item, :category
-  = @object.category.name  
-  = label :item, :season
-  = @object.season.name
+= form_for @object, :url => cart_item_path( @object ), :remote => true, :html => { :class => "ui-widget-content" } do |f| 
+  = f.label :price
+  = number_to_currency( f.object.price )   
+  = f.label :category
+  = f.object.category.name  
+  = f.label :season
+  = f.object.season.name
   = submit_to_cart  
   %div
-    = label :item, :sizes      
-    = render "catalog_items/attrs", :attrs => @object.sizes
-    = label :item, :colours       
-    = render "catalog_items/attrs", :attrs => @object.colours      
-    %div= @object.blurb
-    = render :partial => "catalog_items/photo", :collection => @object.photos unless @object.photos.empty?        
+    = f.label :sizes      
+    = render "catalog_items/attrs", :attrs => f.object.sizes
+    = f.label :colours       
+    = render "catalog_items/attrs", :attrs => f.object.colours      
+    %div= f.object.blurb
+    = render :partial => "catalog_items/photo", :collection => f.object.photos unless f.object.photos.empty?        
 .clear

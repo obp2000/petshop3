@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe "sessions/reset_password" do
   
+  before do
+    assign( :user, users_proxy.first )
+  end
+  
   it "renders reset password form" do
     render
     rendered.should have_selector( "form", :method => "post",
