@@ -3,9 +3,8 @@ class CatalogItem < Item
 
   class_inheritable_accessor :season_icon, :season_name
   self.season_icon = AllSeasonsImage
-  self.season_name = I18n.t( :all_seasons )
+  self.season_name = human_attribute_name( :season_name )
 
-#  self.show_tag = "details"
   self.paginate_options = { :per_page => 8 }
   self.js_for_show = []
   self.index_layout = "application"

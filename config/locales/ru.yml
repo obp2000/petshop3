@@ -32,9 +32,7 @@ ru:
   city: Город
   address: Адрес
   price: Цена
-  spring_summer: Весна/Лето
-  fall_winter: Осень/Зима
-  all_seasons: Все сезоны
+
   on_your_query: По Вашему запросу
   query_results: Результаты поиска по запросу
   that: Такой
@@ -250,7 +248,8 @@ ru:
         photos: Фото
         blurb: Описание
         created_at: Создан
-        updated_at: Изменён        
+        updated_at: Изменён
+        season_name: "Все сезоны"                
         
       closed_order:
         status_nav: " со статусом \"закрытые\""
@@ -307,6 +306,13 @@ ru:
         
       size:
         name: Наименование размера
+        
+      summer_catalog_item:
+        season_name: "Весна/Лето"        
+        
+      winter_catalog_item:
+        season_name: "Осень/Зима"
+
 
       user:
         login: Логин

@@ -2,7 +2,7 @@
 class WinterCatalogItem < CatalogItem
 
   self.season_icon = WinterImage
-  self.season_name = I18n.t( :fall_winter )
+  self.season_name = human_attribute_name( :season_name )  
   set_inheritance_column "type"       
 
 end
