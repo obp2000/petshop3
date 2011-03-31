@@ -1,7 +1,7 @@
-- with_options :remote => true do |remote|
-  - remote.form_tag search_catalog_items_path, :id => "search_box" do
-    = search_field_tag :q
-    = image_submit_tag SearchImage, { :title => CatalogItem.human_attribute_name( :search ) }
+= form_tag search_catalog_items_path, :remote => true, :id => "search_box" do
+  = search_field_tag :q
+  = image_submit_tag SearchImage, { :title => CatalogItem.human_attribute_name( :search ) }
+- with_options :remote => true do |remote|    
   = remote.link_to image_tag( ForumImage ) + ForumPost.model_name.human.pluralize, forum_posts_path 
   = remote.link_to image_tag( ContactsImage ) + Contact.model_name.human.pluralize, contact_path( Contact.first ) 
 %h3= t( :header_title ).html_safe
