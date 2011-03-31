@@ -1,5 +1,5 @@
 - visibility = "visibility: " + ( cart.cart_items.empty? ? "hidden" : "visible" )  
 %div{ :id => cart.link_to_new_order_form, :style => visibility }= link_to_new_order_form
-%div{ :id => cart.cart_totals_dom_id }= render "carts/totals", :cart => cart
+%div{ :id => cart.cart_totals_dom_id }= render "carts/totals"
 %div{ :id => CartItem.tableize }= render cart.cart_items
 %div{ :id => cart.link_to_clear_cart, :style => visibility }= link_to_clear_cart

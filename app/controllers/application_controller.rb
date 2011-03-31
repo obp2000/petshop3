@@ -18,8 +18,15 @@ class ApplicationController < ActionController::Base
   # filter_parameter_logging :password
   
   include AuthenticatedSystem
+  
+  helper_method :cart
+  
+  def cart
+    session.cart
+  end
 
-  class_inheritable_accessor :render_index, :render_show, :render_new_or_edit, :render_create, :render_update
+  class_inheritable_accessor :render_index, :render_show, :render_new_or_edit,
+        :render_create, :render_update
   self.render_index = lambda { render( :update ) { |page| @objects.render_index( page, session ) } }
   self.render_show = lambda { render( :update ) { |page| @object.class.render_show( page ) } }
   self.render_new_or_edit =

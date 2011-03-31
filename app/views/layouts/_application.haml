@@ -8,5 +8,5 @@
   %body
     #wrapper
       #header= render "layouts/header"       
-      #nav= render "layouts/nav", :cart => session.cart unless do_not_show_nav
+      #nav= render "layouts/nav" unless do_not_show_nav
       %div{ :id => ContentTag }= yield
