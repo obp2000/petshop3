@@ -56,7 +56,6 @@ ru:
       default: "%a, %d %b %Y, %H:%M:%S %z"
       short: "%d %b, %H:%M"
       long: "%d.%m.%yг. %H:%M:%S"
-
     am: "утра"
     pm: "вечера"
 
@@ -67,7 +66,6 @@ ru:
       precision: 3
       significant: false
       strip_insignificant_zeros: false
-      
     currency:
       format:
         format: "%n %u"
@@ -102,7 +100,6 @@ ru:
       
     errors:
       models:
-             
         contact:
           attributes:
             email:
@@ -167,24 +164,19 @@ ru:
         must_have_long_name: В имени должно быть не менее двух символов
         must_have_valid_email: Неверный формат адреса электронной почты
         must_have_name: не может быть пустым
-        
       cart_item:
         update_notice: Добавлен товар
         destroy_notice: Удалён товар
-        
       cart:
         destroy_notice: Корзина очищена
         add_this_catalog_item_to_cart: Добавить этот товар в корзину        
-        
       category:
         name: Наименование вида одежды        
-    
       colour:
         add_html_code_to_colour_title: Добавить в цвет
         must_have_unique_html_code: Такой цвет уже есть
         name: Название цвета
         html_code: Код цвета
-    
       contact:
         update_notice: Контакты успешно обновлены!
         change_text: Изменить контакты
@@ -194,7 +186,6 @@ ru:
         phone: Телефон
         icq: ICQ
         address: Адрес        
-
       forum_post:
         must_have_long_subject: Тема слишком короткая (минимум 5 букв)
         must_have_long_body: Сообщение слишком короткое (минимум 5 букв)
@@ -207,11 +198,9 @@ ru:
         empty_forum_message: В форуме пока ещё нет сообщений. Будьте первым!
         new_subject: Новая тема
         reply: Ответить
-        
       item_attribute:
         must_have_unique_name: уже есть
         save: Сохранить 
-        
       item:
         new_title: Добавить
         index_page_title: Список товаров
@@ -232,7 +221,6 @@ ru:
         updated_at: Изменён        
         type: Сезон
         save_changes: Сохранить изменения        
-        
       catalog_item:
         submit_title: Поиск товара
         not_found_notice: товары не найдены
@@ -247,14 +235,12 @@ ru:
         colours: Цвета
         photos: Фото
         blurb: Описание
+        season_name1: Все сезоны
         created_at: Создан
         updated_at: Изменён
-        season_name1: Все сезоны                
-        
       closed_order:
         status_nav: " со статусом \"закрытые\""
         status_: закрыт
-        
       order:
         details_title: Детали заказа
         destroy_notice: успешно удалён
@@ -273,14 +259,11 @@ ru:
         order_notice_header: "В ближайшее время наши менеджеры свяжутся с Вами."
         order_info: "Информация о заказе:"
         order_accepted: Ваш заказ принят.
-       
       order_item:
         removed_item_message: Товар удален из каталога!        
-
       photo:
         must_have_photo: Не выбрана фотография для загрузки
         photo_url: Фотография для загрузки
-
       processed_order:
         new_page_title: Оформление заказа
         new_text: Оформить заказ
@@ -303,16 +286,12 @@ ru:
         ship_to_city: Город
         ship_to_address: Адрес
         comments: Комментарии к заказу        
-        
       size:
         name: Наименование размера
-        
       summer_catalog_item:
         season_name1: Весна/Лето        
-        
       winter_catalog_item:
         season_name1: Осень/Зима
-
       user:
         login: Логин
         password: Пароль
