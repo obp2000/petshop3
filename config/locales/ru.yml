@@ -32,7 +32,6 @@ ru:
   city: Город
   address: Адрес
   price: Цена
-
   on_your_query: По Вашему запросу
   query_results: Результаты поиска по запросу
   that: Такой
@@ -49,7 +48,7 @@ ru:
   forgot_password?: Забыли пароль?
   dear: Уважаемый(ая)
   count: Всего
-
+  all_seasons: Все сезоны
   
   time:
     formats:
