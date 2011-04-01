@@ -21,6 +21,11 @@ module LayoutsHelper
   def items_stylesheets
     [ "nullify", "jquery-ui-1.8.custom", "common", "textile-editor" ]
   end
+ 
+  def link_to_season( season_class )
+    link_to "#{ CatalogItem.human_attribute_name(:count)} (#{season_class.count})",
+        season_class, :remote => true    
+  end
   
   
 end
