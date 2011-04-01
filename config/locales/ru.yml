@@ -249,7 +249,7 @@ ru:
         blurb: Описание
         created_at: Создан
         updated_at: Изменён
-        season_name: Все сезоны                
+        season_name1: Все сезоны                
         
       closed_order:
         status_nav: " со статусом \"закрытые\""
@@ -308,10 +308,10 @@ ru:
         name: Наименование размера
         
       summer_catalog_item:
-        season_name: Весна/Лето        
+        season_name1: Весна/Лето        
         
       winter_catalog_item:
-        season_name: Осень/Зима
+        season_name1: Осень/Зима
 
       user:
         login: Логин
