@@ -64,7 +64,7 @@
 
   end
 
-  delegate :tableize, :underscore, :attrs_tag, :new, :to => "self.class"
+  delegate :tableize, :underscore, :attrs_tag, :new, :human_attribute_name, :to => "self.class"
   
   delegate :human, :to => "self.class.model_name"
 
@@ -81,17 +81,11 @@
   def save_object( * ) save end
     
 # notices
-  def create_notice
-    "#{human} #{I18n.t(:successfully_created)}."
-  end
+  def create_notice() "#{human} #{I18n.t(:successfully_created)}." end
   
-  def update_notice
-    "#{human} #{I18n.t(:successfully_updated)}."
-  end
+  def update_notice() "#{human} #{I18n.t(:successfully_updated)}." end
   
-  def destroy_notice
-    "#{human} #{I18n.t(:deleted)}."
-  end     
+  def destroy_notice() "#{human} #{I18n.t(:deleted)}." end     
 
 # renders
   def render_new_or_edit( page, session )
@@ -115,8 +109,6 @@
     name + " (#{send( season_catalog_items ).size})"
   end
     
-  def delete_title 
-    "#{I18n.t(:remove)} #{human} #{name rescue id}"
-  end
+  def delete_title() "#{I18n.t(:remove)} #{human} #{name rescue id}" end
 
 end

@@ -7,4 +7,4 @@
     = t( :amount ) + ","
     = number_to_currency order_item.order_item_sum
   -else
-    = order_item.class.human_attribute_name( :removed_item_message )
+    = order_item.human_attribute_name( :removed_item_message )

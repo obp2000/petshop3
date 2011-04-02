@@ -51,13 +51,9 @@ class ForumPost < ActiveRecord1
   end
 
 # notices
-  def create_notice
-    self.class.human_attribute_name( parent_id.zero? ? :create_notice : :send_notice ) 
-  end
+  def create_notice() human_attribute_name( parent_id.zero? ? :create_notice : :send_notice ) end
 
-  def destroy_notice
-    self.class.human_attribute_name( :destroy_notice )
-  end
+  def destroy_notice() human_attribute_name( :destroy_notice ) end
 
 # renders  
   def render_new_or_edit( page, session )

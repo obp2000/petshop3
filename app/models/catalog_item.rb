@@ -36,10 +36,8 @@ class CatalogItem < Item
       "#{I18n.t( :on_your_query )} \"#{params[ :q ]}\" #{human_attribute_name( :not_found_notice )}"         
     end
 
-#    def season_page_title() model_name.human end
-
     def render_index( page, objects, session )
-      page.render_catalog_items( session )
+      page.render_catalog_items( session.cart )
       super
     end 
 

@@ -1,14 +1,13 @@
 # encoding: utf-8
 class ProcessedOrder < Order
   
-  self.edit_partial = "form"
-  
-  class_inheritable_accessor :fade_duration, :processed_orders_amount_dom_id
+  class_inheritable_accessor :fade_duration, :processed_orders_amount_dom_id, :edit_partial, :new_tag
   self.fade_duration = 20
   self.status_nav = human_attribute_name( :status_nav )
   self.status_ = human_attribute_name( :status_ )
   self.processed_orders_amount_dom_id = "processed_orders_amount"
   self.new_tag = ContentTag
+  self.edit_partial = "form"
 
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
   validates_length_of :ship_to_first_name, :minimum => 2 
@@ -17,12 +16,12 @@ class ProcessedOrder < Order
   validate :must_have_valid_captcha, :cart_must_have_cart_items
 
   def must_have_valid_captcha
-    errors.add :base, self.class.human_attribute_name( :must_have_valid_captcha ) unless captcha_validated    
+    errors.add :base, human_attribute_name( :must_have_valid_captcha ) unless captcha_validated    
   end
     
   def cart_must_have_cart_items
     errors.add :base,
-      self.class.human_attribute_name( :cart_must_have_cart_items ) unless cart.cart_items.size > 0    
+      human_attribute_name( :cart_must_have_cart_items ) unless cart.cart_items.size > 0    
   end
 
   def closed?() false end
@@ -47,20 +46,16 @@ class ProcessedOrder < Order
   end
 
 # notices
-  def close_notice
-    "#{Order.human} № #{id} #{self.class.human_attribute_name( :close_notice )}."
-  end
+  def close_notice() "#{Order.human} № #{id} #{human_attribute_name( :close_notice )}." end
 
-  def create_notice
-    self.class.human_attribute_name( :create_notice ).html_safe + " #{id}."
-  end
+  def create_notice() human_attribute_name( :create_notice ).html_safe + " #{id}." end
 
 # renders
   def render_close( page ) page.render_close( self ) end
 
   def render_new_or_edit( page, session )
     super
-    page.new_processed_order( session )
+    page.new_processed_order( session.cart )
   end
 
   def render_create_or_update( page, session )

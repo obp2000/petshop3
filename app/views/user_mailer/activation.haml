@@ -1,4 +1,4 @@
 = @user.login + ","
-= @user.class.human_attribute_name( :activation_header ).html_safe
+= @user.human_attribute_name( :activation_header ).html_safe
 = url_for( @user.activation_url ) 
   

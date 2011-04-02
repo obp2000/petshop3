@@ -1,28 +1,28 @@
 %fieldset.ui-widget-content.yoxview
   %div
-    = @object.class.human_attribute_name( :id ).colon
+    = @object.human_attribute_name( :id ).colon
     = @object.id    
   %div
-    = @object.class.human_attribute_name( :ship_to_first_name ).colon
+    = @object.human_attribute_name( :ship_to_first_name ).colon
     = @object.ship_to_first_name        
   %div
-    = @object.class.human_attribute_name( :email ).colon
+    = @object.human_attribute_name( :email ).colon
     = mail_to @object.email     
   %div
-    = @object.class.human_attribute_name( :phone_number ).colon
+    = @object.human_attribute_name( :phone_number ).colon
     = @object.phone_number
   - unless @object.ship_to_city.blank?
     %div
-      = @object.class.human_attribute_name( :ship_to_city ).colon
+      = @object.human_attribute_name( :ship_to_city ).colon
       = @object.ship_to_city
   - unless @object.ship_to_address.blank?
     %div
-      = @object.class.human_attribute_name( :ship_to_address ).colon
+      = @object.human_attribute_name( :ship_to_address ).colon
       = @object.ship_to_address      
   - unless @object.comments.blank?
     %div
-      = @object.class.human_attribute_name( :comments ).colon
+      = @object.human_attribute_name( :comments ).colon
       = @object.comments
-  %div= @object.class.human_attribute_name( :details_title )
+  %div= @object.human_attribute_name( :details_title )
   = render @object.order_items
 %div{ :id => Item.show_tag }

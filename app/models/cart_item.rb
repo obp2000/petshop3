@@ -45,17 +45,17 @@ class CartItem < ActiveRecord1
 
 # notices
   def update_notice
-    "#{self.class.human_attribute_name( :update_notice )}<br/><em>#{name}</em>".html_safe
+    "#{human_attribute_name( :update_notice )}<br/><em>#{name}</em>".html_safe
   end
 
   def destroy_notice
-    "#{self.class.human_attribute_name( :destroy_notice )} <em>#{name}</em>".html_safe
+    "#{human_attribute_name( :destroy_notice )} <em>#{name}</em>".html_safe
   end  
   
 # renders    
   def render_create_or_update( page, session )
     super
-    page.render_create_or_update_cart_item( self, session )
+    page.render_create_or_update_cart_item( self, session.cart )
   end
   alias_method :render_destroy, :render_create_or_update
   

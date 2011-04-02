@@ -30,7 +30,8 @@ class Order < ActiveRecord1
   def status_tag() "order_status_#{id}" end
   def updated_tag() "order_updated_#{id}" end
   def close_tag() "close_order_#{id}" end
-
+  def row_tag() tag end
+    
 # notices
   def destroy_notice
     "#{Order.human} № #{id} #{Order.human_attribute_name( :destroy_notice )}."
@@ -39,7 +40,7 @@ class Order < ActiveRecord1
 # renders
   def render_destroy( page, session )
     super
-    page.update_processed_orders_amount ProcessedOrder.update_amount
+    page.update_processed_orders_amount
   end 
 
   def delete_title 

@@ -6,4 +6,4 @@
   %div
     = label_tag ForumPost.human_attribute_name( :body )
     = h @object.body  
-  %div= link_to image_tag( NewForumPostImage ) + ForumPost.human_attribute_name( :reply ), reply_forum_post_path( @object ), :remote => true, :id => @object.link_to_reply_dom_id
+  %div= link_to_reply

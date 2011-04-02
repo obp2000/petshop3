@@ -1,4 +1,4 @@
-%h3= @user.class.human_attribute_name( :new_page_title )
+%h3= @user.human_attribute_name( :new_page_title )
 = form_for @user do |f|
   = error_messages_for :user
   %div

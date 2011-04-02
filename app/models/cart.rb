@@ -24,9 +24,7 @@ class Cart < ActiveRecord1
       find( session[ :cart_id ] ) rescue create.tap { |cart| session[ :cart_id ] = cart.id }
     end
 
-    def find_current_object( params, session )
-      session.cart
-    end
+    def find_current_object( params, session ) session.cart end
   
   end
 
@@ -53,8 +51,6 @@ class Cart < ActiveRecord1
   end
 
 # notices
-  def destroy_notice
-    self.class.human_attribute_name( :destroy_notice )
-  end  
+  def destroy_notice() human_attribute_name( :destroy_notice ) end  
 
 end

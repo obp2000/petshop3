@@ -6,8 +6,7 @@ module CartsHelper
   end
   
   def link_to_clear_cart
-    link_to image_tag( ClearCartImage ) + t( :clear_cart ), cart,
-        :remote => true, :method => :delete
+    link_to image_tag( ClearCartImage ) + t( :clear_cart ), cart, :remote => true, :method => :delete
   end
   
 end

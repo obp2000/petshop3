@@ -1,7 +1,7 @@
-= @user.class.human_attribute_name( :signup_notification_header )
-= @user.class.human_attribute_name( :login )
+= @user.human_attribute_name( :signup_notification_header )
+= @user.human_attribute_name( :login )
 = @user.login
-= @user.class.human_attribute_name( :password )
+= @user.human_attribute_name( :password )
 = @user.password
-= @user.class.human_attribute_name( :signup_notification_url  )
+= @user.human_attribute_name( :signup_notification_url  )
 = url_for( @user.signup_notification_url )

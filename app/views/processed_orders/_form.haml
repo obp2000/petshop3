@@ -1,4 +1,4 @@
-%h2= @object.class.human_attribute_name( :new_page_title ) 
+%h2= @object.human_attribute_name( :new_page_title ) 
 = form_for @object, :remote => true do |f|
   = render "#{SharedPath}/error_messages", :object => f.object
   %fieldset.ui-widget-content
@@ -24,7 +24,7 @@
       = f.label :comments
       = f.text_area :comments, :rows => 4        
     %div
-      = ProcessedOrder.human_attribute_name( :captcha )
+      = f.object.human_attribute_name( :captcha )
       = render "shared/red_star"       
       = captcha_block
   %div

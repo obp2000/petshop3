@@ -13,28 +13,26 @@ module CatalogItemsHelper
   end
     
   def submit_to_cart
-    image_submit_tag AddToCartImage, :title => Cart.human_attribute_name( :add_this_catalog_item_to_cart ),
-     :onmouseover => on_mouse( AddToCartOverImage ),
-     :onmouseout => on_mouse( AddToCartImage ),
-     :onclick => "$(this).fadeOut().fadeIn()"
+    image_submit_tag AddToCartImage,
+      :title => Cart.human_attribute_name( :add_this_catalog_item_to_cart ),
+      :onmouseover => on_mouse( AddToCartOverImage ),
+      :onmouseout => on_mouse( AddToCartImage ),
+      :onclick => "$(this).fadeOut().fadeIn()"
   end
 
   def index_page_title_for( objects )
     if params[ :q ]
-      "#{t( :query_results )} \"#{params[ :q ]}\"
-       ( #{t( :all_found_items )}: #{objects.search( *params.search_args ).size} )"     
+      "#{t( :query_results )} \"#{params[ :q ]}\" ( #{t( :all_found_items )}: #{objects.size rescue ''} )"     
     else
       "#{objects.human}#{': ' + Category.find( params[ :category_id ] ).name rescue ''}"
     end
   end
 
-  def render_catalog_items( session )
-    delay( Duration ) { check_cart_links( session, false ) }
+  def render_catalog_items( cart )
+    delay( Duration ) { check_cart_links( cart, false ) }
   end
 
   private
-    def on_mouse( image )
-      "$(this).attr('src', 'images/" + image + "')"
-    end
+    def on_mouse( image ) "$(this).attr('src', 'images/" + image + "')" end
 
 end

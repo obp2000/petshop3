@@ -7,9 +7,9 @@ module ApplicationHelper
   end
 
   def link_to_close( object )
-    link_to image_tag( CloseProcessedOrderImage, :title => object.class.human_attribute_name( :close_title ) ),
+    link_to image_tag( CloseProcessedOrderImage, :title => object.human_attribute_name( :close_title ) ),
         close_processed_order_path( object ), :remote => true, :id => object.close_tag,
-        :confirm => object.class.human_attribute_name( :close_title ) + "?"   
+        :confirm => object.human_attribute_name( :close_title ) + "?"   
   end
 
   def link_to_remove_from_item( object )
@@ -62,15 +62,15 @@ module ApplicationHelper
     end
   end
 
-  def check_cart_links( session, force_hide )
+  def check_cart_links( cart, force_hide )
     select(
       ".#{CartItem.link_to_delete_dom_class}, ##{Cart.link_to_new_order_form}, ##{Cart.link_to_clear_cart}" ).send(
-       ( force_hide or session.cart.cart_items.empty? ) ?
+       ( force_hide or cart.cart_items.empty? ) ?
        "fadeOut().attr('style','visibility: hidden')" : "attr('style','visibility: visible').fadeIn()" )
   end
 
-  def check_cart_totals( session )
-    session.cart.cart_totals.each { |args| replace_html *args }
+  def check_cart_totals( cart )
+    cart.cart_totals.each { |args| replace_html *args }
   end
     
   def do_not_show_nav
@@ -83,8 +83,7 @@ module ApplicationHelper
   end
 
   def link_to_close_window( objects )
-    link_to_function(
-      image_tag CloseWindowImage, :title => t( :close_window ) ) {
+    link_to_function( image_tag CloseWindowImage, :title => t( :close_window ) ) {
         |page| page.action :remove, objects.tableize }
   end
 
@@ -93,9 +92,8 @@ module ApplicationHelper
   end
 
   def link_to_add_to_item( object )
-    link_to_function(
-      image_tag AddToItemImage, :title => Item.human_attribute_name( :add_to_item_title ) ) {
-      |page| object.add_to_item( page ) }
+    link_to_function( image_tag AddToItemImage,
+      :title => Item.human_attribute_name( :add_to_item_title ) ) { |page| object.add_to_item( page ) }
   end  
 
   def render_show( appear_tag, fade_tag, show_partial )
@@ -146,6 +144,10 @@ module ApplicationHelper
   def colour_render( colour )
     ( "&nbsp;&nbsp;" ).html_safe * ( colour.html_code.split.many? ? 1 : 2 )
   end
+      
+  def update_processed_orders_amount
+    action *ProcessedOrder.instance_exec { [ :replace_html, processed_orders_amount_dom_id, count ] }
+  end
           
 end
 
@@ -174,14 +176,12 @@ class Object
   def total() inject(0) { |sum, n| n.price * n.amount + sum } end
   
   def sum_amount() sum( :amount ) end
-    
-#  attr_accessor_with_default( :dom_id ) { self.class.name.tableize }
 
 end
 
 class Hash
 
-  attr_accessor_with_default( :cart ) { Cart.find_or_create self }
+  def cart() Cart.find_or_create self end
   
 end
 

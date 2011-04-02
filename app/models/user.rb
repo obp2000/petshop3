@@ -102,19 +102,19 @@ class User < ActiveRecord1
   end
 
   def reset_password_notice
-    self.class.human_attribute_name( :reset_password_notice ).html_safe\
+    human_attribute_name( :reset_password_notice ).html_safe\
   end
   
   def reset_password_page_title
-    self.class.human_attribute_name( :reset_password_page_title ).html_safe
+    human_attribute_name( :reset_password_page_title ).html_safe
   end
 
   def new_user_notice
-    self.class.human_attribute_name( :new_user_notice ).html_safe     
+    human_attribute_name( :new_user_notice ).html_safe     
   end
   
   def activate_user_notice
-    self.class.human_attribute_name( :activate_user_notice ).html_safe    
+    human_attribute_name( :activate_user_notice ).html_safe    
   end
     
   def activation_url
