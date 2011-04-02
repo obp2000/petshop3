@@ -1,7 +1,7 @@
 module InsertContent
 
-  attr_accessor_with_default( :replace ) { "replace" }  
-  attr_accessor_with_default( :insert_or_replace ) { "insert_index_tag" }  
-  attr_accessor_with_default( :index_tag ) { tableize }
+  def replace() "replace" end  
+  def insert_or_replace() "insert_index_tag" end  
+  def index_tag() tableize end
 
 end

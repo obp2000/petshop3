@@ -319,7 +319,7 @@ shared_examples_for "object" do
 
   describe "GET new" do
     it "assigns a new object as @object and renders new template" do
-      @object.class.should_receive( :new1 ).and_return( @object )
+      @object.class.should_receive( :new ).and_return( @object )
       @object.should_receive( :render_new_or_edit )      
       xhr :get, :new
       assigns[ :object ].should equal( @object )

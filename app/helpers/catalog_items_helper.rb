@@ -22,10 +22,9 @@ module CatalogItemsHelper
   def index_page_title_for( objects )
     if params[ :q ]
       "#{t( :query_results )} \"#{params[ :q ]}\"
-       ( #{t( :all_found_items )}: #{objects.first.class.search( *params.search_args ).size} )"     
+       ( #{t( :all_found_items )}: #{objects.search( *params.search_args ).size} )"     
     else
-      "#{objects.first.class.season_page_title}#{': ' +
-            Category.find( params[ :category_id ] ).name rescue ''}"
+      "#{objects.human}#{': ' + Category.find( params[ :category_id ] ).name rescue ''}"
     end
   end
 

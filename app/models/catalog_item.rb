@@ -1,13 +1,13 @@
 # encoding: utf-8
 class CatalogItem < Item
 
-  class_inheritable_accessor :season_icon, :season_name
+  class_inheritable_accessor :season_icon
   self.season_icon = AllSeasonsImage
-  self.season_name = I18n.t( :all_seasons )
 
   self.paginate_options = { :per_page => 8 }
   self.js_for_show = []
   self.index_layout = "application"
+  self.js_for_index = superclass.js_for_index << "attach_shadowOn"  
   
   cattr_accessor :partial_path
   self.partial_path = tableize
@@ -21,11 +21,7 @@ class CatalogItem < Item
 
   class << self
     
-    attr_accessor_with_default( :js_for_index ) { superclass.js_for_index << "attach_shadowOn" }
-    
-    def back( page )
-      page.fade_appear( show_tag, tableize )
-    end
+    def back( page ) page.fade_appear( show_tag, tableize ) end
 
     def render_show( page )
       super
@@ -33,18 +29,14 @@ class CatalogItem < Item
     end
 
 # actions
-    def search_results( params )
-      search( *params.search_args )
-    end
+    def search_results( params ) search( *params.search_args ) end
 
 # notices
     def not_found_notice( params )
       "#{I18n.t( :on_your_query )} \"#{params[ :q ]}\" #{human_attribute_name( :not_found_notice )}"         
     end
 
-    def season_page_title
-      model_name.human + ': ' + season_name
-    end
+#    def season_page_title() model_name.human end
 
     def render_index( page, objects, session )
       page.render_catalog_items( session )

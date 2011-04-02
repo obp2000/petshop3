@@ -8,7 +8,8 @@
   class_inheritable_accessor :replace, :paginate_options, :insert_or_replace,
     :js_for_index, :js_for_show, :js_for_new_or_edit, :js_for_create_or_update,
     :index_tag, :index_partial, :show_tag, :edit_tag, :edit_partial,
-    :new_tag, :new_partial, :row_partial, :partial_path, :index_layout, :new1
+    :new_tag, :new_partial, :row_partial, :partial_path, :index_layout,
+    :new_attr
 
   self.paginate_options = {}
   self.js_for_index = [ "attach_yoxview" ]
@@ -16,34 +17,25 @@
   self.js_for_new_or_edit = []
   self.js_for_create_or_update = []
   self.index_layout = ""
+  self.show_tag = name.underscore
+  self.new_attr = true
+#  self.new_tag = "new_#{name.underscore}"
   
   scope :index_scope
     
   class << self
 
 # actions
-    def all_objects( params )
-      index_scope( params ).paginate_objects( params )
-    end
+    def all_objects( params ) index_scope( params ).paginate_objects( params ) end
     
-    def paginate_hash( params )
-      paginate_options.merge :page => params[ :page ]
-    end
+    def paginate_hash( params ) paginate_options.merge :page => params[ :page ] end
 
-    def paginate_objects( params )
-      paginate paginate_hash( params )
-    end 
+    def paginate_objects( params ) paginate paginate_hash( params ) end 
 
-    def find_current_object( params, session )
-      find params[ :id ]
-    end
+    def find_current_object( params, session ) find params[ :id ] end
     alias_method :find_object_for_update, :find_current_object
-
-    attr_accessor_with_default( :new1 ) { new }      
     
-    def new_object( params, session )
-      new params[ underscore ]
-    end
+    def new_object( params, session ) new params[ underscore ] end
       
 # renders    
     def render_index( page, objects, session )
@@ -57,49 +49,48 @@
     end       
 
     delegate :tableize, :underscore, :to => :name
+    
+    delegate :human, :to => :model_name
 
 # tags and partials
-    attr_accessor_with_default( :new_tag ) { "new_#{underscore}" }
-    attr_accessor_with_default( :edit_partial ) { underscore }    
-    attr_accessor_with_default( :new_partial ) { edit_partial }
-    attr_accessor_with_default( :partial_path ) { tableize }
-    attr_accessor_with_default( :index_partial ) { "#{partial_path}/index" }
-    attr_accessor_with_default( :show_tag ) { underscore }
-    attr_accessor_with_default( :attrs_tag ) { "form_#{tableize}" }  
+    def new_tag() "new_#{underscore}" end
+    def edit_partial() underscore end    
+    def new_partial() edit_partial end
+    def partial_path() tableize end
+    def index_partial() "#{partial_path}/index" end
+#   def show_tag() underscore end
+    def attrs_tag() "form_#{tableize}" end  
+#    def new_attr() { :partial => new_partial, :object => new } end
 
   end
 
-  delegate :tableize, :underscore, :attrs_tag, :to => "self.class"
+  delegate :tableize, :underscore, :attrs_tag, :new, :to => "self.class"
+  
+  delegate :human, :to => "self.class.model_name"
 
-  attr_accessor_with_default( :tag ) { ActionController::RecordIdentifier.dom_id( self ) }
-  attr_accessor_with_default( :edit_tag ) { ActionController::RecordIdentifier.dom_id( self, :edit ) }
-  attr_accessor_with_default( :row_tag ) { edit_tag }
-  attr_accessor_with_default( :row_partial ) { edit_partial }
+  def tag() ActionController::RecordIdentifier.dom_id( self ) end
+  def edit_tag() ActionController::RecordIdentifier.dom_id( self, :edit ) end
+  def row_tag() edit_tag  end
+  def row_partial() edit_partial end
 
 # actions
-  def update_object( params )
-    update_attributes( params[ underscore ] )
-  end
+  def update_object( params ) update_attributes( params[ underscore ] ) end
     
-  def destroy_object
-    destroy
-  end     
+  def destroy_object() destroy end     
   
-  def save_object( session )
-    save
-  end
+  def save_object( * ) save end
     
 # notices
   def create_notice
-    "#{self.class.model_name.human} #{I18n.t(:successfully_created)}."
+    "#{human} #{I18n.t(:successfully_created)}."
   end
   
   def update_notice
-    "#{self.class.model_name.human} #{I18n.t(:successfully_updated)}."
+    "#{human} #{I18n.t(:successfully_updated)}."
   end
   
   def destroy_notice
-    "#{self.class.model_name.human} #{I18n.t(:deleted)}."
+    "#{human} #{I18n.t(:deleted)}."
   end     
 
 # renders
@@ -125,7 +116,7 @@
   end
     
   def delete_title 
-    "#{I18n.t(:remove)} #{self.class.model_name.human} #{name rescue id}"
+    "#{I18n.t(:remove)} #{human} #{name rescue id}"
   end
 
 end

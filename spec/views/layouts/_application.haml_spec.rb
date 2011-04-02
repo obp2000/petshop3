@@ -13,6 +13,7 @@ describe "layouts/_application" do
     WinterCatalogItem.stub( :group_by_category ).and_return( [ winter_catalog_items_proxy.first ] )
     @session = {}
     @session.stub( :cart ).and_return( carts_proxy.first )
+    view.stub( :cart ).and_return( @session.cart)
   end  
   
   it "renders main page" do

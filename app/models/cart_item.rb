@@ -11,21 +11,20 @@ class CartItem < ActiveRecord1
   
   class_inheritable_accessor :link_to_delete_dom_class
   self.link_to_delete_dom_class = "link_to_delete_cart_item"
-  
-  
-  attr_accessor_with_default( :row_tag ) { tag }
     
   class << self
 
 # actions
     def find_object_for_update( params, session )
-      where( params.conditions_hash( session ) ).first ||
-              create( params.conditions_hash( session ).merge :amount => 0 )
+      where( params.conditions_hash( session.cart ) ).first ||
+              create( params.conditions_hash( session.cart ).merge :amount => 0 )
     end
 
-    attr_accessor_with_default( :edit_partial ) { "#{partial_path}/#{underscore}" }  
+    def edit_partial() "#{partial_path}/#{underscore}" end  
 
   end
+
+  def row_tag() tag end
 
 # actions
   def destroy_object
@@ -56,23 +55,20 @@ class CartItem < ActiveRecord1
 # renders    
   def render_create_or_update( page, session )
     super
-    page.after_create_or_update_cart_item( row_tag, ( amount.zero? or session.cart.cart_items.empty? ),
-          session )
+    page.render_create_or_update_cart_item( self, session )
   end
   alias_method :render_destroy, :render_create_or_update
   
   private
-    def update_amount( i )
-      update_attribute :amount, amount + i
-    end     
+    def update_amount( i ) update_attribute( :amount, amount + i ) end     
     
 end
 
 class Hash
   
-  def conditions_hash( session )
+  def conditions_hash( cart )
     { :item_id => self[ :id ].gsub(/\D/u, ""), :size_id => self[ :size_id ],
-      :colour_id => self[ :colour_id ], :cart_id => session.cart.id }
+      :colour_id => self[ :colour_id ], :cart_id => cart.id }
   end  
   
 end

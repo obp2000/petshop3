@@ -25,19 +25,15 @@ class Order < ActiveRecord1
 
   scope :index_scope, order( "created_at desc" )
 
-  class << self
+  extend ReplaceContent      
 
-    include ReplaceContent      
-
-  end
-
-  attr_accessor_with_default( :status_tag ) { "order_status_#{id}" }
-  attr_accessor_with_default( :updated_tag ) { "order_updated_#{id}" }
-  attr_accessor_with_default( :close_tag ) { "close_order_#{id}" }
+  def status_tag() "order_status_#{id}" end
+  def updated_tag() "order_updated_#{id}" end
+  def close_tag() "close_order_#{id}" end
 
 # notices
   def destroy_notice
-    "#{Order.model_name.human} № #{id} #{Order.human_attribute_name( :destroy_notice )}."
+    "#{Order.human} № #{id} #{Order.human_attribute_name( :destroy_notice )}."
   end
 
 # renders
@@ -47,7 +43,7 @@ class Order < ActiveRecord1
   end 
 
   def delete_title 
-    "#{I18n.t(:remove)} #{Order.model_name.human} № #{id}"
+    "#{I18n.t(:remove)} #{Order.human} № #{id}"
   end       
        
 end

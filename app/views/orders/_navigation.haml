@@ -1,8 +1,9 @@
-%div 
-  = t( :show ).colon
-  = link_to Order.model_name.human.pluralize, orders_path, :remote => true
-  \//
-  = link_to ProcessedOrder.model_name.human.pluralize, processed_orders_path, :remote => true       
-  = render "orders/processed_orders_amount" 
-  \//
-  = link_to ClosedOrder.model_name.human.pluralize, closed_orders_path, :remote => true 
+%div
+  - with_options :remote => true do |remote| 
+    = t( :show ).colon
+    = remote.link_to Order.human.pluralize, orders_path
+    \//
+    = remote.link_to ProcessedOrder.human.pluralize, processed_orders_path       
+    = render "orders/processed_orders_amount" 
+    \//
+    = remote.link_to ClosedOrder.human.pluralize, closed_orders_path 

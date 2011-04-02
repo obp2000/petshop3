@@ -7,10 +7,11 @@ describe "carts/_index" do
     @session.stub( :cart ).and_return( carts_proxy.first )
     @cart = @session.cart
     @cart_item = @cart.cart_items.first
+    view.stub( :cart ).and_return( @cart )
   end
   
   it "renders cart with one cart item" do
-    render "carts/index", :cart => @cart
+    render
     rendered.should have_link_to_remote_get( new_processed_order_path )    
     rendered.should contain( @cart.cart_items_sum_amount.to_s )
     rendered.should contain( @cart.total.to_s )
@@ -27,7 +28,7 @@ describe "carts/_index" do
 
   context "when user can make order, delete cart item and clear cart" do
     it "renders link to new order form" do
-      render "carts/index", :cart => @cart      
+      render      
       rendered.should have_selector( :div, :id => @cart.link_to_new_order_form,
         :style => "visibility: visible" )
       rendered.should have_selector( :div, :id => @cart.link_to_clear_cart,
@@ -38,7 +39,7 @@ describe "carts/_index" do
   context "when user can not make order, delete cart item and clear cart" do
     it "does not render link to new order form" do
       @cart.stub( :cart_items ).and_return( [] )
-      render "carts/index", :cart => @cart
+      render
       rendered.should have_selector( :div, :id => @cart.link_to_new_order_form,
         :style => "visibility: hidden" )
       rendered.should have_selector( :div, :id => @cart.link_to_clear_cart,

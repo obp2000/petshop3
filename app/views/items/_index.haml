@@ -1,5 +1,5 @@
 %div
-  %h2= Item.model_name.human.pluralize
+  %h2= Item.human.pluralize
   %table{ :id => @objects.tableize }
     %caption= will_paginate @objects
     %tr
@@ -7,11 +7,11 @@
         %th{ :scope => "col" }
           = remote.link_to Item.human_attribute_name( :name ), items_path( :sort_by => "name" )
         %th{ :scope => "col" }
-          = remote.link_to Size.model_name.human.pluralize, items_path( :sort_by => "sizes.first.name" )                       
+          = remote.link_to Size.human.pluralize, items_path( :sort_by => "sizes.first.name" )                       
         %th{ :scope => "col" }
-          = remote.link_to Colour.model_name.human.pluralize, items_path( :sort_by => "colours.first.name" )
+          = remote.link_to Colour.human.pluralize, items_path( :sort_by => "colours.first.name" )
         %th{ :scope => "col" }
-          = remote.link_to Category.model_name.human, items_path( :sort_by => "category.name" )
+          = remote.link_to Category.human, items_path( :sort_by => "category.name" )
         %th{ :scope => "col" }
           = remote.link_to Item.human_attribute_name( :price ), items_path( :sort_by => "price" )              
         %th{:scope => "col"}

@@ -1,2 +1,2 @@
 = render :partial => "catalog_items/attr", :collection => attrs, :locals => { :many => attrs.many? }
-= render "catalog_items/any_attr", :any_attr => attrs.first.class.new1 if attrs.many?                    
+= render "catalog_items/any_attr", :any_attr => attrs.new if attrs.many?                    

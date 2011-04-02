@@ -6,8 +6,6 @@ class Season
     @item = item
   end
 
-  def name
-    @item.type.classify.constantize.season_name
-  end
+  def name() @item.type.classify.constantize.human end
     
 end

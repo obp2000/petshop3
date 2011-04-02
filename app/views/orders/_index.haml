@@ -1,5 +1,5 @@
 %div
-  %h2= "#{Order.model_name.human.pluralize}" + params[ :controller ].classify.constantize.status_nav 
+  %h2= "#{Order.human.pluralize}" + params[ :controller ].classify.constantize.status_nav 
   = render "orders/navigation"
   %table{ :summary => "" }
     %caption= will_paginate @objects

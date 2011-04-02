@@ -19,7 +19,7 @@ module ApplicationHelper
 
   def link_to_change( object )
     link_to image_tag( object.change_image,
-      { :title => "#{t(:change)} #{object.model_name.human.pluralize}" } ), object, { :remote => true }    
+      { :title => "#{t(:change)} #{object.human.pluralize}" } ), object, { :remote => true }    
   end
 
   def link_to_delete( object )
@@ -40,12 +40,14 @@ module ApplicationHelper
   end
 
   def fade_appear( fade, appear )
-    fade_with_duration fade; appear_with_duration appear
+    fade_with_duration fade
+    appear_with_duration appear
   end
 
   def action( action1, *opts )
     fade_with_duration opts.first
-    delay( Duration ) { send( action1, *opts ); appear_with_duration opts.first unless action1 == :remove }       
+    delay( Duration ) { send( action1, *opts )
+    appear_with_duration opts.first unless action1 == :remove }       
   end
     
   def show_notice( opts = {} )
@@ -55,7 +57,8 @@ module ApplicationHelper
     self[ :notice ].hide
     appear_with_duration :notice, appear_duration    
     delay( appear_duration ) do
-      fade_with_duration :notice, fade_duration; delay( fade_duration ) { self[ :notice ].remove }
+      fade_with_duration :notice, fade_duration
+      delay( fade_duration ) { self[ :notice ].remove }
     end
   end
 
@@ -148,29 +151,29 @@ end
 
 class Array
 
-  def paginate_objects( params )
-    paginate first.class.paginate_hash( params )
-  end 
+  def paginate_objects( params ) paginate paginate_hash( params ) end 
   
   def render_index( page, session )
-    first.class.render_index( page, self, session ) rescue nil
+    first.class.render_index( page, self, session )
     page.show_notice
   end
 
-  delegate :show_tag, :new_tag, :new_partial, :edit_partial,
-      :partial_path, :new1, :destroy_notice, :to => :first 
+  delegate :show_tag, :new_tag, :new_partial, :edit_partial, :partial_path, :new,
+    :destroy_notice, :new_record?, :new_attr, :to => :first 
 
-  delegate :tableize, :to => "first.class"
+  delegate :tableize, :new, :index_layout, :paginate_hash, :search, :to => "first.class"
+  
+  delegate :human, :to => "first.class.model_name"
 
 end
 
 class Object
   
-  attr_accessor_with_default( :colon ) { self + ":" }
+  def colon() self + ":" end
 
-  attr_accessor_with_default( :total ) { inject(0) {|sum, n| n.price * n.amount + sum} }
+  def total() inject(0) { |sum, n| n.price * n.amount + sum } end
   
-  attr_accessor_with_default( :sum_amount ) { sum( :amount ) }
+  def sum_amount() sum( :amount ) end
     
 #  attr_accessor_with_default( :dom_id ) { self.class.name.tableize }
 

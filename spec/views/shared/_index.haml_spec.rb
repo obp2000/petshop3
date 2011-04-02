@@ -7,7 +7,6 @@ describe "shared/_index" do
       @objects = sizes_proxy
       @objects.stub( :new_partial ).and_return( "shared/attr" )
       @objects.stub( :edit_partial ).and_return( "shared/attr" )    
-      @objects.stub( :new1 ).and_return( sizes_proxy.first.class.new )
       @objects.first.stub( :underscore ).and_return( "size" )
       @objects.second.stub( :underscore ).and_return( "size" )
     end
@@ -42,7 +41,6 @@ describe "shared/_index" do
       @objects = colours_proxy
       @objects.stub( :new_partial ).and_return( "shared/attr" )
       @objects.stub( :edit_partial ).and_return( "shared/attr" )    
-      @objects.stub( :new1 ).and_return( colours_proxy.first.class.new )
       @objects.first.stub( :underscore ).and_return( "colour" )
       @objects.second.stub( :underscore ).and_return( "colour" )
       view.stub( :link_to_add_html_code_to )      
@@ -85,7 +83,6 @@ describe "shared/_index" do
       @objects = categories_proxy
       @objects.stub( :new_partial ).and_return( "shared/attr" )
       @objects.stub( :edit_partial ).and_return( "shared/attr" )    
-      @objects.stub( :new1 ).and_return( categories_proxy.first.class.new )
       @objects.first.stub( :underscore ).and_return( "category" )
       @objects.second.stub( :underscore ).and_return( "category" )      
     end
@@ -120,7 +117,6 @@ describe "shared/_index" do
       @objects = photos_proxy
       @objects.stub( :new_partial ).and_return( "photos/upload_photo" )
       @objects.stub( :edit_partial ).and_return( "shared/attr" )    
-      @objects.stub( :new1 ).and_return( photos_proxy.first.class.new )
       @objects.first.stub( :underscore ).and_return( "photo" )
     end
 
@@ -156,7 +152,6 @@ describe "shared/_index" do
     before do
       @objects = contacts_proxy
       @objects.stub( :edit_partial ).and_return( "contacts/contact" )    
-      @objects.stub( :new1 ).and_return( false )
       view.stub( :will_paginate )       
     end
 

@@ -48,7 +48,6 @@ ru:
   forgot_password?: Забыли пароль?
   dear: Уважаемый(ая)
   count: Всего
-  all_seasons: Все сезоны
   
   time:
     formats:
@@ -79,7 +78,7 @@ ru:
     models:
       cart_item: Товар
       cart: Корзина
-      catalog_item: Каталог товаров
+      catalog_item: Все сезоны
       category: Вид одежды
       closed_order: Закрытые заказ
       colour: Цвет
@@ -93,9 +92,9 @@ ru:
       processed_order: Заказ для исполнения
       season: Сезон
       size: Размер
-      summer_catalog_item: Каталог товаров
+      summer_catalog_item: Весна/Лето
       user: Пользователь
-      winter_catalog_item: Каталог товаров
+      winter_catalog_item: Осень/Зима
       
     errors:
       models:

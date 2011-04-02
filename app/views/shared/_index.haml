@@ -1,7 +1,7 @@
 .ui-widget-content{ :id => objects.tableize }
   = link_to_close_window objects
   = will_paginate objects
-  = render *objects.instance_exec { [ :partial => new_partial, :object => new1 ] } unless objects.new1.blank?
-  = render *objects.instance_exec { [ :partial => edit_partial, :collection => self ] } unless objects.first.new_record?  
+  = render objects.instance_exec { new_attr ? { :partial => new_partial, :object => new } : { :text => "" } }
+  = render objects.instance_exec { new_record? ? { :text => "" } : { :partial => edit_partial, :collection => self } }
   = draggable_element objects.tableize
   

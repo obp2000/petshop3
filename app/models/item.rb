@@ -18,20 +18,18 @@ class Item < ActiveRecord1
 
   self.paginate_options = { :per_page => 14 }
   self.js_for_new_or_edit = self.js_for_show = [ "attach_yoxview" ]
-  self.edit_partial = "form"
   self.index_layout = "items"
 
-  class_inheritable_accessor :style, :edit_tag
+  class_inheritable_accessor :style, :new_tag, :edit_tag, :edit_partial
   self.style = "margin-left: 10px;"
   self.edit_tag = self.new_tag = "edit_item"
+  self.edit_partial = "form"
 
   validates_length_of :name, :minimum => 2
   validates_presence_of :category, :type
   validates_numericality_of :price, :only_integer => true
 
-  def season
-    Season.new( self )
-  end
+  def season() Season.new( self ) end
 
   extend ReplaceContent 
   
@@ -47,9 +45,7 @@ class Item < ActiveRecord1
 # actions
   after_update :save_photos
   
-  def save_photos
-    photos.each( &:save )
-  end
+  def save_photos() photos.each( &:save ) end
   
   def update_object( params )
     params[ "item" ][ :existing_photo_attributes ] ||= {}
@@ -63,11 +59,12 @@ class Item < ActiveRecord1
     end
   end
 
-  attr_accessor_with_default( :row_tag ) { tag }
-  attr_accessor_with_default( :row_partial ) { underscore } 
+  def row_tag() tag end
+  def row_partial() underscore end 
 
   [ "Size", "Colour" ].each do |class_name|
-    define_method( "#{class_name.underscore}_ids=" ) { |ids| class_name.constantize.update_attr( self, ids ) }    
+    define_method( "#{class_name.underscore}_ids=" ) {
+        |ids| class_name.constantize.update_attr( self, ids ) }    
   end   
    
 end

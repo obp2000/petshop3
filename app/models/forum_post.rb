@@ -4,12 +4,11 @@ class ForumPost < ActiveRecord1
   acts_as_threaded
 
   self.paginate_options = { :per_page => 15 }
-  self.new_tag = "post_new"
-#  self.show_tag = "post"
-  self.edit_partial = "form"
 
-  class_inheritable_accessor :link_to_reply_dom_id, :parent_tag
+  class_inheritable_accessor :link_to_reply_dom_id, :parent_tag, :edit_partial, :new_tag
   self.link_to_reply_dom_id = "link_to_reply"
+  self.edit_partial = "form"
+  self.new_tag = "post_new"
   
   validates_length_of :name, :minimum => 2
   validates_length_of :subject, :minimum => 5
@@ -28,7 +27,7 @@ class ForumPost < ActiveRecord1
 
     def render_show( page )
       super
-      page.fade new_tag
+      page.fade( new_tag )
     end
 
   end
@@ -71,19 +70,17 @@ class ForumPost < ActiveRecord1
         :render_destroy ).bind( forum_post )[ page, session ] }
   end
 
-  attr_accessor_with_default( :parent_tag ) { "#{underscore}_#{parent_id}" }
-  attr_accessor_with_default( :row_tag ) { tag }
-  attr_accessor_with_default( :style ) { "margin-left: #{depth*20 + 30}px" }
+  def parent_tag() "#{underscore}_#{parent_id}" end
+  def row_tag() tag end
+  def style() "margin-left: #{depth*20 + 30}px" end
 
   def render_reply( page, *args )
     self.class.superclass.instance_method( :render_new_or_edit ).bind( self )[ page, *args ]    
-    page.fade link_to_reply_dom_id    
+    page.fade( link_to_reply_dom_id )    
   end 
   
   def render_create_or_update( page, session )
-    page.render_create_forum_post [ ( parent_id.zero? ? "top"  : "after" ),
-      ( parent_id.zero? ? tableize : parent_tag ), { :partial => underscore, :object => self } ],
-      [ show_tag, new_tag ]    
+    page.render_create_forum_post self
   end
 
 end

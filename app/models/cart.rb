@@ -17,9 +17,6 @@ class Cart < ActiveRecord1
   self.content_tag = "cart"
   self.cart_totals_dom_id = "cart_totals"
 
-  attr_accessor_with_default( :cart_totals ) {
-    [ [ Cart.total_items_dom_id, cart_items_sum_amount ], [ Cart.total_sum_dom_id, total ] ] }    
-
   class << self
 
 # actions
@@ -31,6 +28,10 @@ class Cart < ActiveRecord1
       session.cart
     end
   
+  end
+
+  def cart_totals
+    [ [ Cart.total_items_dom_id, cart_items_sum_amount ], [ Cart.total_sum_dom_id, total ] ]
   end
 
 # actions

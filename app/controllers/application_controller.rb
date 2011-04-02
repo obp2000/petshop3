@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
     if request.xhr?
       render_index.bind( self )[]
     else
-      render :partial => "index", :layout => @objects.first.class.index_layout
+      render :partial => "index", :layout => @objects.index_layout
     end
   end
 
@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
   end
 
   def new
-    @object = controller_name.classify.constantize.new1
+    @object = controller_name.classify.constantize.new
     render_new_or_edit.bind( self )[]     
   end
 

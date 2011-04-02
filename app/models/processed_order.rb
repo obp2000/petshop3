@@ -3,7 +3,7 @@ class ProcessedOrder < Order
   
   self.edit_partial = "form"
   
-  class_inheritable_accessor :fade_duration, :processed_orders_amount_dom_id, :update_amount
+  class_inheritable_accessor :fade_duration, :processed_orders_amount_dom_id
   self.fade_duration = 20
   self.status_nav = human_attribute_name( :status_nav )
   self.status_ = human_attribute_name( :status_ )
@@ -24,17 +24,8 @@ class ProcessedOrder < Order
     errors.add :base,
       self.class.human_attribute_name( :cart_must_have_cart_items ) unless cart.cart_items.size > 0    
   end
-    
-  class << self
 
-# partials
-    def update_amount
-      [ :replace_html, "processed_orders_amount", count ]
-    end
-           
-  end
-
-  def closed?; false end
+  def closed?() false end
 
 # actions  
   def save_object( session )
@@ -57,7 +48,7 @@ class ProcessedOrder < Order
 
 # notices
   def close_notice
-    "#{Order.model_name.human} № #{id} #{self.class.human_attribute_name( :close_notice )}."
+    "#{Order.human} № #{id} #{self.class.human_attribute_name( :close_notice )}."
   end
 
   def create_notice
@@ -65,9 +56,7 @@ class ProcessedOrder < Order
   end
 
 # renders
-  def render_close( page )
-    page.render_close( change_to_closed, change_close_tag_to_updated_tag, update_amount )
-  end
+  def render_close( page ) page.render_close( self ) end
 
   def render_new_or_edit( page, session )
     super
@@ -77,13 +66,5 @@ class ProcessedOrder < Order
   def render_create_or_update( page, session )
     page.render_create_processed_order( fade_duration )
   end 
-
-  def change_to_closed
-    [ :replace_html, status_tag, ClosedOrder.human_attribute_name( :status_ ) ]
-  end
-
-  def change_close_tag_to_updated_tag
-    [ :replace_html, updated_tag, I18n.l( updated_at, :format => :long ) ]
-  end
       
 end

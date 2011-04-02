@@ -7,6 +7,6 @@ class OrderItem < ActiveRecord1
  
   delegate :name, :to => :item 
 
-  attr_accessor_with_default( :order_item_sum ) { price * amount }
+  def order_item_sum() price * amount end
   
 end
