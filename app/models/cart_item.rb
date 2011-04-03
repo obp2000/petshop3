@@ -15,9 +15,9 @@ class CartItem < ActiveRecord1
   class << self
 
 # actions
-    def find_object_for_update( params, session )
-      where( params.conditions_hash( session.cart ) ).first ||
-              create( params.conditions_hash( session.cart ).merge :amount => 0 )
+    def find_object_for_update( params, cart )
+      where( params.conditions_hash( cart ) ).first ||
+              create( params.conditions_hash( cart ).merge :amount => 0 )
     end
 
     def edit_partial() "#{partial_path}/#{underscore}" end  
@@ -53,9 +53,9 @@ class CartItem < ActiveRecord1
   end  
   
 # renders    
-  def render_create_or_update( page, session )
+  def render_create_or_update( page, cart )
     super
-    page.render_create_or_update_cart_item( self, session.cart )
+    page.render_create_or_update_cart_item( self, cart )
   end
   alias_method :render_destroy, :render_create_or_update
   

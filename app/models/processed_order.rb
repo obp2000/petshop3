@@ -53,12 +53,12 @@ class ProcessedOrder < Order
 # renders
   def render_close( page ) page.render_close( self ) end
 
-  def render_new_or_edit( page, session )
+  def render_new_or_edit( page, cart )
     super
-    page.new_processed_order( session.cart )
+    page.new_processed_order( cart )
   end
 
-  def render_create_or_update( page, session )
+  def render_create_or_update( page, cart )
     page.render_create_processed_order( fade_duration )
   end 
       

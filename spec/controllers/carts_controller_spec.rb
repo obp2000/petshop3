@@ -11,7 +11,7 @@ describe CartsController do
   describe "DELETE destroy" do
     it "clears the requested cart and renders destroy template" do
       @cart.class.should_receive( :find_current_object ).with(
-        { "controller" => "carts", "action" => "destroy" }, session ).and_return( @cart )      
+        { "controller" => "carts", "action" => "destroy" }, session.cart ).and_return( @cart )      
       @cart.should_receive( :destroy_object )
       @cart.stub( :destroy_notice ).and_return( "Test" )      
       @cart.should_receive( :render_destroy )            

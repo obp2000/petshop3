@@ -12,7 +12,7 @@ describe "shared/_index" do
     end
 
     it "renders two existing objects and one new object" do
-      view.should_receive( :link_to_close_window ).with( @objects )
+      view.should_receive( :link_to_close_window )
       view.should_receive( :will_paginate ).with( @objects )
       view.should_receive( :link_to_add_to_item ).with( @objects.first ).once
       view.should_receive( :link_to_add_to_item ).with( @objects.second ).once        
@@ -47,7 +47,7 @@ describe "shared/_index" do
     end
 
     it "renders two existing objects and one new object" do
-      view.should_receive( :link_to_close_window ).with( @objects )
+      view.should_receive( :link_to_close_window )
       view.should_receive( :will_paginate ).with( @objects )
       view.should_receive( :link_to_add_html_code_to ).with( @objects.first ).once
       view.should_receive( :link_to_add_html_code_to ).with( @objects.second ).once      
@@ -88,7 +88,7 @@ describe "shared/_index" do
     end
 
     it "renders two existing objects and one new object" do
-      view.should_receive( :link_to_close_window ).with( @objects )
+      view.should_receive( :link_to_close_window )
       view.should_receive( :will_paginate ).with( @objects )
       view.should_receive( :link_to_add_to_item ).with( @objects.first ).once
       view.should_receive( :link_to_add_to_item ).with( @objects.second ).once        
@@ -121,7 +121,7 @@ describe "shared/_index" do
     end
 
     it "renders one existing photo and one new photo" do
-      view.should_receive( :link_to_close_window ).with( @objects )
+      view.should_receive( :link_to_close_window )
       view.should_receive( :will_paginate ).with( @objects )
       view.should_receive( :link_to_add_to_item ).with( @objects.first ).once
       view.should_receive( :draggable_element ).with( @objects.first.class.name.tableize )
@@ -156,7 +156,7 @@ describe "shared/_index" do
     end
 
     it "renders one existing contact" do
-      view.should_receive( :link_to_close_window ).with( @objects )
+      view.should_receive( :link_to_close_window )
       view.should_receive( :draggable_element ).with( @objects.first.class.name.tableize )
       render "shared/index", :objects => @objects
       @objects.each do |object|

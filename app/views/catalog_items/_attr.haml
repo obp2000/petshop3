@@ -1,3 +1,2 @@
 = radio_button_tag attr.underscore.foreign_key, attr.id, ( true unless many ), many ? {} : { :style => "visibility: hidden" }
-=# hidden_field_tag "#{dom_id(attr)}", attr.id
 = render :partial => "#{SharedPath}/#{attr.underscore}", :object => attr unless attr.blank?

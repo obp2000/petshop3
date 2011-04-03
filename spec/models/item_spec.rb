@@ -47,7 +47,7 @@ describe Item do
   describe "#new_object" do
   
     it "builds new item" do
-      @item = Item.new_object( @params, @session )
+      @item = Item.new_object( @params )
       @item.name.should == "Shirt"
     end
   
@@ -68,7 +68,7 @@ describe Item do
   
     it "updates existing item" do
       create_item
-      @item = Item.find_current_object( { :id => @item.id }, @session )
+      @item = Item.find_current_object( { :id => @item.id }, @session.cart )
       @item.update_object( @updated_params )
       @item.name.should == @updated_params[ "item" ][ :name ]
     end
@@ -80,7 +80,7 @@ describe Item do
     it "destroys existing item" do
       create_item
       @params_for_destroy = { :id => @item.id }
-      @item = Item.find_current_object( @params_for_destroy, @session )
+      @item = Item.find_current_object( @params_for_destroy, @session.cart )
       @item.destroy_object
       @item.name.should == valid_item_attributes[ :name ]
       Item.all.should_not include( @item )

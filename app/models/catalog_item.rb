@@ -13,14 +13,14 @@ class CatalogItem < Item
   self.partial_path = tableize
 
   scope :ordered_by_id, order( :id )
-  scope :with_category, lambda { |params| where( :category_id => params[ :category_id ] ) if
-        params[ :category_id ] }
+  scope :with_category, lambda { |params|
+        where( :category_id => params[ :category_id ] ) if params[ :category_id ] }
   scope :index_scope, lambda { |params| with_category( params ).ordered_by_id }
 #  scope :group_by_category, group( :category_id )
   scope :group_by_category, find( :all, :select => "category_id", :group => :category_id )  
 
   class << self
-    
+            
     def back( page ) page.fade_appear( show_tag, tableize ) end
 
     def render_show( page )
@@ -36,8 +36,8 @@ class CatalogItem < Item
       "#{I18n.t( :on_your_query )} \"#{params[ :q ]}\" #{human_attribute_name( :not_found_notice )}"         
     end
 
-    def render_index( page, objects, session )
-      page.render_catalog_items( session.cart )
+    def render_index( page, cart )
+      page.render_catalog_items( cart )
       super
     end 
 

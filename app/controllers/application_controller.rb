@@ -25,17 +25,21 @@ class ApplicationController < ActionController::Base
     session.cart
   end
 
+#  before_filter :init_cart
+  delegate :cart, :to => :session
+
   class_inheritable_accessor :render_index, :render_show, :render_new_or_edit,
-        :render_create, :render_update
-  self.render_index = lambda { render( :update ) { |page| @objects.render_index( page, session ) } }
-  self.render_show = lambda { render( :update ) { |page| @object.class.render_show( page ) } }
+        :render_create, :render_update, :render_notice
+  self.render_index = lambda { render( :update ) { |page| @objects.render_index( page, cart ) } }
+  self.render_show = lambda { render( :update ) { |page| @object.render_show( page ) } }
   self.render_new_or_edit =
-    lambda { render( :update ) { |page| @object.render_new_or_edit( page, session ) } }
+    lambda { render( :update ) { |page| @object.render_new_or_edit( page, cart ) } }
   self.render_create = self.render_update =
-    lambda { render( :update ) { |page| @object.render_create_or_update( page, session ) } }  
+    lambda { render( :update ) { |page| @object.render_create_or_update( page, cart ) } }
+  self.render_notice = lambda { render( :update ) { |page| page.show_notice } }
   
   def index
-    @object = controller_name.classify.constantize.new_object( params, session )    
+    @object = controller_name.classify.constantize.new_object( params )    
     @objects = controller_name.classify.constantize.all_objects( params ) rescue [ @object ]
     if request.xhr?
       render_index.bind( self )[]
@@ -60,7 +64,7 @@ class ApplicationController < ActionController::Base
   end
 
   def create
-    @object = controller_name.classify.constantize.new_object( params, session )
+    @object = controller_name.classify.constantize.new_object( params )
     if @object.save_object( session )
       flash.now[ :notice ] = @object.create_notice
       render_create.bind( self )[]      
@@ -70,7 +74,7 @@ class ApplicationController < ActionController::Base
   end
 
   def update
-    @object = controller_name.classify.constantize.find_object_for_update( params, session )    
+    @object = controller_name.classify.constantize.find_object_for_update( params, cart )    
     if @object.update_object( params )
       flash.now[ :notice ] = @object.update_notice
       render_update.bind( self )[]
@@ -80,17 +84,20 @@ class ApplicationController < ActionController::Base
   end
 
   def destroy
-    @object = controller_name.classify.constantize.find_current_object( params, session )
+    @object = controller_name.classify.constantize.find_current_object( params, cart )
     @object.destroy_object
     flash.now[ :notice ] = @object.destroy_notice
-    render( :update ) { |page| @object.render_destroy( page, session ) }      
+    render( :update ) { |page| @object.render_destroy( page, cart ) }      
   end
 
   def close
-    @object = controller_name.classify.constantize.find_current_object( params, session )
+    @object = controller_name.classify.constantize.find_current_object( params, cart )
     @object.close_object
     flash.now[ :notice ] = @object.close_notice    
     render( :update ) { |page| @object.render_close( page ) }      
   end    
+
+#  private
+#    def init_cart() @cart = session.cart end
 
 end

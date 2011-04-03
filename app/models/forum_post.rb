@@ -33,7 +33,7 @@ class ForumPost < ActiveRecord1
   end
 
 # actions
-  def save_object( session )
+  def save_object( * )
     super.tap do |success|
       if success
         if parent_id.zero?
@@ -56,14 +56,14 @@ class ForumPost < ActiveRecord1
   def destroy_notice() human_attribute_name( :destroy_notice ) end
 
 # renders  
-  def render_new_or_edit( page, session )
+  def render_new_or_edit( page, *args )
     super
     page.fade show_tag
   end 
 
-  def render_destroy( page, session )
+  def render_destroy( page, cart )
     @full_set_clone.each { |forum_post| forum_post.class.superclass.instance_method(
-        :render_destroy ).bind( forum_post )[ page, session ] }
+        :render_destroy ).bind( forum_post )[ page, cart ] }
   end
 
   def parent_tag() "#{underscore}_#{parent_id}" end

@@ -24,7 +24,7 @@ class Cart < ActiveRecord1
       find( session[ :cart_id ] ) rescue create.tap { |cart| session[ :cart_id ] = cart.id }
     end
 
-    def find_current_object( params, session ) session.cart end
+    def find_current_object( params, cart ) cart end
   
   end
 
@@ -46,8 +46,8 @@ class Cart < ActiveRecord1
   end
 
 #renders
-  def render_destroy( page, session )
-    @cart_items_clone.each { |cart_item| cart_item.render_destroy( page, session ) }
+  def render_destroy( page, cart )
+    @cart_items_clone.each { |cart_item| cart_item.render_destroy( page, cart ) }
   end
 
 # notices

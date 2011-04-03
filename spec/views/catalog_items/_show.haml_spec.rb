@@ -16,11 +16,10 @@ describe "catalog_items/_show" do
     @object.colours.first.stub( :underscore ).and_return( "colour" )
     @object.colours.second.stub( :underscore ).and_return( "colour" )    
     assign( :object, @object )
-    view.stub( :link_to_back ).with( @object )     
   end
   
   it "shows only one existing catalog item's details" do
-    view.should_receive( :link_to_back ).with( @object )            
+    view.should_receive( :link_to_back )            
     render
     rendered.should contain( @object.name )
     rendered.should contain( @object.price.to_s )

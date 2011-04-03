@@ -12,7 +12,7 @@ describe Photo do
   end
 
   it "is valid with valid attributes" do
-      @photo = Photo.new_object( @params, @session )
+      @photo = Photo.new_object( @params )
       @photo.should be_valid 
   end
 
@@ -25,7 +25,7 @@ describe Photo do
   describe "#new_object" do
   
     it "builds new photo" do
-      @photo = Photo.new_object( @params, @session )
+      @photo = Photo.new_object( @params )
       @photo.photo_url.should =~ /test.jpg/
     end
   
@@ -44,7 +44,7 @@ describe Photo do
   
     it "updates existing photo comment" do
       create_photo      
-      @photo = Photo.find_current_object( { :id => @photo.id }, @session )
+      @photo = Photo.find_current_object( { :id => @photo.id }, @session.cart )
       @photo.update_object( @updated_params )
       @photo.comment.should == @updated_params[ "photo" ][ :comment ]
     end
@@ -56,7 +56,7 @@ describe Photo do
     it "destroys existing photo" do
       create_photo
       @params_for_destroy = { :id => @photo.id }
-      @photo = Photo.find_current_object( @params_for_destroy, @session )
+      @photo = Photo.find_current_object( @params_for_destroy, @session.cart )
       @photo.destroy_object
       @photo.photo_url.should =~ /test.jpg/
       Photo.all.should_not include( @photo )

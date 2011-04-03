@@ -14,7 +14,7 @@ describe ProcessedOrder do
     @params[ :id ] = "catalog_item_" + @item.id.to_s
     OrderNotice.stub( :deliver_order_notice ).and_return( true )
     @session[ :captcha_validated ] = true      
-    @cart_item = CartItem.find_object_for_update( @params, @session )
+    @cart_item = CartItem.find_object_for_update( @params, @session.cart )
     @cart_item.update_object( @params )
   end
 
@@ -54,7 +54,7 @@ describe ProcessedOrder do
     end
   
     it "builds new processed order" do
-      @order = ProcessedOrder.new_object( @params, @session )
+      @order = ProcessedOrder.new_object( @params )
       @order.email.should == valid_processed_order_attributes[ :email ]
     end
   
@@ -64,7 +64,7 @@ describe ProcessedOrder do
   
     it "saves new processed order" do
       @params = { "processed_order" => valid_processed_order_attributes }
-      @order = ProcessedOrder.new_object( @params, @session )
+      @order = ProcessedOrder.new_object( @params )
       OrderNotice.should_receive( :deliver_order_notice ).with( @order )
       @order.save_object( @session )
       @order.email.should == valid_processed_order_attributes[ :email ]
@@ -77,10 +77,10 @@ describe ProcessedOrder do
   
     it "closes processed order" do
       @params = { "processed_order" => valid_processed_order_attributes }
-      @order = ProcessedOrder.new_object( @params, @session )
+      @order = ProcessedOrder.new_object( @params )
       @order.save_object( @session )
       @params_for_close = { :id => @order.id }
-      @order = ProcessedOrder.find_current_object( @params_for_close, @session )
+      @order = ProcessedOrder.find_current_object( @params_for_close, @session.cart )
       @order.close_object
       @order.email.should == valid_processed_order_attributes[ :email ]
       ProcessedOrder.all.should_not include( @order )

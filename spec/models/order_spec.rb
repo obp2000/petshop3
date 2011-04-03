@@ -10,10 +10,10 @@ describe Order do
     end
   
     it "destroys existing order" do
-      @order = Order.new_object( @params, @session )
+      @order = Order.new_object( @params )
       @order.save_object( @session ) 
       @params_for_destroy = { :id => @order.id }
-      @order = Order.find_current_object( @params_for_destroy, @session )
+      @order = Order.find_current_object( @params_for_destroy, @session.cart )
       @order.destroy_object
       @order.email.should == valid_order_attributes[ :email ]
       Order.all.should_not include( @order )

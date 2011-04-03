@@ -19,7 +19,6 @@
   self.index_layout = ""
   self.show_tag = name.underscore
   self.new_attr = true
-#  self.new_tag = "new_#{name.underscore}"
   
   scope :index_scope
     
@@ -32,14 +31,14 @@
 
     def paginate_objects( params ) paginate paginate_hash( params ) end 
 
-    def find_current_object( params, session ) find params[ :id ] end
+    def find_current_object( params, cart ) find params[ :id ] end
     alias_method :find_object_for_update, :find_current_object
     
-    def new_object( params, session ) new params[ underscore ] end
+    def new_object( params ) new params[ underscore ] end
       
 # renders    
-    def render_index( page, objects, session )
-      page.send insert_or_replace, index_tag, index_partial, objects
+    def render_index( page, cart )
+      page.send( insert_or_replace, index_tag, index_partial )
       page.attach_chain( js_for_index )
     end      
 
@@ -58,13 +57,12 @@
     def new_partial() edit_partial end
     def partial_path() tableize end
     def index_partial() "#{partial_path}/index" end
-#   def show_tag() underscore end
     def attrs_tag() "form_#{tableize}" end  
-#    def new_attr() { :partial => new_partial, :object => new } end
 
   end
 
-  delegate :tableize, :underscore, :attrs_tag, :new, :human_attribute_name, :to => "self.class"
+  delegate :tableize, :underscore, :attrs_tag, :new, :back,
+      :human_attribute_name, :render_index, :render_show, :to => "self.class"
   
   delegate :human, :to => "self.class.model_name"
 
@@ -88,26 +86,21 @@
   def destroy_notice() "#{human} #{I18n.t(:deleted)}." end     
 
 # renders
-  def render_new_or_edit( page, session )
+  def render_new_or_edit( page, *args )
     page.action replace, ( new_record? ? new_tag : edit_tag ),
           :partial => ( new_record? ? new_partial : edit_partial ), :object => self
     page.attach_chain( js_for_new_or_edit )     
   end 
 
-  def render_create_or_update( page, session )
+  def render_create_or_update( page, cart )
     page.render_create_or_update [ :remove, row_tag ],
             [ :bottom, tableize, { :partial => row_partial, :object => self } ]
     page.attach_chain( js_for_create_or_update )             
   end  
   
-  def render_destroy( page, session )
+  def render_destroy( page, cart )
     page.render_destroy( row_tag )
   end 
-
-# links
-  def link_to_category( season_catalog_items )
-    name + " (#{send( season_catalog_items ).size})"
-  end
     
   def delete_title() "#{I18n.t(:remove)} #{human} #{name rescue id}" end
 

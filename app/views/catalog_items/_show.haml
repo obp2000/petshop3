@@ -1,5 +1,5 @@
 %h2
-  = link_to_back @object
+  = link_to_back
   = @object.name
 = form_for @object, :url => cart_item_path( @object ), :remote => true, :html => { :class => "ui-widget-content" } do |f| 
   = f.label :price

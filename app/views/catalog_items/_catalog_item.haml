@@ -1,6 +1,5 @@
 .ui-widget-content{ :id => dom_id( catalog_item ), :class => dom_class( CatalogItem ) }
-  .thumbs.yoxview
-    = render :partial => "#{SharedPath}/photo", :collection => catalog_item.photos unless catalog_item.photos.empty?      
+  .thumbs.yoxview= render :partial => "#{SharedPath}/photo", :collection => catalog_item.photos unless catalog_item.photos.empty?      
   = form_for catalog_item, :url => cart_item_path( catalog_item ), :remote => true do |f|  
     %h4
       = link_to f.object.name, f.object, :remote => true

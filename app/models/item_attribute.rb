@@ -41,7 +41,7 @@ class ItemAttribute < ActiveRecord1
   end
   
 # renders  
-  def render_create_or_update( page, session )
+  def render_create_or_update( page, cart )
     super
     page.replace new_tag, :partial => new_partial, :object => new
     page.replace tag, :partial => "items/" + attr_partial, :object => self

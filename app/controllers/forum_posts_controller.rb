@@ -3,7 +3,7 @@ class ForumPostsController < ApplicationController
   
   def reply
     @object = controller_name.classify.constantize.reply( params )
-    render( :update ) { |page| @object.render_reply( page, session ) }    
+    render( :update ) { |page| @object.render_reply( page, cart ) }    
   end
   
 end

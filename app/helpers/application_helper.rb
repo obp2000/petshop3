@@ -19,7 +19,7 @@ module ApplicationHelper
 
   def link_to_change( object )
     link_to image_tag( object.change_image,
-      { :title => "#{t(:change)} #{object.human.pluralize}" } ), object, { :remote => true }    
+      { :title => "#{t(:change)} #{object.human.pluralize}" } ), object, :remote => true    
   end
 
   def link_to_delete( object )
@@ -78,17 +78,17 @@ module ApplicationHelper
   end
 
   def link_to_category( category, season_catalog_items )
-    link_to category.link_to_category( season_catalog_items ),
+    link_to category.name + " (#{category.send( season_catalog_items ).size})",
       send( "category_#{season_catalog_items}_path", category ), :remote => true, :class => "category"
   end
 
-  def link_to_close_window( objects )
+  def link_to_close_window
     link_to_function( image_tag CloseWindowImage, :title => t( :close_window ) ) {
-        |page| page.action :remove, objects.tableize }
+        |page| page.action :remove, @objects.tableize }
   end
 
-  def link_to_back( object )
-    link_to_function( image_tag BackImage, :title => t( :back ) ) { |page| object.class.back( page ) }
+  def link_to_back
+    link_to_function( image_tag BackImage, :title => t( :back ) ) { |page| @object.back( page ) }
   end
 
   def link_to_add_to_item( object )
@@ -102,13 +102,13 @@ module ApplicationHelper
     fade_appear fade_tag, appear_tag          
   end
 
-  def insert_index_tag( index_tag, index_partial, objects )
+  def insert_index_tag( index_tag, index_partial )
     remove_and_insert [ :remove, index_tag ], [ :after, "tabs",
-          { :partial => index_partial, :locals => { :objects => objects } } ]       
+          { :partial => index_partial } ]       
   end
 
-  def replace_index_tag( index_tag, index_partial, objects )
-    action :replace_html, index_tag, :partial => index_partial, :locals => { :objects => objects }
+  def replace_index_tag( index_tag, index_partial )
+    action :replace_html, index_tag, :partial => index_partial
   end
   
   def render_destroy( row_tag )
@@ -155,17 +155,20 @@ class Array
 
   def paginate_objects( params ) paginate paginate_hash( params ) end 
   
-  def render_index( page, session )
-    first.class.render_index( page, self, session )
+  def render_index( page, cart )
+    first.render_index( page, cart )
     page.show_notice
   end
 
   delegate :show_tag, :new_tag, :new_partial, :edit_partial, :partial_path, :new,
     :destroy_notice, :new_record?, :new_attr, :to => :first 
 
-  delegate :tableize, :new, :index_layout, :paginate_hash, :search, :to => "first.class"
+  delegate :tableize, :new, :index_layout, :paginate_hash,
+    :search, :grouped_category_name, :to => "first.class"
   
   delegate :human, :to => "first.class.model_name"
+  
+  delegate :category, :to => :first
 
 end
 

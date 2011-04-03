@@ -31,7 +31,7 @@ describe ForumPost do
   describe "#new_object" do
   
     it "builds new forum post" do
-      @forum_post = ForumPost.new_object( @params, @session )
+      @forum_post = ForumPost.new_object( @params )
       @forum_post.name.should == valid_forum_post_attributes[ :name ]
     end
   
@@ -59,7 +59,7 @@ describe ForumPost do
       it "reply to existing forum post" do
         create_forum_post
         @params[ "forum_post" ][ :parent_id ] = @forum_post.to_param
-        @reply_forum_post = ForumPost.new_object( @params, @session )
+        @reply_forum_post = ForumPost.new_object( @params )
         @reply_forum_post.save_object( @session ) 
         @reply_forum_post.parent_id.should == @forum_post.id
       end
@@ -72,10 +72,10 @@ describe ForumPost do
     it "destroys thread of forum posts" do
       create_forum_post
       @reply_params = { "forum_post" => { :name => "Sergey", :subject => "Reply theme", :body => "Reply body", :parent_id => @forum_post.id } }         
-      @reply_forum_post = ForumPost.new_object(  @reply_params, @session ) 
+      @reply_forum_post = ForumPost.new_object( @reply_params ) 
       @reply_forum_post.save_object( @session )
       @params_for_destroy = { :id => @forum_post.id }
-      @forum_posts = ForumPost.find_current_object( @params_for_destroy, @session )
+      @forum_posts = ForumPost.find_current_object( @params_for_destroy, @session.cart )
       @forum_posts = @forum_posts.destroy_object
       @forum_posts.size.should == 2
       @forum_posts.should include( @forum_post )

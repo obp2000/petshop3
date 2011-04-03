@@ -11,7 +11,8 @@ describe "catalog_items/_index" do
     @object.sizes.second.stub( :underscore ).and_return( "size" )
     @object.colours.first.stub( :underscore ).and_return( "colour" )
     @object.colours.second.stub( :underscore ).and_return( "colour" )
-    Category.stub( :find ).and_return( @object.category )
+    @objects.stub_chain( :category, :name ).and_return( @object.category.name )
+    view.stub( :params ).and_return( { :category_id => 124 } )
     view.stub( :will_paginate )
     @objects.stub( :show_tag ).and_return( "catalog_item" )     
   end
@@ -20,7 +21,7 @@ describe "catalog_items/_index" do
     view.should_receive( :will_paginate ).with( @objects )
     render
     rendered.should contain( @objects.human )
-    rendered.should contain( @object.category.name )
+    rendered.should contain( @objects.category.name )
     rendered.should have_selector( :div, :id => @objects.show_tag )    
   end
   
@@ -29,11 +30,10 @@ describe "catalog_items/_index" do
   context "when successfull search committed" do
     
     it "renders search page title" do
-      @object.class.stub_chain( :search, :size ).and_return( 347 )
       view.stub( :params ).and_return( @params = { :q => "Jacket" } )
       render
       rendered.should contain( @params[ :q ] )      
-      rendered.should contain( @object.class.search.size.to_s )
+      rendered.should contain( @objects.size.to_s )
     end
     
   end

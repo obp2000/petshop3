@@ -1,10 +1,6 @@
 shared_examples_for "catalog item" do
   
   it "renders one catalog item" do
-#    @object.should_receive( :link_to_show ).and_return( link_to @object.name,
-#            @object, :remote => true, :method => :get )
-#    @photo.should_receive( :link_to_show_with_comment ).and_return( link_to image_tag(
-#            @photo.photo.thumb.url ) + @photo.comment, @photo.photo_url )
     view.should_receive( :draggable_element ).with( dom_id( @object ), :revert => true )
     render
     rendered.should have_selector( "a[href*=" + @photo.photo_url[0..-5] + "]" ) do |a|
@@ -219,7 +215,7 @@ def create_cart_item
             :blurb => @item.blurb,
             :category_id => @item.category_id,
             :type => @item.type }
-  @cart_item = CartItem.find_object_for_update( @params, @session )
+  @cart_item = CartItem.find_object_for_update( @params, @session.cart )
   @cart_item.update_object( @params )
 end
 
@@ -264,32 +260,32 @@ def create_4_catalog_items_with_different_categories_and_seasons
 end
 
 def create_category
-  @category = Category.new_object( @params, @session )
+  @category = Category.new_object( @params )
   @category.save_object( @session )  
 end
 
 def create_colour
-  @colour = Colour.new_object( @params, @session )
+  @colour = Colour.new_object( @params )
   @colour.save_object( @session )
 end
 
 def create_photo
-  @photo = Photo.new_object( @params, @session )
+  @photo = Photo.new_object( @params )
   @photo.save_object( @session )
 end
 
 def create_size
-  @size = Size.new_object( @params, @session )
+  @size = Size.new_object( @params )
   @size.save_object( @session )
 end
 
 def create_item
-  @item = Item.new_object( @params, @session )
+  @item = Item.new_object( @params )
   @item.save_object( @session )  
 end
 
 def create_forum_post
-  @forum_post = ForumPost.new_object( @params, @session )
+  @forum_post = ForumPost.new_object( @params )
   @forum_post.save_object( @session )  
 end
 
@@ -311,7 +307,7 @@ shared_examples_for "object" do
   describe "GET show" do
     it "assigns the requested object as @object and renders show template" do
       @object.class.should_receive( :find ).with( @object.to_param ).and_return( @object )
-      @object.class.should_receive( :render_show )      
+      @object.should_receive( :render_show )      
       xhr :get, :show, :id => @object.to_param
       assigns[ :object ].should equal( @object )
     end

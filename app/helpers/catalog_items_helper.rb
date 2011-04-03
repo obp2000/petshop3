@@ -20,11 +20,12 @@ module CatalogItemsHelper
       :onclick => "$(this).fadeOut().fadeIn()"
   end
 
-  def index_page_title_for( objects )
+  def catalog_items_page_title
     if params[ :q ]
-      "#{t( :query_results )} \"#{params[ :q ]}\" ( #{t( :all_found_items )}: #{objects.size rescue ''} )"     
+      "#{t( :query_results )} \"#{params[ :q ]}\" ( #{t( :all_found_items )}: #{@objects.size} )"     
     else
-      "#{objects.human}#{': ' + Category.find( params[ :category_id ] ).name rescue ''}"
+      @objects.instance_exec( params[ :category_id ] ) {
+          |with_category| "#{human}#{ ': ' + category.name if with_category }" }      
     end
   end
 

@@ -11,6 +11,8 @@ class Photo < ItemAttribute
   self.insert_attr = "photo"
   self.paginate_options = { :per_page => 5  }
   self.js_for_add_to_item = self.js_for_create_or_update = [ "attach_mColorPicker" ]
+  
+  class_inheritable_accessor :new_partial
   self.new_partial = "photos/upload_photo"
   
   class_inheritable_accessor :upload_frame

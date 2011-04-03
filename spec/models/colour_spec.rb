@@ -43,7 +43,7 @@ describe Colour do
   describe "#new_object" do
   
     it "builds new colour" do
-      @colour = Colour.new_object( @params, @session )
+      @colour = Colour.new_object( @params )
       @colour.name.should == valid_colour_attributes[ :name ]
     end
   
@@ -63,7 +63,7 @@ describe Colour do
   
     it "updates existing colour" do
       create_colour
-      @colour = Colour.find_current_object( { :id => @colour.id }, @session )
+      @colour = Colour.find_current_object( { :id => @colour.id }, @session.cart )
       @colour.update_object( @updated_params )
       @colour.name.should == @updated_params[ "colour" ][ :name ]
     end
@@ -74,7 +74,7 @@ describe Colour do
   
     it "destroys existing colour" do
       create_colour
-      @colour = Colour.find_current_object( { :id => @colour.id }, @session )
+      @colour = Colour.find_current_object( { :id => @colour.id }, @session.cart )
       @colour.destroy_object
       @colour.name.should == valid_colour_attributes[ :name ]
       Colour.all.should_not include( @colour )

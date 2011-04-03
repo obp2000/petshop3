@@ -1,5 +1,5 @@
 %div{ :id => @objects.tableize }
-  %h2= index_page_title_for @objects
+  %h2= catalog_items_page_title
   = render :partial => "catalog_items/catalog_item", :collection => @objects
   = will_paginate @objects
 %div{ :id => @objects.show_tag }

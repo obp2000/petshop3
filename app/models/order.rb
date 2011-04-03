@@ -38,7 +38,7 @@ class Order < ActiveRecord1
   end
 
 # renders
-  def render_destroy( page, session )
+  def render_destroy( page, *args )
     super
     page.update_processed_orders_amount
   end 

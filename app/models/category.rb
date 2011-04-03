@@ -12,6 +12,8 @@ class Category < ItemAttribute
 
   self.change_image = ChangeCategoryImage
   self.attr_partial = "category"
+
+  class_inheritable_accessor :hidden_field_name
   self.hidden_field_name = "item[category_id]"
 
   scope :index_scope, order( :name )
