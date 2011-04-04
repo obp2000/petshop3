@@ -1,7 +1,7 @@
 # encoding: utf-8
 class Contact < ActiveRecord1
 
-  class_inheritable_accessor :change_image, :index_partial
+  class_inheritable_accessor :change_image, :index_partial, :show_tag
   self.index_partial = "shared/index"
   self.show_tag = ContentTag
   self.new_attr = false
