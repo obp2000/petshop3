@@ -64,14 +64,9 @@ module ApplicationHelper
   end
 
   def check_cart_links( cart, force_hide )
-#    select(
-#      ".#{CartItem.link_to_delete_dom_class}, ##{Cart.link_to_new_order_form}, ##{Cart.link_to_clear_cart}" ).send(
-#       ( force_hide or cart.cart_items.empty? ) ?
-#       "fadeOut().attr('style','visibility: hidden')" : "attr('style','visibility: visible').fadeIn()" )
     select( "#cart > a, #cart .link_to_delete" ).send(
        ( force_hide or cart.cart_items.empty? ) ?
        "fadeOut().attr('style','visibility: hidden')" : "attr('style','visibility: visible').fadeIn()" )
-
   end
     
   def do_not_show_nav
