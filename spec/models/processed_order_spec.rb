@@ -14,7 +14,7 @@ describe ProcessedOrder do
     @params[ :id ] = "catalog_item_" + @item.id.to_s
     OrderNotice.stub( :deliver_order_notice ).and_return( true )
     @session[ :captcha_validated ] = true      
-    @cart_item = CartItem.find_object_for_update( @params, @session.cart )
+    @cart_item = CartItem.object_for_update( @params, @session.cart )
     @cart_item.update_object( @params )
   end
 
@@ -80,7 +80,7 @@ describe ProcessedOrder do
       @order = ProcessedOrder.new_object( @params )
       @order.save_object( @session )
       @params_for_close = { :id => @order.id }
-      @order = ProcessedOrder.find_current_object( @params_for_close, @session.cart )
+      @order = ProcessedOrder.current_object( @params_for_close, @session.cart )
       @order.close_object
       @order.email.should == valid_processed_order_attributes[ :email ]
       ProcessedOrder.all.should_not include( @order )

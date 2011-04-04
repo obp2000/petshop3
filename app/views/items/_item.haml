@@ -2,6 +2,6 @@
   %td= item.name
   %td= render :partial => "#{SharedPath}/size", :collection => item.sizes unless item.sizes.empty?  
   %td= render :partial => "#{SharedPath}/colour", :collection => item.colours unless item.colours.empty? 
-  %td= item.category.name
+  %td= item.category_name
   %td.align_right= number_to_currency item.price
   %td= link_to_delete item

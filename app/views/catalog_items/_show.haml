@@ -5,9 +5,9 @@
   = f.label :price
   = number_to_currency( f.object.price )   
   = f.label :category
-  = f.object.category.name  
+  = f.object.category_name  
   = f.label :season
-  = f.object.season.name
+  = f.object.season_name
   = submit_to_cart  
   %div
     = f.label :sizes      

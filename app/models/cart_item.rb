@@ -9,10 +9,12 @@ class CartItem < ActiveRecord1
   
   delegate :name, :price, :to => :item
     
+  delegate :name, :to => :catalog_item, :prefix => true    
+    
   class << self
 
 # actions
-    def find_object_for_update( params, cart )
+    def object_for_update( params, cart )
       where( params.conditions_hash( cart ) ).first ||
               create( params.conditions_hash( cart ).merge :amount => 0 )
     end

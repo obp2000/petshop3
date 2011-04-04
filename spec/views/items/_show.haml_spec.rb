@@ -4,6 +4,7 @@ describe "items/_show" do
 
   before do
     assign( :object, @item = items_proxy.first )
+    @item.stub( :category_name ).and_return( @item.category.name )    
     @photo = @item.photos.first
   end
   

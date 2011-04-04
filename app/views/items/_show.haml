@@ -2,8 +2,8 @@
   %h3= @object.name
   = render :partial => "#{SharedPath}/size", :collection => @object.sizes unless @object.sizes.empty?
   = render :partial => "#{SharedPath}/colour", :collection => @object.colours unless @object.colours.empty?     
-  = @object.category.name
-  = @object.season.name
+  = @object.category_name
+  = @object.season_name
   %div= number_to_currency @object.price  
   %div= @object.blurb
   .thumbs.yoxview

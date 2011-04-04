@@ -39,8 +39,8 @@ class ApplicationController < ActionController::Base
   self.render_notice = lambda { render( :update ) { |page| page.show_notice } }
   
   def index
-    @object = controller_name.classify.constantize.new_object( params )    
-    @objects = controller_name.classify.constantize.all_objects( params ) rescue [ @object ]
+    @object = current_model.new_object( params )    
+    @objects = current_model.all_objects( params ) rescue [ @object ]
     if request.xhr?
       render_index.bind( self )[]
     else
@@ -49,22 +49,22 @@ class ApplicationController < ActionController::Base
   end
 
   def show
-    @object = controller_name.classify.constantize.find( params[ :id ] )
+    @object = current_model.current_object( params, cart )
     render_show.bind( self )[]    
   end
 
   def new
-    @object = controller_name.classify.constantize.new
+    @object = current_model.new
     render_new_or_edit.bind( self )[]     
   end
 
   def edit
-    @object = controller_name.classify.constantize.find( params[ :id ] )
+    @object = current_model.current_object( params, cart )
     render_new_or_edit.bind( self )[]    
   end
 
   def create
-    @object = controller_name.classify.constantize.new_object( params )
+    @object = current_model.new_object( params )
     if @object.save_object( session )
       flash.now[ :notice ] = @object.create_notice
       render_create.bind( self )[]      
@@ -74,7 +74,7 @@ class ApplicationController < ActionController::Base
   end
 
   def update
-    @object = controller_name.classify.constantize.find_object_for_update( params, cart )    
+    @object = current_model.object_for_update( params, cart )    
     if @object.update_object( params )
       flash.now[ :notice ] = @object.update_notice
       render_update.bind( self )[]
@@ -84,20 +84,22 @@ class ApplicationController < ActionController::Base
   end
 
   def destroy
-    @object = controller_name.classify.constantize.find_current_object( params, cart )
+    @object = current_model.current_object( params, cart )
     @object.destroy_object
     flash.now[ :notice ] = @object.destroy_notice
     render( :update ) { |page| @object.render_destroy( page, cart ) }      
   end
 
   def close
-    @object = controller_name.classify.constantize.find_current_object( params, cart )
+    @object = current_model.current_object( params, cart )
     @object.close_object
     flash.now[ :notice ] = @object.close_notice    
     render( :update ) { |page| @object.render_close( page ) }      
   end    
 
-#  private
+  private
 #    def init_cart() @cart = session.cart end
+
+    def current_model() controller_name.classify.constantize end
 
 end

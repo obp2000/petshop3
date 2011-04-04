@@ -34,7 +34,7 @@ describe Contact do
     it "updates existing contact" do
       @contact = Contact.new_object( @params )
       @contact.save_object( @session )
-      @contact = Contact.find_current_object( { :id => @contact.id }, @session.cart )
+      @contact = Contact.current_object( { :id => @contact.id }, @session.cart )
       @contact.update_object( @updated_params )
       @contact.name.should == @updated_params[ "contact" ][ :name ]
     end

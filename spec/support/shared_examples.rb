@@ -69,7 +69,7 @@ shared_examples_for "item" do
     render
     rendered.should have_selector( "tr", :onclick => "$.get('#{edit_item_path( @items.first )}')" )
     rendered.should contain(@items.first.name)
-    rendered.should contain(@items.first.category.name)
+    rendered.should contain(@items.first.category_name)
     rendered.should contain( @items.first.sizes.first.name )
     rendered.should have_colour( @items.first.colours.first.html_code )     
     rendered.should contain(@items.first.price.to_s)
@@ -215,7 +215,7 @@ def create_cart_item
             :blurb => @item.blurb,
             :category_id => @item.category_id,
             :type => @item.type }
-  @cart_item = CartItem.find_object_for_update( @params, @session.cart )
+  @cart_item = CartItem.object_for_update( @params, @session.cart )
   @cart_item.update_object( @params )
 end
 

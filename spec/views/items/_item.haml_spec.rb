@@ -4,6 +4,7 @@ describe "items/_item" do
 
   before do
     @items = items_proxy
+    @items.first.stub( :category_name ).and_return( @items.first.category.name )    
   end
   
   it "renders item" do

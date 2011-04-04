@@ -7,11 +7,11 @@
         %th{ :scope => "col" }
           = remote.link_to Item.human_attribute_name( :name ), items_path( :sort_by => "name" )
         %th{ :scope => "col" }
-          = remote.link_to Size.human.pluralize, items_path( :sort_by => "sizes.first.name" )                       
+          = remote.link_to Size.human.pluralize, items_path( :sort_by => "sizes_name" )                       
         %th{ :scope => "col" }
-          = remote.link_to Colour.human.pluralize, items_path( :sort_by => "colours.first.name" )
+          = remote.link_to Colour.human.pluralize, items_path( :sort_by => "colours_name" )
         %th{ :scope => "col" }
-          = remote.link_to Category.human, items_path( :sort_by => "category.name" )
+          = remote.link_to Category.human, items_path( :sort_by => "category_name" )
         %th{ :scope => "col" }
           = remote.link_to Item.human_attribute_name( :price ), items_path( :sort_by => "price" )              
         %th{:scope => "col"}

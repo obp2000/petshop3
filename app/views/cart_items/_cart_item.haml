@@ -1,5 +1,5 @@
 .ui-widget-content{ :id => dom_id( cart_item ) }
-  = link_to cart_item.catalog_item.name, cart_item.catalog_item, :remote => true
+  = link_to cart_item.catalog_item_name, cart_item.catalog_item, :remote => true
   = render "#{SharedPath}/size", :size => cart_item.size unless cart_item.size.blank?
   = render "#{SharedPath}/colour", :colour => cart_item.colour unless cart_item.colour.blank?      
   %div

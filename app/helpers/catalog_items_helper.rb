@@ -25,7 +25,7 @@ module CatalogItemsHelper
       "#{t( :query_results )} \"#{params[ :q ]}\" ( #{t( :all_found_items )}: #{@objects.size} )"     
     else
       @objects.instance_exec( params[ :category_id ] ) {
-          |with_category| "#{human}#{ ': ' + category.name if with_category }" }      
+          |with_category| "#{human}#{ ': ' + category_name if with_category }" }      
     end
   end
 

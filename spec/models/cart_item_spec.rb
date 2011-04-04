@@ -19,7 +19,7 @@ describe CartItem do
     
     context "when cart has such cart item already" do
       it "increments cart item amount" do
-        @cart_item = CartItem.find_object_for_update( @params, @session.cart )
+        @cart_item = CartItem.object_for_update( @params, @session.cart )
         @cart_item.update_object( @params )        
         @session.cart.cart_items.first.amount.should == 2
       end
@@ -31,7 +31,7 @@ describe CartItem do
     
     context "when cart has some such cart items" do
       it "deletes cart item" do
-        @cart_item = CartItem.find_object_for_update( @params, @session.cart )
+        @cart_item = CartItem.object_for_update( @params, @session.cart )
         @cart_item.update_object( @params )
         @cart_item.destroy_object
         @session.cart.cart_items.count.should == 1

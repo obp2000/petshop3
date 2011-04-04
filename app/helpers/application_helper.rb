@@ -157,7 +157,7 @@ class Array
   end
 
   delegate :show_tag, :new_tag, :new_partial, :edit_partial, :partial_path, :new,
-    :destroy_notice, :new_record?, :new_attr, :to => :first 
+    :destroy_notice, :new_record?, :new_attr, :category_name, :name, :to => :first 
 
   delegate :tableize, :new, :index_layout, :paginate_hash,
     :search, :grouped_category_name, :to => "first.class"

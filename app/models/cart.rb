@@ -15,7 +15,7 @@ class Cart < ActiveRecord1
       find( session[ :cart_id ] ) rescue create.tap { |cart| session[ :cart_id ] = cart.id }
     end
 
-    def find_current_object( params, cart ) cart end
+    def current_object( params, cart ) cart end
   
   end
 

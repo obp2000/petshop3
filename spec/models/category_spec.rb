@@ -51,7 +51,7 @@ describe Category do
   
     it "updates existing category" do
       create_category
-      @category = Category.find_current_object(
+      @category = Category.current_object(
             @updated_params.merge( :id => @category.id ), @session.cart )
       @category.update_object( @updated_params )
       @category.name.should == @updated_params[ "category" ][ :name ]
@@ -64,7 +64,7 @@ describe Category do
     it "destroys existing category" do
       create_category
       @params_for_destroy = { :id => @category.id }
-      @category = Category.find_current_object( @params_for_destroy, @session.cart )
+      @category = Category.current_object( @params_for_destroy, @session.cart )
       @category.destroy_object
       @category.name.should == @params[ "category" ][ :name ]
       Category.all.should_not include( @category )

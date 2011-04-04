@@ -44,7 +44,7 @@ describe Photo do
   
     it "updates existing photo comment" do
       create_photo      
-      @photo = Photo.find_current_object( { :id => @photo.id }, @session.cart )
+      @photo = Photo.current_object( { :id => @photo.id }, @session.cart )
       @photo.update_object( @updated_params )
       @photo.comment.should == @updated_params[ "photo" ][ :comment ]
     end
@@ -56,7 +56,7 @@ describe Photo do
     it "destroys existing photo" do
       create_photo
       @params_for_destroy = { :id => @photo.id }
-      @photo = Photo.find_current_object( @params_for_destroy, @session.cart )
+      @photo = Photo.current_object( @params_for_destroy, @session.cart )
       @photo.destroy_object
       @photo.photo_url.should =~ /test.jpg/
       Photo.all.should_not include( @photo )

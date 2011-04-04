@@ -29,6 +29,11 @@ class Item < ActiveRecord1
   validates_presence_of :category, :type
   validates_numericality_of :price, :only_integer => true
 
+  delegate :name, :to => :category, :prefix => true
+  delegate :name, :to => :season, :prefix => true
+  delegate :name, :to => :sizes, :prefix => true
+  delegate :name, :to => :colours, :prefix => true
+
   def season() Season.new( self ) end
 
   extend ReplaceContent 

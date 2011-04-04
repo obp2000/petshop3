@@ -48,7 +48,7 @@ describe Size do
   
     it "updates existing size" do
       create_size
-      @size = Size.find_current_object( { :id => @size.id }, @session.cart )
+      @size = Size.current_object( { :id => @size.id }, @session.cart )
       @size.update_object( @updated_params )
       @size.name.should == @updated_params[ "size" ][ :name ]
     end
@@ -60,7 +60,7 @@ describe Size do
     it "destroys existing size" do
       create_size
       @params_for_destroy = { :id => @size.id }
-      @size = Size.find_current_object( @params_for_destroy, @session.cart )
+      @size = Size.current_object( @params_for_destroy, @session.cart )
       @size.destroy_object
       @size.name.should == valid_size_attributes[ :name ]
       Size.all.should_not include( @size )

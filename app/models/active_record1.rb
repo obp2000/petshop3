@@ -31,8 +31,8 @@
 
     def paginate_objects( params ) paginate paginate_hash( params ) end 
 
-    def find_current_object( params, cart ) find params[ :id ] end
-    alias_method :find_object_for_update, :find_current_object
+    def current_object( params, cart ) find params[ :id ] end
+    alias_method :object_for_update, :current_object
     
     def new_object( params ) new params[ underscore ] end
       

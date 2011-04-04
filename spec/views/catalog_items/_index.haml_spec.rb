@@ -11,7 +11,7 @@ describe "catalog_items/_index" do
     @object.sizes.second.stub( :underscore ).and_return( "size" )
     @object.colours.first.stub( :underscore ).and_return( "colour" )
     @object.colours.second.stub( :underscore ).and_return( "colour" )
-    @objects.stub_chain( :category, :name ).and_return( @object.category.name )
+    @object.stub( :category_name ).and_return( @object.category.name )    
     view.stub( :params ).and_return( { :category_id => 124 } )
     view.stub( :will_paginate )
     @objects.stub( :show_tag ).and_return( "catalog_item" )     
@@ -21,7 +21,7 @@ describe "catalog_items/_index" do
     view.should_receive( :will_paginate ).with( @objects )
     render
     rendered.should contain( @objects.human )
-    rendered.should contain( @objects.category.name )
+    rendered.should contain( @objects.category_name )
     rendered.should have_selector( :div, :id => @objects.show_tag )    
   end
   

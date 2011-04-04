@@ -10,11 +10,12 @@ describe "catalog_items/_show" do
     @photo.stub( :underscore ).and_return( "photo" )    
     @object.stub_chain( :sizes, :class_name_rus_cap ).and_return( "Размер" )
     @object.stub_chain( :colours, :class_name_rus_cap ).and_return( "Цвет" )
-    @object.stub_chain( :season, :name ).and_return( "Весна/Лето" )
     @object.sizes.first.stub( :underscore ).and_return( "size" )
     @object.sizes.second.stub( :underscore ).and_return( "size" )
     @object.colours.first.stub( :underscore ).and_return( "colour" )
-    @object.colours.second.stub( :underscore ).and_return( "colour" )    
+    @object.colours.second.stub( :underscore ).and_return( "colour" )
+    @object.stub( :category_name ).and_return( @object.category.name )
+    @object.stub( :season_name ).and_return( @object.season.name )    
     assign( :object, @object )
   end
   
@@ -23,8 +24,8 @@ describe "catalog_items/_show" do
     render
     rendered.should contain( @object.name )
     rendered.should contain( @object.price.to_s )
-    rendered.should contain( @object.category.name )
-    rendered.should contain( @object.season.name )    
+    rendered.should contain( @object.category_name )
+    rendered.should contain( @object.season_name )    
     rendered.should have_selector( "form", :method => "post", :action => cart_item_path( @object ) ) do |form|
       form.should have_image_input
     end
