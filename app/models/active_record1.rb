@@ -17,7 +17,6 @@
   self.js_for_new_or_edit = []
   self.js_for_create_or_update = []
   self.index_layout = ""
-  self.show_tag = name.underscore
   self.new_attr = true
   
   scope :index_scope
@@ -52,6 +51,7 @@
     delegate :human, :to => :model_name
 
 # tags and partials
+    def show_tag() name.underscore end
     def new_tag() "new_#{underscore}" end
     def edit_partial() underscore end    
     def new_partial() edit_partial end

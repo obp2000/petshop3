@@ -15,8 +15,7 @@ class CartItem < ActiveRecord1
 
 # actions
     def object_for_update( params, cart )
-      where( cart.conditions_hash( params ) ).first ||
-              create( cart.conditions_hash( params ).merge :amount => 0 )
+      find_or_create( cart.conditions_hash( params ) )
     end
 
     def edit_partial() "#{partial_path}/#{underscore}" end  
@@ -60,5 +59,9 @@ class CartItem < ActiveRecord1
   
   private
     def update_amount( i ) update_attribute( :amount, amount + i ) end     
+   
+    def self.find_or_create( conditions )
+      where( conditions ).first || create( conditions.merge :amount => 0 )
+    end
     
 end

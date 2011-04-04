@@ -8,5 +8,9 @@ class OrderItem < ActiveRecord1
   delegate :name, :to => :item 
 
   def order_item_sum() price * amount end
+    
+  def self.populate_order_item( cart_item )
+    create( cart_item.populate_order_item_hash )
+  end
   
 end

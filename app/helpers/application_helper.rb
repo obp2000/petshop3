@@ -94,7 +94,6 @@ module ApplicationHelper
 
   def render_show( appear_tag, fade_tag, show_partial )
     action :replace_html, appear_tag, :partial => show_partial
-#    self[ appear_tag ].replace_html :partial => show_partial
     fade_appear fade_tag, appear_tag          
   end
 
@@ -151,12 +150,10 @@ class Array
 
   def paginate_objects( params ) paginate paginate_hash( params ) end 
 
-  delegate :show_tag, :new_tag, :new_partial, :edit_partial, :partial_path, :new,
-    :destroy_notice, :new_record?, :new_attr, :category_name, :name,
-    :render_index, :category, :to => :first 
+  delegate :show_tag, :new_tag, :new_partial, :edit_partial, :partial_path, :destroy_notice,
+    :new_record?, :new_attr, :name, :render_index, :category, :category_name, :to => :first
 
-  delegate :tableize, :new, :index_layout, :paginate_hash,
-    :search, :grouped_category_name, :to => "first.class"
+  delegate :tableize, :new, :index_layout, :paginate_hash, :search, :to => "first.class"
   
   delegate :human, :to => "first.class.model_name"
 

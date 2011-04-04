@@ -29,7 +29,7 @@ class ProcessedOrder < Order
   def save_object( session )
     self.captcha_validated = session[ :captcha_validated ]
     self.cart = session.cart
-    if save && transaction { populate_order( self.cart ); self.cart.clear_cart }
+    if save && self.cart.populate_order_and_clear_cart( self )
       OrderNotice.deliver_order_notice( self )
     end
   end     
@@ -39,9 +39,8 @@ class ProcessedOrder < Order
     save( :validate => false )
   end
 
-  def populate_order( cart )
-    cart.cart_items.each { |cart_item| order_items.build( cart_item.populate_order_item_hash ) }
-    save
+  def populate_order_item( cart_item )
+    order_items.populate_order_item( cart_item )
   end
 
 # notices

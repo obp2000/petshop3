@@ -26,9 +26,12 @@ class Cart < ActiveRecord1
   end
   alias_method :destroy_object, :clear_cart    
 
-  def populate_order( order )
-    cart_items.each do |cart_item|
-      order.populate_order_item( cart_item )
+  def populate_order_and_clear_cart( order )
+    transaction do
+      cart_items.each do |cart_item|
+        order.populate_order_item( cart_item )
+      end
+      clear_cart
     end
   end
 
