@@ -11,7 +11,7 @@ module ForumPostsHelper
 
   def link_to_reply
     link_to image_tag( NewForumPostImage ) + ForumPost.human_attribute_name( :reply ),
-        reply_forum_post_path( @object ), :remote => true, :id => @object.link_to_reply_dom_id    
+        reply_forum_post_path( @object ), :remote => true, :id => "link_to_reply"    
   end
 
 end

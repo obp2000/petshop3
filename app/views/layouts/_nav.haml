@@ -4,8 +4,8 @@
       %h3= link_to image_tag( season_class.season_icon ) + season_class.human      
       %div
         %span.link_to_season= link_to_season( season_class )
-        - season_class.find( :all, :select => "category_id", :group => "category_id" ).each do |grouped_by_category|
-          = link_to_category( grouped_by_category.category, season_class.tableize )      
+        - season_class.find( :all, :select => "category_id", :group => "category_id" ).each do |grouped|
+          = link_to_category( grouped.category, season_class.tableize )      
     %h3= link_to image_tag( CartImage ) + cart.human
-    %div{ :id => cart.content_tag }= render "carts/index"
-    = set_drop_receiving_element cart.content_tag
+    #cart= render "carts/index"
+    = set_drop_receiving_element "cart"

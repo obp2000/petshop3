@@ -4,4 +4,4 @@
   = render "#{SharedPath}/colour", :colour => cart_item.colour unless cart_item.colour.blank?      
   %div
     = "#{number_to_currency cart_item.price} / #{cart_item.amount} #{t(:amount)}"
-    %span{ :class => cart_item.link_to_delete_dom_class }= link_to_delete cart_item
+    = link_to_delete cart_item

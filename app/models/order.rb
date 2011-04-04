@@ -43,8 +43,6 @@ class Order < ActiveRecord1
     page.update_processed_orders_amount
   end 
 
-  def delete_title 
-    "#{I18n.t(:remove)} #{Order.human} № #{id}"
-  end       
+  def delete_title() "#{I18n.t(:remove)} #{Order.human} № #{id}" end       
        
 end

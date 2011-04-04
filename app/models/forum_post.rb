@@ -5,8 +5,7 @@ class ForumPost < ActiveRecord1
 
   self.paginate_options = { :per_page => 15 }
 
-  class_inheritable_accessor :link_to_reply_dom_id, :parent_tag, :edit_partial, :new_tag
-  self.link_to_reply_dom_id = "link_to_reply"
+  class_inheritable_accessor :parent_tag, :edit_partial, :new_tag
   self.edit_partial = "form"
   self.new_tag = "post_new"
   
@@ -72,7 +71,7 @@ class ForumPost < ActiveRecord1
 
   def render_reply( page, *args )
     self.class.superclass.instance_method( :render_new_or_edit ).bind( self )[ page, *args ]    
-    page.fade( link_to_reply_dom_id )    
+    page.fade :link_to_reply    
   end 
   
   def render_create_or_update( page, session )

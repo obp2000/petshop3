@@ -24,7 +24,8 @@ module ApplicationHelper
 
   def link_to_delete( object )
     link_to image_tag( DeleteImage, { :title => object.delete_title } ), object,
-          :remote => true, :method => :delete, :confirm => object.delete_title + "?"    
+          :remote => true, :method => :delete, :confirm => object.delete_title + "?",
+          :class => "link_to_delete"
   end
 
   def small_submit_button
@@ -63,14 +64,14 @@ module ApplicationHelper
   end
 
   def check_cart_links( cart, force_hide )
-    select(
-      ".#{CartItem.link_to_delete_dom_class}, ##{Cart.link_to_new_order_form}, ##{Cart.link_to_clear_cart}" ).send(
+#    select(
+#      ".#{CartItem.link_to_delete_dom_class}, ##{Cart.link_to_new_order_form}, ##{Cart.link_to_clear_cart}" ).send(
+#       ( force_hide or cart.cart_items.empty? ) ?
+#       "fadeOut().attr('style','visibility: hidden')" : "attr('style','visibility: visible').fadeIn()" )
+    select( "#cart > a, #cart .link_to_delete" ).send(
        ( force_hide or cart.cart_items.empty? ) ?
        "fadeOut().attr('style','visibility: hidden')" : "attr('style','visibility: visible').fadeIn()" )
-  end
 
-  def check_cart_totals( cart )
-    cart.cart_totals.each { |args| replace_html *args }
   end
     
   def do_not_show_nav
@@ -146,7 +147,7 @@ module ApplicationHelper
   end
       
   def update_processed_orders_amount
-    action *ProcessedOrder.instance_exec { [ :replace_html, processed_orders_amount_dom_id, count ] }
+    action :replace_html, :processed_orders_amount, :partial => "orders/processed_orders_amount"
   end
           
 end

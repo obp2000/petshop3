@@ -1,11 +1,10 @@
 # encoding: utf-8
 class ProcessedOrder < Order
   
-  class_inheritable_accessor :fade_duration, :processed_orders_amount_dom_id, :edit_partial, :new_tag
+  class_inheritable_accessor :fade_duration, :edit_partial, :new_tag
   self.fade_duration = 20
   self.status_nav = human_attribute_name( :status_nav )
   self.status_ = human_attribute_name( :status_ )
-  self.processed_orders_amount_dom_id = "processed_orders_amount"
   self.new_tag = ContentTag
   self.edit_partial = "form"
 

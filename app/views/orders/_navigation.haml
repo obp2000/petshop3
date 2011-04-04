@@ -4,6 +4,6 @@
     = remote.link_to Order.human.pluralize, orders_path
     \//
     = remote.link_to ProcessedOrder.human.pluralize, processed_orders_path       
-    = render "orders/processed_orders_amount" 
+    %span#processed_orders_amount= render "orders/processed_orders_amount" 
     \//
     = remote.link_to ClosedOrder.human.pluralize, closed_orders_path 

@@ -8,9 +8,6 @@ class CartItem < ActiveRecord1
   belongs_to :colour
   
   delegate :name, :price, :to => :item
-  
-  class_inheritable_accessor :link_to_delete_dom_class
-  self.link_to_delete_dom_class = "link_to_delete_cart_item"
     
   class << self
 

@@ -7,15 +7,6 @@ class Cart < ActiveRecord1
 
   delegate :sum_amount, :to => :cart_items, :prefix => true
   delegate :total, :to => :cart_items
-          
-  class_inheritable_accessor :cart, :link_to_new_order_form, :link_to_clear_cart,
-        :total_items_dom_id, :total_sum_dom_id, :content_tag, :cart_totals_dom_id
-  self.link_to_new_order_form = "link_to_new_order_form"
-  self.link_to_clear_cart = "link_to_clear_cart"
-  self.total_items_dom_id = "cart_total_items"
-  self.total_sum_dom_id = "cart_total_sum"
-  self.content_tag = "cart"
-  self.cart_totals_dom_id = "cart_totals"
 
   class << self
 
@@ -26,10 +17,6 @@ class Cart < ActiveRecord1
 
     def find_current_object( params, cart ) cart end
   
-  end
-
-  def cart_totals
-    [ [ Cart.total_items_dom_id, cart_items_sum_amount ], [ Cart.total_sum_dom_id, total ] ]
   end
 
 # actions

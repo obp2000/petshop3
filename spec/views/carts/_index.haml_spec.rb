@@ -28,11 +28,9 @@ describe "carts/_index" do
 
   context "when user can make order, delete cart item and clear cart" do
     it "renders link to new order form" do
-      render      
-      rendered.should have_selector( :div, :id => @cart.link_to_new_order_form,
-        :style => "visibility: visible" )
-      rendered.should have_selector( :div, :id => @cart.link_to_clear_cart,
-        :style => "visibility: visible" )        
+      render
+      rendered.should have_selector( :a, :href => new_processed_order_path, :style => "visibility: visible" )
+      rendered.should have_selector( :a, :href => cart_path( @cart ), :style => "visibility: visible" )
     end    
   end
 
@@ -40,10 +38,8 @@ describe "carts/_index" do
     it "does not render link to new order form" do
       @cart.stub( :cart_items ).and_return( [] )
       render
-      rendered.should have_selector( :div, :id => @cart.link_to_new_order_form,
-        :style => "visibility: hidden" )
-      rendered.should have_selector( :div, :id => @cart.link_to_clear_cart,
-        :style => "visibility: hidden" )        
+      rendered.should have_selector( :a, :href => new_processed_order_path, :style => "visibility: hidden" )
+      rendered.should have_selector( :a, :href => cart_path( @cart ), :style => "visibility: hidden" )        
     end    
   end
 
