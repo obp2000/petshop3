@@ -15,8 +15,8 @@ class CartItem < ActiveRecord1
 
 # actions
     def object_for_update( params, cart )
-      where( params.conditions_hash( cart ) ).first ||
-              create( params.conditions_hash( cart ).merge :amount => 0 )
+      where( cart.conditions_hash( params ) ).first ||
+              create( cart.conditions_hash( params ).merge :amount => 0 )
     end
 
     def edit_partial() "#{partial_path}/#{underscore}" end  
@@ -61,13 +61,4 @@ class CartItem < ActiveRecord1
   private
     def update_amount( i ) update_attribute( :amount, amount + i ) end     
     
-end
-
-class Hash
-  
-  def conditions_hash( cart )
-    { :item_id => self[ :id ].gsub(/\D/u, ""), :size_id => self[ :size_id ],
-      :colour_id => self[ :colour_id ], :cart_id => cart.id }
-  end  
-  
 end

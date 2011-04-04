@@ -150,21 +150,15 @@ end
 class Array
 
   def paginate_objects( params ) paginate paginate_hash( params ) end 
-  
-  def render_index( page, cart )
-    first.render_index( page, cart )
-    page.show_notice
-  end
 
   delegate :show_tag, :new_tag, :new_partial, :edit_partial, :partial_path, :new,
-    :destroy_notice, :new_record?, :new_attr, :category_name, :name, :to => :first 
+    :destroy_notice, :new_record?, :new_attr, :category_name, :name,
+    :render_index, :category, :to => :first 
 
   delegate :tableize, :new, :index_layout, :paginate_hash,
     :search, :grouped_category_name, :to => "first.class"
   
   delegate :human, :to => "first.class.model_name"
-  
-  delegate :category, :to => :first
 
 end
 

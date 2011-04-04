@@ -40,4 +40,9 @@ class Cart < ActiveRecord1
 # notices
   def destroy_notice() human_attribute_name( :destroy_notice ) end  
 
+  def conditions_hash( params )
+    params.instance_exec { { :item_id => self[ :id ].gsub(/\D/u, ""),
+        :size_id => self[ :size_id ], :colour_id => self[ :colour_id ] } }.merge :cart_id => id
+  end
+
 end
